@@ -12,7 +12,7 @@
         <!--Item Managing-->
         <scene sceneID="3Cr-Ew-GOk">
             <objects>
-                <viewController storyboardIdentifier="addItem" id="dXX-aT-xHr" userLabel="Item Managing" customClass="ManageItemsVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="addItem" id="dXX-aT-xHr" userLabel="Item Managing" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FAI-n7-kck">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,7 +58,7 @@
         <!--Add Item-->
         <scene sceneID="nvu-Bn-M0l">
             <objects>
-                <viewController id="737-cc-90j" customClass="AddItemScreenVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="737-cc-90j" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kyP-7Y-5g6">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -193,10 +193,10 @@
             </objects>
             <point key="canvasLocation" x="3208.6956521739135" y="-709.15178571428567"/>
         </scene>
-        <!--New ItemVC-->
+        <!--View Controller-->
         <scene sceneID="Llx-NS-Rjo">
             <objects>
-                <viewController storyboardIdentifier="newItem" id="d9r-Vg-VdD" customClass="NewItemVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newItem" id="d9r-Vg-VdD" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4qK-Ej-ioT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

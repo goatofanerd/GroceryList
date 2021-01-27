@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6D42C28825B5394900CD63ED /* CreateStoresController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D42C28725B5394900CD63ED /* CreateStoresController.swift */; };
 		6D42C28E25B8058A00CD63ED /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D42C28D25B8058A00CD63ED /* Store.swift */; };
 		6DC6F4FE25AD660F0042CE2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6F4FD25AD660F0042CE2A /* AppDelegate.swift */; };
 		6DC6F50025AD660F0042CE2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6F4FF25AD660F0042CE2A /* SceneDelegate.swift */; };
@@ -21,11 +20,7 @@
 		6DC6F54225AEB2370042CE2A /* Shopping.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DC6F54125AEB2370042CE2A /* Shopping.storyboard */; };
 		6DC6F55025B514220042CE2A /* InitialLaunch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DC6F54F25B514220042CE2A /* InitialLaunch.storyboard */; };
 		6DC6F55925B519FF0042CE2A /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6F55825B519FF0042CE2A /* SignUpController.swift */; };
-		6DC6F56325B51AE80042CE2A /* AddItemsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6F56225B51AE80042CE2A /* AddItemsController.swift */; };
-		9AB0A13E25BC079F004B681D /* AddItemScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0A13D25BC079F004B681D /* AddItemScreenVC.swift */; };
-		9AB0A14325BC07D3004B681D /* NewItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0A14225BC07D3004B681D /* NewItemVC.swift */; };
 		9AB0A14825BC16F8004B681D /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0A14725BC16F8004B681D /* Alert.swift */; };
-		9AB0A14D25BE1EB4004B681D /* ChooseStoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0A14C25BE1EB4004B681D /* ChooseStoreCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +41,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6D42C28725B5394900CD63ED /* CreateStoresController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateStoresController.swift; sourceTree = "<group>"; };
 		6D42C28D25B8058A00CD63ED /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6DC6F4FA25AD660F0042CE2A /* GroceryShopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroceryShopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DC6F4FD25AD660F0042CE2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,11 +60,7 @@
 		6DC6F54125AEB2370042CE2A /* Shopping.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Shopping.storyboard; sourceTree = "<group>"; };
 		6DC6F54F25B514220042CE2A /* InitialLaunch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InitialLaunch.storyboard; sourceTree = "<group>"; };
 		6DC6F55825B519FF0042CE2A /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
-		6DC6F56225B51AE80042CE2A /* AddItemsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemsController.swift; sourceTree = "<group>"; };
-		9AB0A13D25BC079F004B681D /* AddItemScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemScreenVC.swift; sourceTree = "<group>"; };
-		9AB0A14225BC07D3004B681D /* NewItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemVC.swift; sourceTree = "<group>"; };
 		9AB0A14725BC16F8004B681D /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		9AB0A14C25BE1EB4004B681D /* ChooseStoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseStoreCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,7 +165,6 @@
 		6DC6F53725AEAA110042CE2A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				6DC6F56025B51ABE0042CE2A /* AddItems */,
 				6DC6F55725B519CB0042CE2A /* InitialLaunch */,
 			);
 			path = ViewControllers;
@@ -185,20 +174,8 @@
 			isa = PBXGroup;
 			children = (
 				6DC6F55825B519FF0042CE2A /* SignUpController.swift */,
-				6D42C28725B5394900CD63ED /* CreateStoresController.swift */,
 			);
 			path = InitialLaunch;
-			sourceTree = "<group>";
-		};
-		6DC6F56025B51ABE0042CE2A /* AddItems */ = {
-			isa = PBXGroup;
-			children = (
-				6DC6F56225B51AE80042CE2A /* AddItemsController.swift */,
-				9AB0A14225BC07D3004B681D /* NewItemVC.swift */,
-				9AB0A14C25BE1EB4004B681D /* ChooseStoreCell.swift */,
-				9AB0A13D25BC079F004B681D /* AddItemScreenVC.swift */,
-			);
-			path = AddItems;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,12 +315,7 @@
 				9AB0A14825BC16F8004B681D /* Alert.swift in Sources */,
 				6DC6F4FE25AD660F0042CE2A /* AppDelegate.swift in Sources */,
 				6DC6F50025AD660F0042CE2A /* SceneDelegate.swift in Sources */,
-				6DC6F56325B51AE80042CE2A /* AddItemsController.swift in Sources */,
 				6D42C28E25B8058A00CD63ED /* Store.swift in Sources */,
-				9AB0A14325BC07D3004B681D /* NewItemVC.swift in Sources */,
-				6D42C28825B5394900CD63ED /* CreateStoresController.swift in Sources */,
-				9AB0A13E25BC079F004B681D /* AddItemScreenVC.swift in Sources */,
-				9AB0A14D25BE1EB4004B681D /* ChooseStoreCell.swift in Sources */,
 				6DC6F55925B519FF0042CE2A /* SignUpController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

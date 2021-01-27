@@ -71,7 +71,7 @@
         <!--Create Stores-->
         <scene sceneID="4OH-G0-uh4">
             <objects>
-                <viewController storyboardIdentifier="createStoresInitial" id="68P-uS-4fe" customClass="CreateStoresController" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="createStoresInitial" id="68P-uS-4fe" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mhT-Ik-Ymb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
