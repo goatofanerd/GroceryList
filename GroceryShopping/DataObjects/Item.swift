@@ -2,26 +2,21 @@
 //  Item.swift
 //  GroceryShopping
 //
-//  Created by Saahil Sukhija on 1/25/21.
+//  Created by Saahil Sukhija on 1/26/21.
 //
 
-/*import Foundation
-import UIKit
+import Foundation
 
-struct Item: Codable, Equatable {
-    var parentStores: [Store] = []
+struct Item: Codable {
     var name: String!
+    var stores: [Store] = []
+    var lastBought: Date?
     
-    mutating func addParentStore(store: Store) {
-        parentStores.append(store)
+    mutating func addStore(_ store: String) {
+        stores.append(Store(name: store))
     }
     
-    mutating func removeParentStore(at index: Int) {
-        parentStores.remove(at: index)
-    }
-    
-    mutating func insertParentStore(at index: Int, with store: Store) {
-        parentStores.insert(store, at: index)
+    mutating func changeBoughtTime(date: Date) {
+        lastBought = date
     }
 }
-*/
