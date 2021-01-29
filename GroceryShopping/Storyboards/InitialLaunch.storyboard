@@ -68,66 +68,6 @@
             </objects>
             <point key="canvasLocation" x="1062" y="135"/>
         </scene>
-        <!--Create Stores-->
-        <scene sceneID="4OH-G0-uh4">
-            <objects>
-                <viewController storyboardIdentifier="createStoresInitial" id="68P-uS-4fe" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="mhT-Ik-Ymb">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zkw-2h-U04">
-                                <rect key="frame" x="20" y="752" width="374" height="50"/>
-                                <color key="backgroundColor" name="blueColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="p1x-Nj-4tT"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <state key="normal" title="Done">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onSubmit:" destination="68P-uS-4fe" eventType="touchUpInside" id="HE1-ES-sxm"/>
-                                </connections>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a7x-zZ-tQW">
-                                <rect key="frame" x="10" y="124.66666666666669" width="394" height="617.33333333333326"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="separatorColor" name="secondChoiceColor"/>
-                            </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Stores" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddc-f4-Vdg">
-                                <rect key="frame" x="20" y="64" width="374" height="40.666666666666657"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="Wjz-HK-VAf"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="Wjz-HK-VAf" firstAttribute="trailing" secondItem="Ddc-f4-Vdg" secondAttribute="trailing" constant="20" id="DXv-f5-4My"/>
-                            <constraint firstItem="Wjz-HK-VAf" firstAttribute="bottom" secondItem="Zkw-2h-U04" secondAttribute="bottom" constant="60" id="NhK-VL-mUm"/>
-                            <constraint firstItem="Ddc-f4-Vdg" firstAttribute="top" secondItem="Wjz-HK-VAf" secondAttribute="top" constant="20" id="QzJ-mA-dN5"/>
-                            <constraint firstItem="Zkw-2h-U04" firstAttribute="trailing" secondItem="Ddc-f4-Vdg" secondAttribute="trailing" id="aVL-1n-aLf"/>
-                            <constraint firstItem="a7x-zZ-tQW" firstAttribute="leading" secondItem="Wjz-HK-VAf" secondAttribute="leading" constant="10" id="chI-hJ-1yr"/>
-                            <constraint firstItem="Wjz-HK-VAf" firstAttribute="trailing" secondItem="a7x-zZ-tQW" secondAttribute="trailing" constant="10" id="eHh-s8-LM2"/>
-                            <constraint firstItem="a7x-zZ-tQW" firstAttribute="top" secondItem="Ddc-f4-Vdg" secondAttribute="bottom" constant="20" id="has-5o-SQJ"/>
-                            <constraint firstItem="Ddc-f4-Vdg" firstAttribute="leading" secondItem="Wjz-HK-VAf" secondAttribute="leading" constant="20" id="jfi-vY-DXi"/>
-                            <constraint firstItem="Zkw-2h-U04" firstAttribute="leading" secondItem="Ddc-f4-Vdg" secondAttribute="leading" id="nEK-Dm-i93"/>
-                            <constraint firstItem="Zkw-2h-U04" firstAttribute="top" secondItem="a7x-zZ-tQW" secondAttribute="bottom" constant="10" id="qKf-PJ-Uba"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Create Stores" id="jMr-8S-SyI"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <connections>
-                        <outlet property="doneButton" destination="Zkw-2h-U04" id="i3g-vD-WHB"/>
-                        <outlet property="tableView" destination="a7x-zZ-tQW" id="MPX-5Q-fuw"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fYI-0s-VEe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2394" y="135"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="ibn-LO-34d">
             <objects>

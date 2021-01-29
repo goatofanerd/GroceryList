@@ -17,9 +17,6 @@ class SignUpController: UIViewController {
     }
 
     @IBAction func nextPage(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "InitialLaunch", bundle: nil)
-        let createStoresScreen = storyboard.instantiateViewController(withIdentifier: "createStoresInitial")
-        createStoresScreen.modalPresentationStyle = .fullScreen
-        self.present(createStoresScreen, animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }

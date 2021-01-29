@@ -19,13 +19,12 @@
                         <color key="tintColor" name="blueColor"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                <color key="value" name="blueColor"/>
+                                <color key="value" name="selectedBlueColor"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </tabBar>
                     <connections>
                         <segue destination="b3L-P2-Nuy" kind="relationship" relationship="viewControllers" destinationCreationSelector="itemManager" id="Z8Y-4n-xSM"/>
-                        <segue destination="57L-0J-VvN" kind="relationship" relationship="viewControllers" destinationCreationSelector="shopping" id="baj-uj-aAe"/>
                         <segue destination="2nw-fO-lwe" kind="relationship" relationship="viewControllers" destinationCreationSelector="manageStores" id="Cb7-KQ-D8m"/>
                     </connections>
                 </tabBarController>
@@ -53,20 +52,13 @@
             </objects>
             <point key="canvasLocation" x="1477" y="-251"/>
         </scene>
-        <!--Shopping-->
-        <scene sceneID="lyc-LO-fru">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Shopping" id="57L-0J-VvN" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="V4c-eY-pog"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MS7-cg-FYL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1665" y="72"/>
-        </scene>
     </scenes>
     <resources>
         <namedColor name="blueColor">
             <color red="0.15099999308586121" green="0.41299998760223389" blue="0.86000001430511475" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="selectedBlueColor">
+            <color red="0.0" green="0.59899997711181641" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
