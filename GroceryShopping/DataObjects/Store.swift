@@ -5,27 +5,23 @@
 //  Created by Saahil Sukhija on 1/19/21.
 //
 
-import UIKit
+import Foundation
 struct Store: Codable, Equatable {
-    static func == (lhs: Store, rhs: Store) -> Bool {
-        return lhs.name == rhs.name
-    }
     
     var name: String
-    var color: Color
 }
 
-struct Color: Codable {
-    var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
-    
-    var color: UIColor {
-        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
-    }
-    
-    init(color: UIColor) {
-        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-    }
-}
+//struct Color: Codable {
+//    var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
+//
+//    var color: UIColor {
+//        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+//    }
+//
+//    init(color: UIColor) {
+//        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+//    }
+//}
 // MARK: - UserDefaults extensions
 
 public extension UserDefaults {

@@ -11,10 +11,14 @@ class ItemManagerVC: UIViewController {
     @IBOutlet weak var storeCollectionView: UICollectionView!
     var stores: [Store] = []
     var items: [Item] = []
+    var storeColors = [UIColor(named: "Blue")!, UIColor(named: "Green")!, UIColor(named: "Red")!, UIColor(named: "Orange")!, UIColor(named: "Lime")!, UIColor(named: "LightBlue")!]
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        let layout = UICollectionViewFlowLayout()
+        storeCollectionView.collectionViewLayout = layout
+        storeCollectionView.register(StoreCell.nib(), forCellWithReuseIdentifier: StoreCell.identifier)
         checkFirstLaunch()
     }
 }
@@ -35,7 +39,16 @@ extension ItemManagerVC: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "storeCell", for: indexPath)
+        //collectionViewHeight.constant = CGFloat(75 * ((indexPath.row / 2) + 1))
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreCell.identifier, for: indexPath) as! StoreCell
+        
+        let dividend = storeColors.count
+        
+        if indexPath.row == stores.count{
+            cell.configure(storeName: "Add Store", backgroundColor: .darkGray)
+        } else {
+            cell.configure(storeName: stores[indexPath.row].name, backgroundColor: storeColors[indexPath.row % dividend])
+        }
         
         return cell
     }
@@ -45,6 +58,12 @@ extension ItemManagerVC: UICollectionViewDataSource {
 
 extension ItemManagerVC: UICollectionViewDelegateFlowLayout {
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding: CGFloat = 10
+        return CGSize(width: (collectionView.frame.size.width - padding) / 2, height: 75)
+    }
+    
+    
 }
 
 
@@ -64,7 +83,7 @@ extension ItemManagerVC {
         else {
             print("already launched")
             storeCollectionView.delegate = self
-            //storeCollectionView.dataSource = self
+            storeCollectionView.dataSource = self
             loadUserItems()
         }
     }

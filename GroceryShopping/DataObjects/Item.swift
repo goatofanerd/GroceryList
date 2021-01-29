@@ -12,9 +12,8 @@ struct Item: Codable {
     var stores: [Store] = []
     var lastBought: Date?
     
-    mutating func addStore(_ store: String, color: UIColor) {
-        let uiColor: Color = Color(color: color)
-        stores.append(Store(name: store, color: uiColor))
+    mutating func addStore(_ store: String) {
+        stores.append(Store(name: store))
     }
     
     mutating func changeBoughtTime(date: Date) {

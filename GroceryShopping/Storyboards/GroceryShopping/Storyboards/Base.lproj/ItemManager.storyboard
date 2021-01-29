@@ -16,36 +16,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" id="bcm-an-WKg">
-                                <rect key="frame" x="0.0" y="140" width="414" height="673"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="10n-Mi-yvj">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="140" id="3fB-EP-wYa"/>
-                                        </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kD7-Vq-fyV">
-                                            <size key="itemSize" width="128" height="128"/>
-                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                        <cells/>
-                                    </collectionView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="nsu-cW-c4E" firstAttribute="trailing" secondItem="10n-Mi-yvj" secondAttribute="trailing" id="JS2-t4-vqI"/>
-                                    <constraint firstItem="10n-Mi-yvj" firstAttribute="leading" secondItem="nsu-cW-c4E" secondAttribute="leading" id="nfH-62-6Ry"/>
-                                    <constraint firstItem="10n-Mi-yvj" firstAttribute="top" secondItem="nsu-cW-c4E" secondAttribute="top" id="vrD-rM-iqk"/>
-                                </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="7La-Ay-a8g"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="nsu-cW-c4E"/>
-                            </scrollView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="10n-Mi-yvj">
+                                <rect key="frame" x="20" y="140" width="374" height="673"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kD7-Vq-fyV">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8mk-fq-sdV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="8mk-fq-sdV" firstAttribute="trailing" secondItem="10n-Mi-yvj" secondAttribute="trailing" constant="20" id="23J-Iw-nrD"/>
+                            <constraint firstItem="10n-Mi-yvj" firstAttribute="leading" secondItem="8mk-fq-sdV" secondAttribute="leading" constant="20" id="P3R-5Y-hUi"/>
+                            <constraint firstItem="8mk-fq-sdV" firstAttribute="bottom" secondItem="10n-Mi-yvj" secondAttribute="bottom" id="cbG-fe-ryu"/>
+                            <constraint firstItem="10n-Mi-yvj" firstAttribute="top" secondItem="8mk-fq-sdV" secondAttribute="top" id="uBV-hj-COA"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Start Shopping" largeTitleDisplayMode="always" id="83i-sl-vlC">
                         <barButtonItem key="backBarButtonItem" title="Shopping" id="r70-30-s9c"/>
