@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="10n-Mi-yvj">
-                                <rect key="frame" x="20" y="140" width="374" height="673"/>
+                                <rect key="frame" x="20" y="150" width="374" height="663"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kD7-Vq-fyV">
                                     <size key="itemSize" width="128" height="128"/>
@@ -34,7 +34,7 @@
                             <constraint firstItem="8mk-fq-sdV" firstAttribute="trailing" secondItem="10n-Mi-yvj" secondAttribute="trailing" constant="20" id="23J-Iw-nrD"/>
                             <constraint firstItem="10n-Mi-yvj" firstAttribute="leading" secondItem="8mk-fq-sdV" secondAttribute="leading" constant="20" id="P3R-5Y-hUi"/>
                             <constraint firstItem="8mk-fq-sdV" firstAttribute="bottom" secondItem="10n-Mi-yvj" secondAttribute="bottom" id="cbG-fe-ryu"/>
-                            <constraint firstItem="10n-Mi-yvj" firstAttribute="top" secondItem="8mk-fq-sdV" secondAttribute="top" id="uBV-hj-COA"/>
+                            <constraint firstItem="10n-Mi-yvj" firstAttribute="top" secondItem="8mk-fq-sdV" secondAttribute="top" constant="10" id="uBV-hj-COA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Start Shopping" largeTitleDisplayMode="always" id="83i-sl-vlC">
@@ -48,6 +48,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AoP-XZ-suI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2386.9565217391305" y="-251.11607142857142"/>
+        </scene>
+        <!--Add Store-->
+        <scene sceneID="EE7-NL-IIS">
+            <objects>
+                <viewController storyboardIdentifier="AddItem" hidesBottomBarWhenPushed="YES" id="ZDU-tX-aHK" customClass="AddItemVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oqR-U6-6A6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wzM-QT-AgQ">
+                                <rect key="frame" x="20" y="140" width="374" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="k4K-tD-wdY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="addItemButtonTapped:" destination="ZDU-tX-aHK" eventType="touchUpInside" id="Zsx-82-BPO"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mUG-uD-wd7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="wzM-QT-AgQ" firstAttribute="top" secondItem="mUG-uD-wd7" secondAttribute="top" id="1FF-YU-Eol"/>
+                            <constraint firstItem="mUG-uD-wd7" firstAttribute="trailing" secondItem="wzM-QT-AgQ" secondAttribute="trailing" constant="20" id="dXc-qg-cbS"/>
+                            <constraint firstItem="wzM-QT-AgQ" firstAttribute="leading" secondItem="mUG-uD-wd7" secondAttribute="leading" constant="20" id="sZb-ZI-lad"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add Store" id="P6b-Qa-rO8">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="RZM-9m-d19"/>
+                    </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="itemName" destination="wzM-QT-AgQ" id="y6B-6l-rfc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Flg-ii-YLq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4415.9420289855079" y="-633.48214285714278"/>
         </scene>
         <!--Add Items-->
         <scene sceneID="O7E-jY-bm0">
@@ -68,6 +110,71 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jFT-4Q-RSI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1476.8115942028987" y="-251.11607142857142"/>
+        </scene>
+        <!--Store Name EnterVC-->
+        <scene sceneID="4U5-wy-eMK">
+            <objects>
+                <viewController storyboardIdentifier="StoreAdder" id="QBq-tc-mMf" customClass="StoreNameEnterVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uJ4-jA-JkW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter name of store..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gTr-1q-bn0">
+                                <rect key="frame" x="20" y="44" width="374" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="DQb-IU-ZuH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <action selector="textFieldChange:" destination="QBq-tc-mMf" eventType="editingChanged" id="tNo-Af-k02"/>
+                                </connections>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BXr-G0-x1F">
+                                <rect key="frame" x="0.0" y="94" width="414" height="768"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bca-wL-4rR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gTr-1q-bn0" firstAttribute="leading" secondItem="Bca-wL-4rR" secondAttribute="leading" constant="20" id="3Jz-jX-k6z"/>
+                            <constraint firstItem="BXr-G0-x1F" firstAttribute="leading" secondItem="Bca-wL-4rR" secondAttribute="leading" id="Qyv-rf-mWW"/>
+                            <constraint firstItem="Bca-wL-4rR" firstAttribute="bottom" secondItem="BXr-G0-x1F" secondAttribute="bottom" id="Uur-hZ-gJE"/>
+                            <constraint firstItem="BXr-G0-x1F" firstAttribute="top" secondItem="gTr-1q-bn0" secondAttribute="bottom" id="YF5-jt-v8b"/>
+                            <constraint firstItem="Bca-wL-4rR" firstAttribute="trailing" secondItem="BXr-G0-x1F" secondAttribute="trailing" id="cs2-dn-LUx"/>
+                            <constraint firstItem="Bca-wL-4rR" firstAttribute="trailing" secondItem="gTr-1q-bn0" secondAttribute="trailing" constant="20" id="hQ4-b4-ntF"/>
+                            <constraint firstItem="gTr-1q-bn0" firstAttribute="top" secondItem="Bca-wL-4rR" secondAttribute="top" id="zOb-fv-NzR"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="nbs-O9-x15"/>
+                    <connections>
+                        <outlet property="tableView" destination="BXr-G0-x1F" id="46w-e5-gGS"/>
+                        <outlet property="textField" destination="gTr-1q-bn0" id="cst-Nx-y21"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QvC-OD-HX1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5162" y="-988"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VcL-Hl-fAk">
+            <objects>
+                <navigationController storyboardIdentifier="AddItemNav" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="hIu-c6-Xxy" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="Imb-Mr-lEj">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ZDU-tX-aHK" kind="relationship" relationship="rootViewController" id="12X-sp-Ar5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q5z-vK-87V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3505.7971014492755" y="-633.48214285714278"/>
         </scene>
     </scenes>
     <resources>

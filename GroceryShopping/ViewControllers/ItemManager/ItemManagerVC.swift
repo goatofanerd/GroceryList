@@ -19,6 +19,9 @@ class ItemManagerVC: UIViewController {
         let layout = UICollectionViewFlowLayout()
         storeCollectionView.collectionViewLayout = layout
         storeCollectionView.register(StoreCell.nib(), forCellWithReuseIdentifier: StoreCell.identifier)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         checkFirstLaunch()
     }
 }
@@ -29,7 +32,15 @@ extension ItemManagerVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        print("tapped")
+        var gotoVC: UIViewController
+        if indexPath.row == stores.count {
+            //Launch Add Store Screen
+            gotoVC = (storyboard?.instantiateViewController(withIdentifier: "AddItem"))!
+            gotoVC.modalPresentationStyle = .fullScreen
+            navigationController?.pushViewController(gotoVC, animated: true)
+        } else {
+            //Launch user store screen
+        }
     }
 }
 
@@ -95,5 +106,7 @@ extension ItemManagerVC {
         } catch {
             print("error getting stores/items")
         }
+        
+        storeCollectionView.reloadData()
     }
 }
