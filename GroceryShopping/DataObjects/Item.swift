@@ -7,11 +7,16 @@
 
 import UIKit
 
-struct Item: Codable {
+struct Item: Codable, Equatable {
     var name: String!
     var stores: [Store] = []
     var lastBought: Date?
     
+    init(name: String, stores: [Store] = [], lastBought: Date? = nil) {
+        self.name = name
+        self.stores = stores
+        self.lastBought = lastBought
+    }
     mutating func addStore(_ store: String) {
         stores.append(Store(name: store))
     }
