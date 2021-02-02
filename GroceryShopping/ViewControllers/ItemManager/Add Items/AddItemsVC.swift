@@ -16,7 +16,6 @@ class AddItemsVC: UIViewController {
     
     var existingItems: [Item] = []
     var checkedItems: [Item] = []
-    //var reorderTableView: LongPressReorderTableView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,15 +25,8 @@ class AddItemsVC: UIViewController {
         tableView.dataSource = self
         addNewItemField.delegate = self
         
-//        reorderTableView = LongPressReorderTableView(tableView)
-//        reorderTableView.enableLongPressReorder()
-//        reorderTableView.delegate = self
-        
     }
     
-//    override func positionChanged(currentIndex: IndexPath, newIndex: IndexPath) {
-//        existingItems.swapAt(currentIndex.row, newIndex.row)
-//    }
     
     override func viewWillAppear(_ animated: Bool) {
         loadUserItems()
@@ -67,12 +59,22 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ItemsCheckboxCell.reuseIdentifier) as! ItemsCheckboxCell
-        cell.configure(itemName: existingItems[indexPath.row].name)
-        cell.checkBox.layer.borderColor = UIColor.gray.cgColor
-        cell.checkBox.layer.borderWidth = 1
         cell.checkBox.isUserInteractionEnabled = false
+        cell.checkBox.layer.borderWidth = 1
         cell.checkBox.tintColor = .white
-        cell.itemName.textColor = .gray
+        cell.configure(itemName: existingItems[indexPath.row].name)
+        
+        if !checkedItems.contains(Item(name: existingItems[indexPath.row].name)) {
+            cell.checkBox.layer.borderColor = UIColor.gray.cgColor
+            cell.checkBox.layer.backgroundColor = UIColor.clear.cgColor
+            cell.checkBox.setImage(nil, for: .normal)
+            cell.itemName.textColor = .gray
+        } else {
+            cell.checkBox.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration(scale: .small))?.withTintColor(.white), for: .normal)
+            cell.checkBox.backgroundColor = UIColor(named: "LightBlue")
+            cell.checkBox.layer.borderColor = UIColor.blue.cgColor
+            cell.itemName.textColor = .label
+        }
         return cell
     }
     
