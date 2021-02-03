@@ -37,6 +37,8 @@ extension ItemManagerVC: UICollectionViewDelegate {
             //Launch Add Store Screen
             gotoVC = (storyboard?.instantiateViewController(withIdentifier: "AddItem"))!
             gotoVC.modalPresentationStyle = .fullScreen
+            gotoVC.navigationItem.backBarButtonItem?.tintColor = .label
+            gotoVC.navigationItem.backButtonTitle = " "
             navigationController?.pushViewController(gotoVC, animated: true)
         } else {
             //Launch user store screen

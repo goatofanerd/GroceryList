@@ -58,6 +58,11 @@ class AddStoreVC: UIViewController {
     }
     
     @IBAction func addItemsButtonTapped(_ sender: Any) {
+        guard let title = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            Alert.regularAlert(title: "Enter store name first", message: "Please enter the store name before you can add items", vc: self)
+            return
+            
+        }
         let newItemVC = storyboard?.instantiateViewController(identifier: "AddItemsNew") as! AddItemsVC
         let navController = UINavigationController(rootViewController: newItemVC) // Creating a navigation controller with VC1 at the root of the navigation stack.
         if let title = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) {
@@ -65,12 +70,14 @@ class AddStoreVC: UIViewController {
         } else {
             newItemVC.navigationItem.title = "Add Items"
         }
+        
+        newItemVC.storeName = title
         self.present(navController, animated: true, completion: nil)
     }
     
 }
 
-extension AddStoreVC: ItemDelegate {
+extension AddStoreVC: StoreDelegate {
     func addStore(_ store: String) {
         itemName.setTitleColor(UIColor.label, for: .normal)
         itemName.setTitle("   " + store.trimmingCharacters(in: .whitespacesAndNewlines), for: .normal)

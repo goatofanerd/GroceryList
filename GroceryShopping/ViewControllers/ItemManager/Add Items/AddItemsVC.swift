@@ -16,6 +16,10 @@ class AddItemsVC: UIViewController {
     
     var existingItems: [Item] = []
     var checkedItems: [Item] = []
+    var filteredItems: [Item] = []
+    var reorderTable: LongPressReorderTableView!
+    
+    var storeName: String!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,11 +28,20 @@ class AddItemsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         addNewItemField.delegate = self
+        searchBar.delegate = self
+        reorderTable = LongPressReorderTableView(tableView)
+        reorderTable.enableLongPressReorder()
+        reorderTable.delegate = self
         
+    }
+    
+    override func positionChanged(currentIndex: IndexPath, newIndex: IndexPath) {
+        existingItems.swapAt(currentIndex.row, newIndex.row)
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadUserItems()
     }
     
@@ -39,22 +52,65 @@ class AddItemsVC: UIViewController {
         } catch {
             print("Error getting items")
         }
+        
+        filteredItems = existingItems
     }
 
     @IBAction func closeAndSave(_ sender: Any) {
-        save()
         dismiss(animated: true, completion: nil)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        save()
+    }
+    
     func save() {
-        
+        print(storeName!)
+    }
+}
+
+
+extension AddItemsVC: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+        filteredItems = []
+        for item in existingItems{
+            
+            if item.name.lowercased().starts(with: searchText.lowercased()) {
+                filteredItems.append(Item(name: item.name))
+            }
+            
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
     }
 }
 
 extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return existingItems.count
+        return filteredItems.count
+    }
+    
+    // this method handles row deletion
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            // remove the item from the data model
+            if(checkedItems.contains(Item(name: filteredItems[indexPath.row].name))) {
+                checkedItems.remove(at: checkedItems.firstIndex(of: Item(name: filteredItems[indexPath.row].name))!)
+            }
+            filteredItems.remove(at: indexPath.row)
+            
+            // delete the table view row
+            tableView.deleteRows(at: [indexPath], with: .left)
+            
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,9 +118,9 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
         cell.checkBox.isUserInteractionEnabled = false
         cell.checkBox.layer.borderWidth = 1
         cell.checkBox.tintColor = .white
-        cell.configure(itemName: existingItems[indexPath.row].name)
+        cell.configure(itemName: filteredItems[indexPath.row].name ?? "unknown error")
         
-        if !checkedItems.contains(Item(name: existingItems[indexPath.row].name)) {
+        if !checkedItems.contains(Item(name: filteredItems[indexPath.row].name)) {
             cell.checkBox.layer.borderColor = UIColor.gray.cgColor
             cell.checkBox.layer.backgroundColor = UIColor.clear.cgColor
             cell.checkBox.setImage(nil, for: .normal)
@@ -83,7 +139,10 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func markRowAsSelected(indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! ItemsCheckboxCell
+    
+        guard let cell = tableView.cellForRow(at: indexPath) as? ItemsCheckboxCell else { print("uh-oh");
+            return
+        }
         
         if cell.checkBox.backgroundColor == UIColor(named: "LightBlue") {
             checkedItems.remove(at: checkedItems.firstIndex(of: Item(name: cell.itemName.text!)) ?? 0)
@@ -92,7 +151,7 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
             cell.checkBox.layer.borderColor = UIColor.gray.cgColor
             cell.itemName.textColor = .gray
         } else {
-            checkedItems.append(existingItems[indexPath.row])
+            checkedItems.append(filteredItems[indexPath.row])
             cell.checkBox.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration(scale: .small))?.withTintColor(.white), for: .normal)
             cell.checkBox.backgroundColor = UIColor(named: "LightBlue")
             cell.checkBox.layer.borderColor = UIColor.blue.cgColor
@@ -123,7 +182,9 @@ extension AddItemsVC: UITextFieldDelegate {
             return
         }
         existingItems.insert(Item(name: addNewItemField.text!), at: 0)
-        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
+        tableView.setContentOffset(.zero, animated: false)
+        //tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
+        searchBar.delegate?.searchBar?(searchBar, textDidChange: searchBar.text!)
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
         tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
         

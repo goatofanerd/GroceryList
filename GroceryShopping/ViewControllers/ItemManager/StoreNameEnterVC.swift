@@ -11,7 +11,7 @@ class StoreNameEnterVC: UIViewController {
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
-    var itemDelegate: ItemDelegate!
+    var itemDelegate: StoreDelegate!
     var totalStores = ["Costco", "Trader Joe's", "Produce", "Target", "Walmart", "Walgreens"]
     var showingStores: [String] = []
     override func viewDidLoad() {
@@ -52,7 +52,7 @@ class StoreNameEnterVC: UIViewController {
     
 }
 
-protocol ItemDelegate {
+protocol StoreDelegate {
     func addStore(_ store: String)
 }
 
