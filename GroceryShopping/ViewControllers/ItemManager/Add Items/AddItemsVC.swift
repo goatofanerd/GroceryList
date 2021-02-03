@@ -81,7 +81,6 @@ class AddItemsVC: UIViewController {
         
         do {
             try UserDefaults.standard.set(object: existingItems, forKey: "items")
-            print(try UserDefaults.standard.get(objectType: [Item].self, forKey: "items"))
         } catch {
             print("error setting items")
         }
