@@ -36,6 +36,10 @@ class AddItemsVC: UIViewController {
     }
     
     override func positionChanged(currentIndex: IndexPath, newIndex: IndexPath) {
+        if checkedItems.contains(existingItems[currentIndex.row]) && checkedItems.contains(existingItems[newIndex.row]) {
+            print("contains")
+            checkedItems.swapAt(currentIndex.row, newIndex.row)
+        }
         existingItems.swapAt(currentIndex.row, newIndex.row)
     }
     
@@ -66,7 +70,24 @@ class AddItemsVC: UIViewController {
     }
     
     func save() {
-        print(storeName!)
+        storeName = storeName!
+        
+        for (index, var item) in existingItems.enumerated() {
+            if checkedItems.contains(item) {
+                item.addStore(storeName)
+                existingItems[index] = Item(name: item.name, stores: item.stores)
+            }
+        }
+        
+        do {
+            try UserDefaults.standard.set(object: existingItems, forKey: "items")
+            print(try UserDefaults.standard.get(objectType: [Item].self, forKey: "items"))
+        } catch {
+            print("error setting items")
+        }
+        
+        
+        
     }
 }
 
@@ -106,7 +127,7 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
                 checkedItems.remove(at: checkedItems.firstIndex(of: Item(name: filteredItems[indexPath.row].name))!)
             }
             filteredItems.remove(at: indexPath.row)
-            
+            existingItems.remove(at: indexPath.row)
             // delete the table view row
             tableView.deleteRows(at: [indexPath], with: .left)
             
@@ -189,5 +210,6 @@ extension AddItemsVC: UITextFieldDelegate {
         tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
         
         addNewItemField.text = ""
+        addNewItemField.becomeFirstResponder()
     }
 }

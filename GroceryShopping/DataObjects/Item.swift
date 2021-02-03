@@ -5,7 +5,7 @@
 //  Created by Saahil Sukhija on 1/26/21.
 //
 
-import UIKit
+import Foundation
 
 struct Item: Codable, Equatable {
     var name: String!
@@ -17,8 +17,11 @@ struct Item: Codable, Equatable {
         self.stores = stores
         self.lastBought = lastBought
     }
+    
     mutating func addStore(_ store: String) {
-        stores.append(Store(name: store))
+        if !stores.contains(Store(name: store)) {
+            stores.append(Store(name: store))
+        }
     }
     
     mutating func changeBoughtTime(date: Date) {
