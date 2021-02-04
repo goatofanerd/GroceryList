@@ -166,7 +166,7 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
         cell.checkBox.isUserInteractionEnabled = false
         cell.checkBox.layer.borderWidth = 1
         cell.checkBox.tintColor = .label
-        cell.configure(itemName: filteredItems[indexPath.row].name ?? "unknown error")
+        cell.configure(itemName: filteredItems[indexPath.row].name ?? "error")
         
         if !checkedItems.contains(filteredItems[indexPath.row]) {
             cell.checkBox.layer.borderColor = UIColor.gray.cgColor
