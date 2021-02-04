@@ -37,12 +37,16 @@ class AddItemsVC: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        var indexPaths: [IndexPath] = []
         for (index, item) in existingItems.enumerated() {
             if item.stores.contains(Store(name: storeName)) {
                 checkedItems.append(item)
-                tableView.selectRow(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .none)
-                tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: index, section: 0))
+                indexPaths.append(IndexPath(row: index, section: 0))
             }
+        }
+
+        for indexPath in indexPaths {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
     }
     override func positionChanged(currentIndex: IndexPath, newIndex: IndexPath) {

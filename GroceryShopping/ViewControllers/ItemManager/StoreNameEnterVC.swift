@@ -14,6 +14,7 @@ class StoreNameEnterVC: UIViewController {
     var itemDelegate: StoreDelegate!
     var totalStores = ["Costco", "Trader Joe's", "Produce", "Target", "Walmart", "Walgreens"]
     var showingStores: [String] = []
+    var stores: [Store] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,8 +27,24 @@ class StoreNameEnterVC: UIViewController {
         textField.becomeFirstResponder()
     }
     
+    func loadUserStores() {
+        do {
+            stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+        } catch {
+            print("error getting stores")
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        loadUserStores()
         navigationItem.largeTitleDisplayMode = .never
+        for (index, store) in totalStores.enumerated() {
+            if stores.contains(Store(name: store)) {
+                print(store)
+                totalStores.remove(at: index)
+                print(totalStores)
+            }
+        }
         totalStores.sort()
     }
     
@@ -35,12 +52,17 @@ class StoreNameEnterVC: UIViewController {
         //Returning all strings which contain textfield string
         showingStores = totalStores.filter { item in
             return item.lowercased().contains((textField.text?.lowercased()) ?? "placeholder val")
+            
         }
         tableView.reloadData()
         
     }
     
     func transferData() {
+        guard !stores.contains(Store(name: textField.text!)) else {
+            Alert.regularAlert(title: "Store already exists!", message: "The store '\(textField.text!)' already exists. Please enter another name", vc: self)
+            return
+        }
         if textField.text == "" {
             Alert.regularAlert(title: "Text is Empty!", message: "Please put text in the text box", vc: self)
         } else {
