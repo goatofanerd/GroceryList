@@ -89,12 +89,10 @@ class AddItemsVC: UIViewController {
         
         for (index, var item) in existingItems.enumerated() {
             if checkedItems.contains(item) {
-                print("hello, \(item.name!)")
                 item.addStore(storeName)
                 existingItems[index] = Item(name: item.name, stores: item.stores)
             } else {
                 if item.stores.contains(Store(name: storeName)) {
-                    print("removing")
                     item.stores.remove(at: item.stores.firstIndex(of: Store(name: storeName))!)
                     existingItems[index] = Item(name: item.name, stores: item.stores)
                 }
@@ -107,7 +105,6 @@ class AddItemsVC: UIViewController {
             print("error setting items")
         }
         
-        print(existingItems)
         
         
         
@@ -188,7 +185,7 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
     
     func markRowAsSelected(indexPath: IndexPath) {
     
-        guard let cell = tableView.cellForRow(at: indexPath) as? ItemsCheckboxCell else { print("uh-oh");
+        guard let cell = tableView.cellForRow(at: indexPath) as? ItemsCheckboxCell else { print("unable to mark row");
             return
         }
         
