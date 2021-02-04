@@ -35,6 +35,16 @@ class AddItemsVC: UIViewController {
         
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        for (index, item) in existingItems.enumerated() {
+            if item.stores.contains(Store(name: storeName)) {
+                checkedItems.append(item)
+                tableView.selectRow(at: IndexPath(row: index, section: 0), animated: true, scrollPosition: .none)
+                tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: index, section: 0))
+            }
+        }
+    }
     override func positionChanged(currentIndex: IndexPath, newIndex: IndexPath) {
         if checkedItems.contains(existingItems[currentIndex.row]) && checkedItems.contains(existingItems[newIndex.row]) {
             print("contains")
@@ -52,7 +62,8 @@ class AddItemsVC: UIViewController {
     func loadUserItems() {
         
         do {
-            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? [Item(name: "Item1"), Item(name: "Item2"), Item(name: "Item3"), Item(name: "Item4"), Item(name: "Item5"), Item(name: "Item6"), Item(name: "Item7"), Item(name: "Item8"), Item(name: "Item9"), Item(name: "Item10"), Item(name: "Item11"), Item(name: "Item12"), Item(name: "Item13"), Item(name: "Item14"), Item(name: "Item15"), Item(name: "Item16"), Item(name: "Item17"), Item(name: "Item18"), Item(name: "Item19"), Item(name: "Item20"), Item(name: "Item21"), Item(name: "Item22"), Item(name: "Item23"), Item(name: "Item24"), Item(name: "Item25"), Item(name: "Item26"), Item(name: "Item27"), Item(name: "Item28")]
+            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? [/*Item(name: "Item1"), Item(name: "Item2"), Item(name: "Item3"), Item(name: "Item4"), Item(name: "Item5"), Item(name: "Item6"), Item(name: "Item7"), Item(name: "Item8"), Item(name: "Item9"), Item(name: "Item10"), Item(name: "Item11"), Item(name: "Item12"), Item(name: "Item13"), Item(name: "Item14"), Item(name: "Item15"), Item(name: "Item16"), Item(name: "Item17"), Item(name: "Item18"), Item(name: "Item19"), Item(name: "Item20"), Item(name: "Item21"), Item(name: "Item22"), Item(name: "Item23"), Item(name: "Item24"), Item(name: "Item25"), Item(name: "Item26"), Item(name: "Item27"), Item(name: "Item28")*/]
+            
         } catch {
             print("Error getting items")
         }
@@ -74,8 +85,15 @@ class AddItemsVC: UIViewController {
         
         for (index, var item) in existingItems.enumerated() {
             if checkedItems.contains(item) {
+                print("hello, \(item.name!)")
                 item.addStore(storeName)
                 existingItems[index] = Item(name: item.name, stores: item.stores)
+            } else {
+                if item.stores.contains(Store(name: storeName)) {
+                    print("removing")
+                    item.stores.remove(at: item.stores.firstIndex(of: Store(name: storeName))!)
+                    existingItems[index] = Item(name: item.name, stores: item.stores)
+                }
             }
         }
         
@@ -84,6 +102,8 @@ class AddItemsVC: UIViewController {
         } catch {
             print("error setting items")
         }
+        
+        print(existingItems)
         
         
         
@@ -122,8 +142,12 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
         if editingStyle == .delete {
             
             // remove the item from the data model
-            if(checkedItems.contains(Item(name: filteredItems[indexPath.row].name))) {
-                checkedItems.remove(at: checkedItems.firstIndex(of: Item(name: filteredItems[indexPath.row].name))!)
+            if(checkedItems.contains(filteredItems[indexPath.row])) {
+                var itemNames: [String] = []
+                for item in checkedItems {
+                    itemNames.append(item.name)
+                }
+                checkedItems.remove(at: itemNames.firstIndex(of: filteredItems[indexPath.row].name)!)
             }
             filteredItems.remove(at: indexPath.row)
             existingItems.remove(at: indexPath.row)
@@ -140,7 +164,7 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
         cell.checkBox.tintColor = .white
         cell.configure(itemName: filteredItems[indexPath.row].name ?? "unknown error")
         
-        if !checkedItems.contains(Item(name: filteredItems[indexPath.row].name)) {
+        if !checkedItems.contains(filteredItems[indexPath.row]) {
             cell.checkBox.layer.borderColor = UIColor.gray.cgColor
             cell.checkBox.layer.backgroundColor = UIColor.clear.cgColor
             cell.checkBox.setImage(nil, for: .normal)
@@ -178,7 +202,6 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
             cell.itemName.textColor = .label
         }
         tableView.deselectRow(at: indexPath, animated: true)
-        print(checkedItems)
     }
     
     
@@ -192,7 +215,11 @@ extension AddItemsVC: UITextFieldDelegate {
     }
     
     func addItemToTableView() {
-        guard !existingItems.contains(Item(name: addNewItemField.text!)) else {
+        var tempItemNames: [String] = []
+        for item in existingItems {
+            tempItemNames.append(item.name)
+        }
+        guard !tempItemNames.contains(addNewItemField.text!) else {
             Alert.regularAlert(title: "Item Already Exists!", message: "The item " + addNewItemField.text! + " already exists.", vc: self)
             return
         }
