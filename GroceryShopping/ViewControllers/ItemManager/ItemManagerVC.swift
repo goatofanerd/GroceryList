@@ -35,7 +35,7 @@ extension ItemManagerVC: UICollectionViewDelegate {
         var gotoVC: UIViewController
         if indexPath.row == stores.count {
             //Launch Add Store Screen
-            gotoVC = (storyboard?.instantiateViewController(withIdentifier: "AddItem"))!
+            gotoVC = (UIStoryboard(name: "AddStore", bundle: nil).instantiateViewController(withIdentifier: "AddItem"))
             gotoVC.modalPresentationStyle = .fullScreen
             gotoVC.navigationItem.backBarButtonItem?.tintColor = .label
             gotoVC.navigationItem.backButtonTitle = " "

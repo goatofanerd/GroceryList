@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Add Store-->
+        <scene sceneID="EE7-NL-IIS">
+            <objects>
+                <viewController storyboardIdentifier="AddItem" hidesBottomBarWhenPushed="YES" id="ZDU-tX-aHK" customClass="AddStoreVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oqR-U6-6A6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wzM-QT-AgQ">
+                                <rect key="frame" x="20" y="140" width="374" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="k4K-tD-wdY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="addStoreButtonTapped:" destination="ZDU-tX-aHK" eventType="touchUpInside" id="B02-Py-chL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eB4-ob-JT7">
+                                <rect key="frame" x="119.5" y="205" width="175" height="70"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="175" id="TiT-Hd-eV5"/>
+                                    <constraint firstAttribute="height" constant="70" id="q7Z-Jm-5Ql"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Add Items">
+                                    <color key="titleColor" systemColor="labelColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="addItemsButtonTapped:" destination="ZDU-tX-aHK" eventType="touchUpInside" id="9sf-bA-DJU"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mUG-uD-wd7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="wzM-QT-AgQ" firstAttribute="top" secondItem="mUG-uD-wd7" secondAttribute="top" id="1FF-YU-Eol"/>
+                            <constraint firstItem="eB4-ob-JT7" firstAttribute="top" secondItem="wzM-QT-AgQ" secondAttribute="bottom" constant="20" id="G47-h7-rUi"/>
+                            <constraint firstItem="mUG-uD-wd7" firstAttribute="trailing" secondItem="wzM-QT-AgQ" secondAttribute="trailing" constant="20" id="dXc-qg-cbS"/>
+                            <constraint firstItem="wzM-QT-AgQ" firstAttribute="leading" secondItem="mUG-uD-wd7" secondAttribute="leading" constant="20" id="sZb-ZI-lad"/>
+                            <constraint firstItem="eB4-ob-JT7" firstAttribute="centerX" secondItem="oqR-U6-6A6" secondAttribute="centerX" id="xgH-7v-Ej0"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add Store" id="P6b-Qa-rO8">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="RZM-9m-d19"/>
+                        <barButtonItem key="leftBarButtonItem" image="multiply" catalog="system" id="eXA-VP-wfn">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="cancel:" destination="ZDU-tX-aHK" id="hNV-Hq-qx8"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Create" style="done" id="xli-Hr-dKg">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="createStoreAndExit:" destination="ZDU-tX-aHK" id="qA6-of-dY2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="createButton" destination="xli-Hr-dKg" id="Flb-jp-3fY"/>
+                        <outlet property="itemName" destination="wzM-QT-AgQ" id="y6B-6l-rfc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Flg-ii-YLq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4415.9420289855079" y="-633.48214285714278"/>
+        </scene>
+        <!--Add Items-->
+        <scene sceneID="yb2-kK-k2a">
+            <objects>
+                <viewController storyboardIdentifier="AddItemsNew" title="Add Items" id="cF5-r2-KZ9" customClass="AddItemsVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KS5-b6-sLG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Search for item" translatesAutoresizingMaskIntoConstraints="NO" id="tej-y2-e08">
+                                <rect key="frame" x="0.0" y="64" width="414" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Gdy-9Q-UpE"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qjC-J6-gmv">
+                                <rect key="frame" x="0.0" y="109" width="414" height="695"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="Y27-Ub-Ixh" customClass="ItemsCheckboxCell" customModule="GroceryShopping" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="45.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y27-Ub-Ixh" id="RtB-lt-kil">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9e-GD-FD8">
+                                                    <rect key="frame" x="10" y="13" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="bkM-xp-42W"/>
+                                                        <constraint firstAttribute="width" secondItem="s9e-GD-FD8" secondAttribute="height" multiplier="1:1" id="pqw-4v-W4h"/>
+                                                    </constraints>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="21h-zY-wYS">
+                                                    <rect key="frame" x="60" y="11" width="334" height="23.5"/>
+                                                    <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="19"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="21h-zY-wYS" secondAttribute="bottom" id="1Mf-aZ-usI"/>
+                                                <constraint firstItem="21h-zY-wYS" firstAttribute="top" secondItem="RtB-lt-kil" secondAttribute="topMargin" id="2aI-ck-bgi"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="21h-zY-wYS" secondAttribute="trailing" id="Vue-k2-PgO"/>
+                                                <constraint firstItem="s9e-GD-FD8" firstAttribute="leading" secondItem="RtB-lt-kil" secondAttribute="leading" constant="10" id="ZWc-jy-LVj"/>
+                                                <constraint firstItem="s9e-GD-FD8" firstAttribute="centerY" secondItem="RtB-lt-kil" secondAttribute="centerY" id="n0D-ES-z69"/>
+                                                <constraint firstItem="21h-zY-wYS" firstAttribute="leading" secondItem="s9e-GD-FD8" secondAttribute="trailing" constant="30" id="nrY-kg-stM"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="checkBox" destination="s9e-GD-FD8" id="kAa-Ph-pxK"/>
+                                            <outlet property="itemName" destination="21h-zY-wYS" id="vBX-E2-jeO"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add New Item" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QRR-n9-kXP">
+                                <rect key="frame" x="5" y="812" width="404" height="45"/>
+                                <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="OGM-85-QfH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="23"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="kcn-46-8v3"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="kcn-46-8v3" firstAttribute="trailing" secondItem="QRR-n9-kXP" secondAttribute="trailing" constant="5" id="4GS-nP-4Ru"/>
+                            <constraint firstItem="kcn-46-8v3" firstAttribute="bottom" secondItem="QRR-n9-kXP" secondAttribute="bottom" constant="5" id="5SD-4z-Sdn" customClass="KeyboardLayoutConstraint" customModule="GroceryShopping" customModuleProvider="target"/>
+                            <constraint firstItem="qjC-J6-gmv" firstAttribute="leading" secondItem="kcn-46-8v3" secondAttribute="leading" id="8IP-tl-KS8"/>
+                            <constraint firstItem="QRR-n9-kXP" firstAttribute="top" secondItem="qjC-J6-gmv" secondAttribute="bottom" constant="8" symbolic="YES" id="J5x-1d-SiC"/>
+                            <constraint firstItem="tej-y2-e08" firstAttribute="leading" secondItem="kcn-46-8v3" secondAttribute="leading" id="KpX-Hw-aDS"/>
+                            <constraint firstItem="tej-y2-e08" firstAttribute="trailing" secondItem="kcn-46-8v3" secondAttribute="trailing" id="P4E-Jx-tjU"/>
+                            <constraint firstItem="qjC-J6-gmv" firstAttribute="top" secondItem="tej-y2-e08" secondAttribute="bottom" id="ZnY-GS-VVc"/>
+                            <constraint firstItem="QRR-n9-kXP" firstAttribute="leading" secondItem="kcn-46-8v3" secondAttribute="leading" constant="5" id="gd8-Ah-c2A"/>
+                            <constraint firstItem="tej-y2-e08" firstAttribute="top" secondItem="kcn-46-8v3" secondAttribute="top" constant="20" id="jbI-ZT-O0C"/>
+                            <constraint firstItem="kcn-46-8v3" firstAttribute="trailing" secondItem="qjC-J6-gmv" secondAttribute="trailing" id="r2I-wR-i3T"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add Items" id="sby-vr-qBo">
+                        <barButtonItem key="leftBarButtonItem" image="multiply" catalog="system" id="iKx-fs-oeP">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="closeAndSave:" destination="cF5-r2-KZ9" id="yAr-rl-JdX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addNewItemField" destination="QRR-n9-kXP" id="ZHj-F5-elf"/>
+                        <outlet property="closeButton" destination="iKx-fs-oeP" id="cxn-tI-zIF"/>
+                        <outlet property="searchBar" destination="tej-y2-e08" id="LKT-1W-mdf"/>
+                        <outlet property="tableView" destination="qjC-J6-gmv" id="4pW-b1-Hqe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TZ4-CS-G4e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5163.768115942029" y="-342.1875"/>
+        </scene>
+        <!--Store Name EnterVC-->
+        <scene sceneID="4U5-wy-eMK">
+            <objects>
+                <viewController storyboardIdentifier="StoreAdder" id="QBq-tc-mMf" customClass="StoreNameEnterVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uJ4-jA-JkW">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter name of store..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gTr-1q-bn0">
+                                <rect key="frame" x="20" y="44" width="374" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="DQb-IU-ZuH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <action selector="textFieldChange:" destination="QBq-tc-mMf" eventType="editingChanged" id="tNo-Af-k02"/>
+                                </connections>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BXr-G0-x1F">
+                                <rect key="frame" x="0.0" y="94" width="414" height="768"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bca-wL-4rR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gTr-1q-bn0" firstAttribute="leading" secondItem="Bca-wL-4rR" secondAttribute="leading" constant="20" id="3Jz-jX-k6z"/>
+                            <constraint firstItem="BXr-G0-x1F" firstAttribute="leading" secondItem="Bca-wL-4rR" secondAttribute="leading" id="Qyv-rf-mWW"/>
+                            <constraint firstItem="Bca-wL-4rR" firstAttribute="bottom" secondItem="BXr-G0-x1F" secondAttribute="bottom" id="Uur-hZ-gJE"/>
+                            <constraint firstItem="BXr-G0-x1F" firstAttribute="top" secondItem="gTr-1q-bn0" secondAttribute="bottom" id="YF5-jt-v8b"/>
+                            <constraint firstItem="Bca-wL-4rR" firstAttribute="trailing" secondItem="BXr-G0-x1F" secondAttribute="trailing" id="cs2-dn-LUx"/>
+                            <constraint firstItem="Bca-wL-4rR" firstAttribute="trailing" secondItem="gTr-1q-bn0" secondAttribute="trailing" constant="20" id="hQ4-b4-ntF"/>
+                            <constraint firstItem="gTr-1q-bn0" firstAttribute="top" secondItem="Bca-wL-4rR" secondAttribute="top" id="zOb-fv-NzR"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="nbs-O9-x15"/>
+                    <connections>
+                        <outlet property="tableView" destination="BXr-G0-x1F" id="46w-e5-gGS"/>
+                        <outlet property="textField" destination="gTr-1q-bn0" id="cst-Nx-y21"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QvC-OD-HX1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5162" y="-988"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VcL-Hl-fAk">
+            <objects>
+                <navigationController storyboardIdentifier="AddItemNav" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="hIu-c6-Xxy" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="Imb-Mr-lEj">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ZDU-tX-aHK" kind="relationship" relationship="rootViewController" id="12X-sp-Ar5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q5z-vK-87V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3505.7971014492755" y="-633.48214285714278"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="multiply" catalog="system" width="128" height="111"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray4Color">
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
