@@ -40,9 +40,7 @@ class StoreNameEnterVC: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         for (index, store) in totalStores.enumerated() {
             if stores.contains(Store(name: store)) {
-                print(store)
-                totalStores.remove(at: index)
-                print(totalStores)
+                totalStores.remove(at: totalStores.firstIndex(of: store) ?? index)
             }
         }
         totalStores.sort()

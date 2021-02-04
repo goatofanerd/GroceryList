@@ -58,7 +58,7 @@ extension ItemManagerVC: UICollectionViewDataSource {
         let dividend = storeColors.count
         
         if indexPath.row == stores.count{
-            cell.configure(storeName: "Add Store", backgroundColor: .darkGray)
+            cell.configure(storeName: "Add Store", backgroundColor: UIColor(named: "AddStoreColor")!)
         } else {
             cell.configure(storeName: stores[indexPath.row].name, backgroundColor: storeColors[indexPath.row % dividend])
         }
@@ -73,7 +73,7 @@ extension ItemManagerVC: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat = 10
-        return CGSize(width: (collectionView.frame.size.width - padding) / 2, height: 75)
+        return CGSize(width: (collectionView.frame.size.width - padding) / 2, height: (collectionView.frame.size.width - padding)/4)
     }
     
     

@@ -165,7 +165,7 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: ItemsCheckboxCell.reuseIdentifier) as! ItemsCheckboxCell
         cell.checkBox.isUserInteractionEnabled = false
         cell.checkBox.layer.borderWidth = 1
-        cell.checkBox.tintColor = .white
+        cell.checkBox.tintColor = .label
         cell.configure(itemName: filteredItems[indexPath.row].name ?? "unknown error")
         
         if !checkedItems.contains(filteredItems[indexPath.row]) {
