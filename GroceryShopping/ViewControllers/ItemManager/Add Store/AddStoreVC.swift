@@ -22,12 +22,16 @@ class AddStoreVC: UIViewController {
     }
     
     @IBAction func cancel(_ sender: Any) {
-        successDelegate.showMessage(message: "Successfully discarded store!")
+        successDelegate.showMessage(message: "Successfully discarded store!", type: .normal)
         navigationController?.popViewController(animated: true)
     }
     
     @IBAction func createStoreAndExit(_ sender: Any) {
-        guard createButton.tintColor != .gray else { return }
+        guard createButton.tintColor != .gray else {
+            showFailureToast(message: "No name entered!")
+            return
+            
+        }
         guard let store = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else { Alert.regularAlert(title: "Empty Store Name", message: "Please have a proper store name.", vc: self); return }
         do {
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
@@ -35,7 +39,7 @@ class AddStoreVC: UIViewController {
                 stores.append(Store(name: store))
                 print(store)
                 try UserDefaults.standard.set(object: stores, forKey: "stores")
-                self.successDelegate.showMessage(message: "Successfully added \(store)!")
+                self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
                 navigationController?.popViewController(animated: true)
             } else {
                 let alert = UIAlertController(title: "Duplicate Store Names", message: "Duplicate store names, either replace the existing one with the new one, or discard the new one.", preferredStyle: .alert)
@@ -43,13 +47,13 @@ class AddStoreVC: UIViewController {
                 alert.addAction(UIAlertAction(title: "Replace", style: UIAlertAction.Style.default, handler: {_ in
                     
                     stores[stores.firstIndex(of: Store(name: store))!] = Store(name: store)
-                    self.successDelegate.showMessage(message: "Successfully replaced store!")
+                    self.successDelegate.showMessage(message: "Successfully replaced store!", type: .success)
                     self.navigationController?.popViewController(animated: true)
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Discard", style: .destructive, handler: {_ in
                     
-                    self.successDelegate.showMessage(message: "Successfully discarded store!")
+                    self.successDelegate.showMessage(message: "Successfully discarded store!", type: .success)
                     self.navigationController?.popViewController(animated: true)
                 }))
                 self.present(alert, animated: true, completion: nil)
@@ -87,7 +91,7 @@ class AddStoreVC: UIViewController {
 }
 
 protocol StoreAddedToastDelegate {
-    func showMessage(message: String)
+    func showMessage(message: String, type: SuccessToastEnum)
 }
 extension AddStoreVC: StoreDelegate {
     func addStore(_ store: String) {

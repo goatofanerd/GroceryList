@@ -28,6 +28,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="trash" id="UjI-F8-bCX">
                             <color key="tintColor" name="Red"/>
+                            <connections>
+                                <action selector="deleteStore:" destination="GHE-WI-lPA" id="DnX-nM-J8r"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
