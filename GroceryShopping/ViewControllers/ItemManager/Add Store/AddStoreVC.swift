@@ -11,6 +11,7 @@ class AddStoreVC: UIViewController {
 
     @IBOutlet weak var createButton: UIBarButtonItem!
     @IBOutlet weak var itemName: UIButton!
+    public var successDelegate: StoreAddedToastDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,6 +22,7 @@ class AddStoreVC: UIViewController {
     }
     
     @IBAction func cancel(_ sender: Any) {
+        successDelegate.showMessage(message: "Successfully discarded store!")
         navigationController?.popViewController(animated: true)
     }
     
@@ -33,14 +35,21 @@ class AddStoreVC: UIViewController {
                 stores.append(Store(name: store))
                 print(store)
                 try UserDefaults.standard.set(object: stores, forKey: "stores")
+                self.successDelegate.showMessage(message: "Successfully added \(store)!")
                 navigationController?.popViewController(animated: true)
             } else {
                 let alert = UIAlertController(title: "Duplicate Store Names", message: "Duplicate store names, either replace the existing one with the new one, or discard the new one.", preferredStyle: .alert)
+                
                 alert.addAction(UIAlertAction(title: "Replace", style: UIAlertAction.Style.default, handler: {_ in
+                    
                     stores[stores.firstIndex(of: Store(name: store))!] = Store(name: store)
+                    self.successDelegate.showMessage(message: "Successfully replaced store!")
                     self.navigationController?.popViewController(animated: true)
                 }))
+                
                 alert.addAction(UIAlertAction(title: "Discard", style: .destructive, handler: {_ in
+                    
+                    self.successDelegate.showMessage(message: "Successfully discarded store!")
                     self.navigationController?.popViewController(animated: true)
                 }))
                 self.present(alert, animated: true, completion: nil)
@@ -77,6 +86,9 @@ class AddStoreVC: UIViewController {
     
 }
 
+protocol StoreAddedToastDelegate {
+    func showMessage(message: String)
+}
 extension AddStoreVC: StoreDelegate {
     func addStore(_ store: String) {
         itemName.setTitleColor(UIColor.label, for: .normal)

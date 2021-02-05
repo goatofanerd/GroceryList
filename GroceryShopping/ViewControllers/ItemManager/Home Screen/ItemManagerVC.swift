@@ -11,7 +11,7 @@ class ItemManagerVC: UIViewController {
     @IBOutlet weak var storeCollectionView: UICollectionView!
     var stores: [Store] = []
     var items: [Item] = []
-    var storeColors = [UIColor(named: "Blue")!, UIColor(named: "Green")!, UIColor(named: "Red")!, UIColor(named: "Orange")!, UIColor(named: "Lime")!, UIColor(named: "LightBlue")!]
+    var storeColors = [UIColor(named: "Blue")!, UIColor(named: "Green")!, UIColor(named: "Purple")!, UIColor(named: "Red")!, UIColor(named: "Orange")!, UIColor(named: "Lime")!, UIColor(named: "LightBlue")!, UIColor(named: "Pink")!]
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,18 +32,33 @@ extension ItemManagerVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        var gotoVC: UIViewController
         if indexPath.row == stores.count {
             //Launch Add Store Screen
-            gotoVC = (UIStoryboard(name: "AddStore", bundle: nil).instantiateViewController(withIdentifier: "AddItem"))
+            var gotoVC: AddStoreVC
+            gotoVC = (UIStoryboard(name: "AddStore", bundle: nil).instantiateViewController(withIdentifier: "AddItem")) as! AddStoreVC
+            gotoVC.successDelegate = self
             gotoVC.modalPresentationStyle = .fullScreen
-            gotoVC.navigationItem.backBarButtonItem?.tintColor = .label
             gotoVC.navigationItem.backButtonTitle = " "
             navigationController?.pushViewController(gotoVC, animated: true)
         } else {
             //Launch user store screen
+            var gotoVC: UIViewController
+            gotoVC = (UIStoryboard(name: "StoreScreen", bundle: nil).instantiateViewController(withIdentifier: "StoreScreen"))
+            gotoVC.navigationItem.title = stores[indexPath.row].name
+            gotoVC.modalPresentationStyle = .fullScreen
+            gotoVC.navigationItem.backButtonTitle = " "
+            navigationController?.pushViewController(gotoVC, animated: true)
+            
         }
     }
+}
+
+extension ItemManagerVC: StoreAddedToastDelegate {
+    func showMessage(message: String) {
+        self.showToast(message: message)
+    }
+    
+    
 }
 
 extension ItemManagerVC: UICollectionViewDataSource {
@@ -55,6 +70,7 @@ extension ItemManagerVC: UICollectionViewDataSource {
         //collectionViewHeight.constant = CGFloat(75 * ((indexPath.row / 2) + 1))
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreCell.identifier, for: indexPath) as! StoreCell
         
+        cell.storeName.textColor = .white
         let dividend = storeColors.count
         
         if indexPath.row == stores.count{
