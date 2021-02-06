@@ -9,16 +9,63 @@ import UIKit
 
 class StoreVC: UIViewController {
     
+    @IBOutlet weak var tableView: UITableView!
+    var items: [Item] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        tableView.dataSource = self
+        tableView.delegate = self
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        loadUserItems()
+    }
+    
+    func loadUserItems() {
+        do {
+            items = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
+        } catch {
+            showFailureToast(message: "Error getting items")
+        }
+        
+        for (index, item) in items.enumerated() {
+            if !item.stores.contains(Store(name: navigationItem.title!)) {
+                //items.remove(at: index)
+            }
+        }
+    }
+    
     
     @IBAction func backToHomeScreen(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
+    @IBAction func launchItemScreen(_ sender: Any) {
+        let vc = storyboard?.instantiateViewController(identifier: "AddItemsExisting") as! StoreItemManagerVC
+        vc.storeName = navigationItem.title!
+        let navController = UINavigationController(rootViewController: vc)
+        navigationController?.present(navController, animated: true, completion: nil)
+    }
 }
+
+extension StoreVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ItemCell.identifier) as! ItemCell
+        cell.itemName.text = items[indexPath.row].name
+        cell.lastBought.text = "1/29"
+        return cell
+    }
+    
+    
+}
+
+
 
 
 //MARK: -Delete Store

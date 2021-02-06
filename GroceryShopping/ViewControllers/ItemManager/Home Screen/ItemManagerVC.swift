@@ -54,13 +54,26 @@ extension ItemManagerVC: UICollectionViewDelegate {
 }
 
 extension ItemManagerVC: StoreAddedToastDelegate {
-    func showMessage(message: String) {
-        self.showToast(message: message)
+    func showMessage(message: String, type: SuccessToastEnum) {
+        switch type {
+            
+        case .success:
+            self.showSuccessToast(message: message)
+        case .failure:
+            self.showFailureToast(message: message)
+        case .normal:
+            self.showToast(message: message)
+        }
     }
     
     
 }
 
+enum SuccessToastEnum {
+    case success
+    case failure
+    case normal
+}
 extension ItemManagerVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return stores.count + 1

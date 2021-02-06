@@ -1,5 +1,5 @@
 //
-//  AddItemsVC.swift
+//  StoreItemManagerVC.swift
 //  GroceryShopping
 //
 //  Created by Saahil Sukhija on 1/30/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddItemsVC: UIViewController {
+class StoreItemManagerVC: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -17,7 +17,6 @@ class AddItemsVC: UIViewController {
     var existingItems: [Item] = []
     var checkedItems: [Item] = []
     var filteredItems: [Item] = []
-    var reorderTable: LongPressReorderTableView!
     
     var storeName: String!
     override func viewDidLoad() {
@@ -29,9 +28,6 @@ class AddItemsVC: UIViewController {
         tableView.dataSource = self
         addNewItemField.delegate = self
         searchBar.delegate = self
-        reorderTable = LongPressReorderTableView(tableView)
-        reorderTable.enableLongPressReorder()
-        reorderTable.delegate = self
         
     }
     
@@ -53,14 +49,6 @@ class AddItemsVC: UIViewController {
             tableView.deselectRow(at: last, animated: true)
         }
     }
-    override func positionChanged(currentIndex: IndexPath, newIndex: IndexPath) {
-        if checkedItems.contains(existingItems[currentIndex.row]) && checkedItems.contains(existingItems[newIndex.row]) {
-            print("contains")
-            checkedItems.swapAt(currentIndex.row, newIndex.row)
-        }
-        existingItems.swapAt(currentIndex.row, newIndex.row)
-    }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -116,7 +104,7 @@ class AddItemsVC: UIViewController {
 }
 
 
-extension AddItemsVC: UISearchBarDelegate {
+extension StoreItemManagerVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 
         filteredItems = []
@@ -135,7 +123,7 @@ extension AddItemsVC: UISearchBarDelegate {
     }
 }
 
-extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
+extension StoreItemManagerVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredItems.count
@@ -198,25 +186,29 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
             for item in checkedItems {
                 checkedItemsNames.append(item.name)
             }
-            checkedItems.remove(at: checkedItemsNames.firstIndex(of: (cell.itemName?.text)!)!)
+            checkedItems.remove(at: checkedItemsNames.firstIndex(of: (cell.itemName?.text)!) ?? 0)
             cell.checkBox.setImage(nil, for: .normal)
             cell.checkBox.backgroundColor = .clear
             cell.checkBox.layer.borderColor = UIColor.gray.cgColor
             cell.itemName.textColor = .gray
         } else {
-            checkedItems.append(filteredItems[indexPath.row])
+            if indexPath.row < filteredItems.count {
+                checkedItems.append(filteredItems[indexPath.row])
+            }
             cell.checkBox.setImage(UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration(scale: .small))?.withTintColor(.white), for: .normal)
             cell.checkBox.backgroundColor = UIColor(named: "LightBlue")
             cell.checkBox.layer.borderColor = UIColor.blue.cgColor
             cell.itemName.textColor = .label
         }
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        print(checkedItems)
     }
     
     
 }
 
-extension AddItemsVC: UITextFieldDelegate {
+extension StoreItemManagerVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         addItemToTableView()
@@ -247,3 +239,4 @@ extension AddItemsVC: UITextFieldDelegate {
         addNewItemField.becomeFirstResponder()
     }
 }
+
