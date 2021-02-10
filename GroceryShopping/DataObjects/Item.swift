@@ -10,9 +10,9 @@ import Foundation
 struct Item: Codable, Equatable {
     var name: String!
     var stores: [Store] = []
-    var lastBought: Date?
+    var lastBought: DateComponents?
     
-    init(name: String, stores: [Store] = [], lastBought: Date? = nil) {
+    init(name: String, stores: [Store] = [], lastBought: DateComponents? = nil) {
         self.name = name
         self.stores = stores
         self.lastBought = lastBought
@@ -24,7 +24,19 @@ struct Item: Codable, Equatable {
         }
     }
     
-    mutating func changeBoughtTime(date: Date) {
+    mutating func changeBoughtTime(date: DateComponents) {
         lastBought = date
+    }
+    
+    func getYear() -> Int? {
+        return lastBought?.year
+    }
+    
+    func getMonth() -> Int? {
+        return lastBought?.month
+    }
+    
+    func getDay() -> Int? {
+        return lastBought?.day
     }
 }

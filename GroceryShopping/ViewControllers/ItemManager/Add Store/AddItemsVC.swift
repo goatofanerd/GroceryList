@@ -33,12 +33,13 @@ class AddItemsVC: UIViewController {
         reorderTable.enableLongPressReorder()
         reorderTable.delegate = self
         
-    }
+        self.hideKeyboardWhenTappedAround()
     
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         var indexPaths: [IndexPath] = []
-        for (index, item) in existingItems.enumerated() {
+        for (index, item) in filteredItems.enumerated() {
             if item.stores.contains(Store(name: storeName)) {
                 checkedItems.append(item)
                 indexPaths.append(IndexPath(row: index, section: 0))
@@ -53,10 +54,11 @@ class AddItemsVC: UIViewController {
             tableView.deselectRow(at: last, animated: true)
         }
     }
+    
     override func positionChanged(currentIndex: IndexPath, newIndex: IndexPath) {
         if checkedItems.contains(existingItems[currentIndex.row]) && checkedItems.contains(existingItems[newIndex.row]) {
             print("contains")
-            checkedItems.swapAt(currentIndex.row, newIndex.row)
+            checkedItems.swapAt(checkedItems.firstIndex(of: existingItems[currentIndex.row])!, checkedItems.firstIndex(of: existingItems[newIndex.row])!)
         }
         existingItems.swapAt(currentIndex.row, newIndex.row)
     }
@@ -109,24 +111,21 @@ class AddItemsVC: UIViewController {
             print("error setting items")
         }
         
-        
-        
-        
     }
 }
 
 
 extension AddItemsVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
         filteredItems = []
-        for item in existingItems{
+        for (index, item) in existingItems.enumerated(){
             
             if item.name.lowercased().starts(with: searchText.lowercased()) {
-                filteredItems.append(Item(name: item.name))
+                filteredItems.append(existingItems[index])
             }
             
         }
+        self.viewDidLayoutSubviews()
         tableView.reloadData()
     }
     
@@ -218,7 +217,6 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
 
 extension AddItemsVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
         addItemToTableView()
         return true
     }
@@ -229,21 +227,40 @@ extension AddItemsVC: UITextFieldDelegate {
             tempItemNames.append(item.name)
         }
         guard !tempItemNames.contains(addNewItemField.text!) else {
+            addNewItemField.resignFirstResponder()
             showFailureToast(message: "The item " + addNewItemField.text! + " already exists!")
             return
         }
         
         guard addNewItemField.text != "" else {
+            addNewItemField.resignFirstResponder()
             showFailureToast(message: "Empty text field!")
             return
         }
         existingItems.insert(Item(name: addNewItemField.text!), at: 0)
         tableView.setContentOffset(.zero, animated: false)
         searchBar.delegate?.searchBar?(searchBar, textDidChange: searchBar.text!)
-        tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
         
         addNewItemField.text = ""
         addNewItemField.becomeFirstResponder()
+        
+        //save()
+        //loadUserItems()
+        //tableView.reloadData()
+    }
+    
+}
+
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

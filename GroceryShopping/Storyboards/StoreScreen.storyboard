@@ -17,38 +17,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lIA-b9-HHW">
-                                <rect key="frame" x="20" y="792" width="374" height="50"/>
-                                <color key="backgroundColor" name="AddStoreColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="lJd-PE-1Il"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="27"/>
-                                <state key="normal" title="Add Items">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="launchItemScreen:" destination="GHE-WI-lPA" eventType="touchUpInside" id="CxH-z2-JSB"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bJd-i5-OiK">
-                                <rect key="frame" x="0.0" y="140" width="414" height="652"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="xqL-4D-FCi" customClass="ItemCell" customModule="GroceryShopping" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="45"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xqL-4D-FCi" id="sd6-8E-zc3">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uBJ-Oo-gvO" userLabel="Last Bought">
-                                                    <rect key="frame" x="324" y="11" width="70" height="23"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uBJ-Oo-gvO" userLabel="Last Bought">
+                                                    <rect key="frame" x="324" y="11" width="70" height="21.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="70" id="Vdt-RI-4cI"/>
                                                     </constraints>
@@ -57,8 +38,8 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9DM-Ze-Wj7" userLabel="Item Name">
-                                                    <rect key="frame" x="25" y="11" width="289" height="23"/>
-                                                    <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="19"/>
+                                                    <rect key="frame" x="25" y="11" width="289" height="21.5"/>
+                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -73,20 +54,32 @@
                                                 <constraint firstItem="9DM-Ze-Wj7" firstAttribute="leading" secondItem="sd6-8E-zc3" secondAttribute="leadingMargin" constant="5" id="k5G-ZK-oBs"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="itemName" destination="9DM-Ze-Wj7" id="kwu-Fp-baX"/>
+                                            <outlet property="lastBought" destination="uBJ-Oo-gvO" id="wlV-zz-DcT"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Item..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qs3-bm-BbG">
+                                <rect key="frame" x="5" y="807" width="404" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="f8l-yc-5rE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="23"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="q4F-2D-9rA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Qs3-bm-BbG" firstAttribute="leading" secondItem="q4F-2D-9rA" secondAttribute="leading" constant="5" id="BEA-Jx-Xm1"/>
                             <constraint firstItem="bJd-i5-OiK" firstAttribute="leading" secondItem="q4F-2D-9rA" secondAttribute="leading" id="Gyw-Sa-Vwn"/>
                             <constraint firstItem="q4F-2D-9rA" firstAttribute="trailing" secondItem="bJd-i5-OiK" secondAttribute="trailing" id="Hvd-MB-NLk"/>
-                            <constraint firstItem="lIA-b9-HHW" firstAttribute="leading" secondItem="q4F-2D-9rA" secondAttribute="leading" constant="20" id="NCh-Hw-cwj"/>
-                            <constraint firstItem="lIA-b9-HHW" firstAttribute="top" secondItem="bJd-i5-OiK" secondAttribute="bottom" id="gRV-h6-qIr"/>
-                            <constraint firstItem="q4F-2D-9rA" firstAttribute="trailing" secondItem="lIA-b9-HHW" secondAttribute="trailing" constant="20" id="os4-Dp-cbp"/>
+                            <constraint firstItem="q4F-2D-9rA" firstAttribute="bottom" secondItem="Qs3-bm-BbG" secondAttribute="bottom" constant="5" id="RD8-ym-ikG" customClass="KeyboardLayoutConstraint" customModule="GroceryShopping" customModuleProvider="target"/>
+                            <constraint firstItem="q4F-2D-9rA" firstAttribute="bottom" secondItem="bJd-i5-OiK" secondAttribute="bottom" id="fTI-zQ-gG5"/>
                             <constraint firstItem="bJd-i5-OiK" firstAttribute="top" secondItem="q4F-2D-9rA" secondAttribute="top" id="tS4-dc-OR4"/>
-                            <constraint firstItem="q4F-2D-9rA" firstAttribute="bottom" secondItem="lIA-b9-HHW" secondAttribute="bottom" constant="20" id="vT3-q4-JCl"/>
+                            <constraint firstItem="q4F-2D-9rA" firstAttribute="trailing" secondItem="Qs3-bm-BbG" secondAttribute="trailing" constant="5" id="uQf-H1-AhX"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4je-8T-9cz">
@@ -105,6 +98,7 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="addNewItemField" destination="Qs3-bm-BbG" id="G85-VZ-8Qn"/>
                         <outlet property="tableView" destination="bJd-i5-OiK" id="w8B-Yg-3GJ"/>
                     </connections>
                 </viewController>
@@ -131,112 +125,9 @@
             </objects>
             <point key="canvasLocation" x="1210.144927536232" y="109.82142857142857"/>
         </scene>
-        <!--Add Items-->
-        <scene sceneID="ksH-kB-thv">
-            <objects>
-                <viewController storyboardIdentifier="AddItemsExisting" title="Add Items" id="TTt-KU-zLo" customClass="StoreItemManagerVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="jV2-8t-QXt">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <searchBar contentMode="redraw" placeholder="Search for item" translatesAutoresizingMaskIntoConstraints="NO" id="yk1-Jk-CbO">
-                                <rect key="frame" x="0.0" y="64" width="414" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="lfj-nR-D40"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bx6-mO-t00">
-                                <rect key="frame" x="0.0" y="109" width="414" height="695"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="LBG-go-KKo" customClass="ItemsCheckboxCell" customModule="GroceryShopping" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="45.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LBG-go-KKo" id="wFt-cZ-q6d">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Yv-N5-QGC">
-                                                    <rect key="frame" x="10" y="13" width="20" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="0Co-Rq-OHm"/>
-                                                        <constraint firstAttribute="width" secondItem="9Yv-N5-QGC" secondAttribute="height" multiplier="1:1" id="qKp-bZ-wvz"/>
-                                                    </constraints>
-                                                </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9P5-0j-XqE">
-                                                    <rect key="frame" x="60" y="11" width="334" height="23.5"/>
-                                                    <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="19"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="9Yv-N5-QGC" firstAttribute="leading" secondItem="wFt-cZ-q6d" secondAttribute="leading" constant="10" id="1Jp-td-F4x"/>
-                                                <constraint firstItem="9Yv-N5-QGC" firstAttribute="centerY" secondItem="wFt-cZ-q6d" secondAttribute="centerY" id="3AT-5H-c1F"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="9P5-0j-XqE" secondAttribute="trailing" id="acT-sh-NYq"/>
-                                                <constraint firstItem="9P5-0j-XqE" firstAttribute="top" secondItem="wFt-cZ-q6d" secondAttribute="topMargin" id="cfJ-ad-lV1"/>
-                                                <constraint firstItem="9P5-0j-XqE" firstAttribute="leading" secondItem="9Yv-N5-QGC" secondAttribute="trailing" constant="30" id="gno-V4-a3z"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="9P5-0j-XqE" secondAttribute="bottom" id="zaz-i7-SyQ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="checkBox" destination="9Yv-N5-QGC" id="mj9-gs-tn8"/>
-                                            <outlet property="itemName" destination="9P5-0j-XqE" id="tmN-OD-w5N"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add New Item" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DrZ-dK-uLY">
-                                <rect key="frame" x="5" y="812" width="404" height="45"/>
-                                <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="8Lu-gQ-OsN"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="23"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                            </textField>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="64T-AG-QmC"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="64T-AG-QmC" firstAttribute="bottom" secondItem="DrZ-dK-uLY" secondAttribute="bottom" constant="5" id="2SO-an-1OZ" customClass="KeyboardLayoutConstraint" customModule="GroceryShopping" customModuleProvider="target"/>
-                            <constraint firstItem="Bx6-mO-t00" firstAttribute="leading" secondItem="64T-AG-QmC" secondAttribute="leading" id="81N-sO-xWF"/>
-                            <constraint firstItem="yk1-Jk-CbO" firstAttribute="leading" secondItem="64T-AG-QmC" secondAttribute="leading" id="K2Y-OU-KV9"/>
-                            <constraint firstItem="DrZ-dK-uLY" firstAttribute="top" secondItem="Bx6-mO-t00" secondAttribute="bottom" constant="8" symbolic="YES" id="LiB-6Y-AI1"/>
-                            <constraint firstItem="64T-AG-QmC" firstAttribute="trailing" secondItem="DrZ-dK-uLY" secondAttribute="trailing" constant="5" id="ZpF-WW-gcK"/>
-                            <constraint firstItem="64T-AG-QmC" firstAttribute="trailing" secondItem="Bx6-mO-t00" secondAttribute="trailing" id="fTM-ff-GJD"/>
-                            <constraint firstItem="yk1-Jk-CbO" firstAttribute="top" secondItem="64T-AG-QmC" secondAttribute="top" constant="20" id="pYJ-gc-Yl9"/>
-                            <constraint firstItem="DrZ-dK-uLY" firstAttribute="leading" secondItem="64T-AG-QmC" secondAttribute="leading" constant="5" id="uMp-Cm-9XC"/>
-                            <constraint firstItem="yk1-Jk-CbO" firstAttribute="trailing" secondItem="64T-AG-QmC" secondAttribute="trailing" id="udW-v5-y4k"/>
-                            <constraint firstItem="Bx6-mO-t00" firstAttribute="top" secondItem="yk1-Jk-CbO" secondAttribute="bottom" id="xwe-lK-eFC"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Add Items" id="QG8-fp-idD">
-                        <barButtonItem key="leftBarButtonItem" image="multiply" catalog="system" id="hFV-tU-wGw">
-                            <color key="tintColor" systemColor="labelColor"/>
-                            <connections>
-                                <action selector="closeAndSave:" destination="TTt-KU-zLo" id="YVO-G1-xSA"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="addNewItemField" destination="DrZ-dK-uLY" id="LIY-Ql-77c"/>
-                        <outlet property="closeButton" destination="hFV-tU-wGw" id="n2g-Xg-DRe"/>
-                        <outlet property="searchBar" destination="yk1-Jk-CbO" id="lOe-9y-Ve1"/>
-                        <outlet property="tableView" destination="Bx6-mO-t00" id="C2e-G7-Qou"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fJb-9L-0DE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2965" y="110"/>
-        </scene>
     </scenes>
     <resources>
         <image name="multiply" catalog="system" width="128" height="111"/>
-        <namedColor name="AddStoreColor">
-            <color red="0.68599998950958252" green="0.68599998950958252" blue="0.68599998950958252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Red">
             <color red="1" green="0.017000000923871994" blue="0.29399999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -245,9 +136,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray4Color">
-            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
