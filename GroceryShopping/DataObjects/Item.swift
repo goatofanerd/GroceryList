@@ -50,3 +50,24 @@ struct Item: Codable, Equatable {
         return lastBought?.day
     }
 }
+
+extension Array where Element == Item {
+    func containsItem(_ element: Item) -> Bool {
+        let names = getNames()
+        return names.contains(element.name)
+    }
+    
+    mutating func removeItem(withItem name: String) throws {
+        let names = getNames()
+        
+        self.remove(at: names.firstIndex(of: name)!)
+    }
+    
+    private func getNames() -> [String] {
+        var names: [String] = []
+        for item in self {
+            names.append(item.name)
+        }
+        return names
+    }
+}

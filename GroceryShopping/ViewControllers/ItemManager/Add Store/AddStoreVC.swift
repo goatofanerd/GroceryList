@@ -35,9 +35,8 @@ class AddStoreVC: UIViewController {
         guard let store = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else { Alert.regularAlert(title: "Empty Store Name", message: "Please have a proper store name.", vc: self); return }
         do {
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
-            if !stores.contains(Store(name: store)) {
+            if !stores.containsStore(Store(name: store)) {
                 stores.append(Store(name: store))
-                print(store)
                 try UserDefaults.standard.set(object: stores, forKey: "stores")
                 self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
                 navigationController?.popViewController(animated: true)

@@ -12,6 +12,8 @@ class ItemManagerVC: UIViewController {
     var stores: [Store] = []
     var items: [Item] = []
     var storeColors = [UIColor(named: "Blue")!, UIColor(named: "Green")!, UIColor(named: "Purple")!, UIColor(named: "Red")!, UIColor(named: "Orange")!, UIColor(named: "Lime")!, UIColor(named: "LightBlue")!, UIColor(named: "Pink")!]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,7 +30,27 @@ class ItemManagerVC: UIViewController {
 
 
 //MARK: -Collection View Methods
-extension ItemManagerVC: UICollectionViewDelegate {
+extension ItemManagerVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return stores.count + 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        //collectionViewHeight.constant = CGFloat(75 * ((indexPath.row / 2) + 1))
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreCell.identifier, for: indexPath) as! StoreCell
+        
+        cell.storeName.textColor = .white
+        let dividend = storeColors.count
+        
+        if indexPath.row == stores.count{
+            cell.configure(storeName: "Add Store", backgroundColor: UIColor(named: "AddStoreColor")!)
+        } else {
+            cell.configure(storeName: stores[indexPath.row].name, backgroundColor: storeColors[indexPath.row % dividend])
+        }
+        
+        return cell
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
@@ -53,6 +75,17 @@ extension ItemManagerVC: UICollectionViewDelegate {
     }
 }
 
+extension ItemManagerVC: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding: CGFloat = 10
+        return CGSize(width: (collectionView.frame.size.width - padding) / 2, height: (collectionView.frame.size.width - padding)/4)
+    }
+    
+    
+}
+
+//MARK: -Show Success/Failure
 extension ItemManagerVC: StoreAddedToastDelegate {
     func showMessage(message: String, type: SuccessToastEnum) {
         switch type {
@@ -65,49 +98,14 @@ extension ItemManagerVC: StoreAddedToastDelegate {
             self.showToast(message: message)
         }
     }
-    
-    
 }
 
-enum SuccessToastEnum {
-    case success
-    case failure
-    case normal
-}
-extension ItemManagerVC: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stores.count + 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //collectionViewHeight.constant = CGFloat(75 * ((indexPath.row / 2) + 1))
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreCell.identifier, for: indexPath) as! StoreCell
-        
-        cell.storeName.textColor = .white
-        let dividend = storeColors.count
-        
-        if indexPath.row == stores.count{
-            cell.configure(storeName: "Add Store", backgroundColor: UIColor(named: "AddStoreColor")!)
-        } else {
-            cell.configure(storeName: stores[indexPath.row].name, backgroundColor: storeColors[indexPath.row % dividend])
-        }
-        
-        return cell
-    }
-    
-    
-}
 
-extension ItemManagerVC: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let padding: CGFloat = 10
-        return CGSize(width: (collectionView.frame.size.width - padding) / 2, height: (collectionView.frame.size.width - padding)/4)
-    }
-    
-    
+enum SuccessToastEnum: Int {
+    case success = 0
+    case failure = 1
+    case normal = 2
 }
-
 
 //MARK: -First Launch
 extension ItemManagerVC {

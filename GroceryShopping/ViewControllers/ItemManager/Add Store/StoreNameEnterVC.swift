@@ -39,7 +39,7 @@ class StoreNameEnterVC: UIViewController {
         loadUserStores()
         navigationItem.largeTitleDisplayMode = .never
         for (index, store) in totalStores.enumerated() {
-            if stores.contains(Store(name: store)) {
+            if stores.containsStore(Store(name: store)) {
                 totalStores.remove(at: totalStores.firstIndex(of: store) ?? index)
             }
         }
@@ -57,7 +57,7 @@ class StoreNameEnterVC: UIViewController {
     }
     
     func transferData() {
-        guard !stores.contains(Store(name: textField.text!)) else {
+        guard !stores.containsStore(Store(name: textField.text!)) else {
             Alert.regularAlert(title: "Store already exists!", message: "The store '\(textField.text!)' already exists. Please enter another name", vc: self)
             return
         }

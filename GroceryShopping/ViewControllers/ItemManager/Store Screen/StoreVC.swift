@@ -41,8 +41,8 @@ class StoreVC: UIViewController {
             showFailureToast(message: "Error getting items")
         }
         
-        for item in existingItems {
-            if item.stores.contains(Store(name: storeName)) {
+        for var item in existingItems {
+            if item.stores.containsStore(Store(name: storeName)) {
                 items.append(item)
             }
         }
@@ -152,14 +152,7 @@ extension StoreVC: UITextFieldDelegate {
     }
     
     func addItemToList() {
-        
-        var itemNames: [String] = []
-        
-        for item in items {
-            itemNames.append(item.name)
-        }
-        
-        guard !itemNames.contains(addNewItemField.text!) else {
+        guard !items.containsItem(Item(name: addNewItemField.text!)) else {
             showFailureToast(message: "Item already exists!")
             return
         }
@@ -200,15 +193,15 @@ extension StoreVC {
                 var tempItems: [Item] = []
                 let items = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items")!
                 for var item in items {
-                    if item.stores.contains(Store(name: storeName)) {
-                        item.stores.remove(at: item.stores.firstIndex(of: Store(name: storeName))!)
+                    if item.stores.containsStore(Store(name: storeName)) {
+                        try item.stores.removeStore(withStore: storeName)
                     }
                     tempItems.append(item)
                 }
                 
                 try UserDefaults.standard.set(object: tempItems, forKey: "items")
                 var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")!
-                stores.remove(at: stores.firstIndex(of: Store(name: storeName))!)
+                try stores.removeStore(withStore: storeName)
                 try UserDefaults.standard.set(object: stores, forKey: "stores")
                 self.navigationController?.viewControllers[0].showToast(message: "Successfully deleted!", image: UIImage(systemName: "trash")!)
                 self.navigationController?.popViewController(animated: true)

@@ -11,6 +11,27 @@ struct Store: Codable, Equatable {
     var name: String
 }
 
+extension Array where Element == Store {
+    mutating func containsStore(_ element: Store) -> Bool {
+        let names = getNames()
+        return names.contains(element.name)
+    }
+    
+    mutating func removeStore(withStore name: String) throws {
+        let names = getNames()
+        
+        self.remove(at: names.firstIndex(of: name)!)
+    }
+    
+    private func getNames() -> [String] {
+        var names: [String] = []
+        for store in self {
+            names.append(store.name)
+        }
+        return names
+    }
+}
+
 //struct Color: Codable {
 //    var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
 //

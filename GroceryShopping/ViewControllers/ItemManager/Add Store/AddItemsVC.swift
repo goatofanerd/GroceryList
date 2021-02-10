@@ -39,8 +39,8 @@ class AddItemsVC: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         var indexPaths: [IndexPath] = []
-        for (index, item) in filteredItems.enumerated() {
-            if item.stores.contains(Store(name: storeName)) {
+        for (index, var item) in filteredItems.enumerated() {
+            if item.stores.containsStore(Store(name: storeName)) {
                 checkedItems.append(item)
                 indexPaths.append(IndexPath(row: index, section: 0))
             }
@@ -94,11 +94,11 @@ class AddItemsVC: UIViewController {
         storeName = storeName!
         
         for (index, var item) in existingItems.enumerated() {
-            if checkedItems.contains(item) {
+            if checkedItems.containsItem(item) {
                 item.addStore(storeName)
                 existingItems[index] = Item(name: item.name, stores: item.stores)
             } else {
-                if item.stores.contains(Store(name: storeName)) {
+                if item.stores.containsStore(Store(name: storeName)) {
                     item.stores.remove(at: item.stores.firstIndex(of: Store(name: storeName))!)
                     existingItems[index] = Item(name: item.name, stores: item.stores)
                 }
@@ -147,11 +147,11 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
             
             // remove the item from the data model
             if(checkedItems.contains(filteredItems[indexPath.row])) {
-                var itemNames: [String] = []
-                for item in checkedItems {
-                    itemNames.append(item.name)
+                do {
+                    try checkedItems.removeItem(withItem: filteredItems[indexPath.row].name)
+                } catch {
+                    print("error deleting")
                 }
-                checkedItems.remove(at: itemNames.firstIndex(of: filteredItems[indexPath.row].name)!)
             }
             filteredItems.remove(at: indexPath.row)
             existingItems.remove(at: indexPath.row)
@@ -193,11 +193,11 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
         }
         
         if cell.checkBox.backgroundColor == UIColor(named: "LightBlue") {
-            var checkedItemsNames: [String] = []
-            for item in checkedItems {
-                checkedItemsNames.append(item.name)
+            do {
+                try checkedItems.removeItem(withItem: cell.itemName!.text!)
+            } catch {
+                print("error unchecking")
             }
-            checkedItems.remove(at: checkedItemsNames.firstIndex(of: (cell.itemName?.text)!)!)
             cell.checkBox.setImage(nil, for: .normal)
             cell.checkBox.backgroundColor = .clear
             cell.checkBox.layer.borderColor = UIColor.gray.cgColor
@@ -222,11 +222,7 @@ extension AddItemsVC: UITextFieldDelegate {
     }
     
     func addItemToTableView() {
-        var tempItemNames: [String] = []
-        for item in existingItems {
-            tempItemNames.append(item.name)
-        }
-        guard !tempItemNames.contains(addNewItemField.text!) else {
+        guard !existingItems.containsItem(Item(name: addNewItemField.text!)) else {
             addNewItemField.resignFirstResponder()
             showFailureToast(message: "The item " + addNewItemField.text! + " already exists!")
             return
