@@ -13,6 +13,7 @@ class StoreVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var existingItems: [Item] = []
     var items: [Item] = []
+    var storeName: String!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,8 +22,10 @@ class StoreVC: UIViewController {
         tableView.rowHeight = 60
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.tableFooterView = UIView()
         
         addNewItemField.delegate = self
+        storeName = self.navigationItem.title!
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,7 +42,7 @@ class StoreVC: UIViewController {
         }
         
         for item in existingItems {
-            if item.stores.contains(Store(name: navigationItem.title!)) {
+            if item.stores.contains(Store(name: storeName)) {
                 items.append(item)
             }
         }
@@ -78,12 +81,65 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             cell.lastBought.text = ""
         }
+        
+        //Separator Full Line
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = .zero
+        cell.layoutMargins = .zero
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let notNeeded = notNeededAction(at: indexPath)
+        
+        return UISwipeActionsConfiguration(actions: [notNeeded])
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let bought = boughtAction(at: indexPath)
+        
+        return UISwipeActionsConfiguration(actions: [bought])
+    }
+    
+    func boughtAction(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Bought") { (action, view, completion) in
+            
+            if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
+                self.existingItems[index].changeBoughtTime()
+                self.existingItems[index].removeStore(withName: self.storeName)
+            }
+            self.items.remove(at: indexPath.row)
+            
+            self.tableView.deleteRows(at: [indexPath], with: .left)
+            completion(true)
+            
+        }
+        action.backgroundColor = .green
+        
+        return action
+    }
+    
+    func notNeededAction(at indexPath: IndexPath) -> UIContextualAction {
+        
+        let action = UIContextualAction(style: .normal, title: "Not Needed") { (action, view, completion) in
+            if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
+                self.existingItems[index].removeStore(withName: self.storeName)
+            }
+            self.items.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .right)
+            completion(true)
+            
+        }
+        action.backgroundColor = .orange
+        
+        return action
+    }
+    
+    
     
 }
 
@@ -112,7 +168,7 @@ extension StoreVC: UITextFieldDelegate {
         for (index, var item) in existingItems.enumerated() {
             
             if item.name == addNewItemField.text! {
-                item.addStore(self.navigationItem.title!)
+                item.addStore(storeName)
                 added = true
                 existingItems[index] = item
                 items.append(item)
@@ -121,12 +177,14 @@ extension StoreVC: UITextFieldDelegate {
         }
         
         if !added {
-            let newItem = Item(name: addNewItemField.text!, stores: [Store(name: self.navigationItem.title!)])
+            let newItem = Item(name: addNewItemField.text!, stores: [Store(name: storeName)])
             items.append(newItem)
             existingItems.append(newItem)
         }
         
         tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: .left)
+        
+        addNewItemField.becomeFirstResponder()
     }
 }
 
@@ -137,9 +195,8 @@ extension StoreVC {
     @IBAction func deleteStore(_ sender: Any) {
         let alert = UIAlertController(title: "Are you sure you want to delete?", message: "This action is irreversible!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {_ in
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self]_ in
             do {
-                let storeName = self.navigationItem.title!
                 var tempItems: [Item] = []
                 let items = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items")!
                 for var item in items {

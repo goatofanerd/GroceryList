@@ -24,8 +24,18 @@ struct Item: Codable, Equatable {
         }
     }
     
-    mutating func changeBoughtTime(date: DateComponents) {
-        lastBought = date
+    mutating func changeBoughtTime() {
+        lastBought = DateComponents(month: Calendar.current.component(.month, from: Date()), day: Calendar.current.component(.day, from: Date()))
+    }
+    
+    mutating func removeStore(at index: Int) {
+        stores.remove(at: index)
+    }
+    
+    mutating func removeStore(withName: String) {
+        if let index = stores.firstIndex(of: Store(name: withName)) {
+            removeStore(at: index)
+        }
     }
     
     func getYear() -> Int? {
