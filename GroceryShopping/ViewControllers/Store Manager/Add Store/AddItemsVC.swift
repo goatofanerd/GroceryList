@@ -234,13 +234,14 @@ extension AddItemsVC: UITextFieldDelegate {
             return
         }
         existingItems.insert(Item(name: addNewItemField.text!), at: 0)
+        filteredItems.insert(Item(name: addNewItemField.text!), at: 0)
+        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
         tableView.setContentOffset(.zero, animated: false)
         searchBar.delegate?.searchBar?(searchBar, textDidChange: searchBar.text!)
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
         
         addNewItemField.text = ""
-        addNewItemField.becomeFirstResponder()
         
         //save()
         //loadUserItems()

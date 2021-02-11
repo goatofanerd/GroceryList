@@ -1,5 +1,5 @@
 //
-//  ItemManagerVC.swift
+//  StoreManagerVC.swift
 //  GroceryShopping
 //
 //  Created by Saahil Sukhija on 1/28/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ItemManagerVC: UIViewController {
+class StoreManagerVC: UIViewController {
     @IBOutlet weak var storeCollectionView: UICollectionView!
     var stores: [Store] = []
     var items: [Item] = []
@@ -26,11 +26,15 @@ class ItemManagerVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         checkFirstLaunch()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        storeCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+    }
 }
 
 
 //MARK: -Collection View Methods
-extension ItemManagerVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension StoreManagerVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return stores.count + 1
     }
@@ -75,7 +79,7 @@ extension ItemManagerVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 }
 
-extension ItemManagerVC: UICollectionViewDelegateFlowLayout {
+extension StoreManagerVC: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat = 10
@@ -86,7 +90,7 @@ extension ItemManagerVC: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: -Show Success/Failure
-extension ItemManagerVC: StoreAddedToastDelegate {
+extension StoreManagerVC: StoreAddedToastDelegate {
     func showMessage(message: String, type: SuccessToastEnum) {
         switch type {
             
@@ -108,7 +112,7 @@ enum SuccessToastEnum: Int {
 }
 
 //MARK: -First Launch
-extension ItemManagerVC {
+extension StoreManagerVC {
     func checkFirstLaunch() {
         let hasLaunched = UserDefaults.standard.bool(forKey: "hasLaunched")
         if !hasLaunched{

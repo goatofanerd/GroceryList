@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bJd-i5-OiK">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="719"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="xqL-4D-FCi" customClass="ItemCell" customModule="GroceryShopping" customModuleProvider="target">
@@ -73,12 +73,12 @@
                         <viewLayoutGuide key="safeArea" id="q4F-2D-9rA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Qs3-bm-BbG" firstAttribute="top" secondItem="bJd-i5-OiK" secondAttribute="bottom" id="4IS-9o-pOY"/>
                             <constraint firstItem="Qs3-bm-BbG" firstAttribute="leading" secondItem="q4F-2D-9rA" secondAttribute="leading" constant="5" id="BEA-Jx-Xm1"/>
                             <constraint firstItem="bJd-i5-OiK" firstAttribute="leading" secondItem="q4F-2D-9rA" secondAttribute="leading" id="Gyw-Sa-Vwn"/>
                             <constraint firstItem="q4F-2D-9rA" firstAttribute="trailing" secondItem="bJd-i5-OiK" secondAttribute="trailing" id="Hvd-MB-NLk"/>
                             <constraint firstItem="q4F-2D-9rA" firstAttribute="bottom" secondItem="Qs3-bm-BbG" secondAttribute="bottom" constant="5" id="RD8-ym-ikG" customClass="KeyboardLayoutConstraint" customModule="GroceryShopping" customModuleProvider="target"/>
-                            <constraint firstItem="q4F-2D-9rA" firstAttribute="bottom" secondItem="bJd-i5-OiK" secondAttribute="bottom" id="fTI-zQ-gG5"/>
-                            <constraint firstItem="bJd-i5-OiK" firstAttribute="top" secondItem="q4F-2D-9rA" secondAttribute="top" id="tS4-dc-OR4"/>
+                            <constraint firstItem="bJd-i5-OiK" firstAttribute="top" secondItem="q4F-2D-9rA" secondAttribute="top" id="TdJ-DJ-rnQ"/>
                             <constraint firstItem="q4F-2D-9rA" firstAttribute="trailing" secondItem="Qs3-bm-BbG" secondAttribute="trailing" constant="5" id="uQf-H1-AhX"/>
                         </constraints>
                     </view>

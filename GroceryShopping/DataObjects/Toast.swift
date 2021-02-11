@@ -9,6 +9,7 @@ import UIKit
 
 extension UIViewController {
     func showToast(message: String, duration: Double = 2, image: UIImage = UIImage(systemName: "cart")!, color: UIColor = .label, fontColor: UIColor = .label) {
+        view.endEditing(true)
         let toastView = UIView(frame: CGRect(x: 10, y: view.frame.size.height - view.safeAreaInsets.bottom, width: view.frame.size.width - 20, height: 50))
         toastView.layer.borderWidth = 2
         toastView.layer.borderColor = color.cgColor

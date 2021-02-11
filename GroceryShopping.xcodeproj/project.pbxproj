@@ -16,14 +16,15 @@
 		6DC6F51525AD66130042CE2A /* GroceryShoppingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6F51425AD66130042CE2A /* GroceryShoppingTests.swift */; };
 		6DC6F52025AD66130042CE2A /* GroceryShoppingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6F51F25AD66130042CE2A /* GroceryShoppingUITests.swift */; };
 		6DC6F53225AEA9C50042CE2A /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DC6F53025AEA9C50042CE2A /* Settings.storyboard */; };
-		6DC6F53D25AEADA70042CE2A /* ItemManager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DC6F53B25AEADA70042CE2A /* ItemManager.storyboard */; };
+		6DC6F53D25AEADA70042CE2A /* HomeScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DC6F53B25AEADA70042CE2A /* HomeScreen.storyboard */; };
 		6DC6F55025B514220042CE2A /* InitialLaunch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DC6F54F25B514220042CE2A /* InitialLaunch.storyboard */; };
 		6DC6F55925B519FF0042CE2A /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC6F55825B519FF0042CE2A /* SignUpController.swift */; };
 		9A19381925CCCB0200E56444 /* StoreScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A19381825CCCB0200E56444 /* StoreScreen.storyboard */; };
 		9A19382025CCCCDF00E56444 /* StoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A19381F25CCCCDF00E56444 /* StoreVC.swift */; };
 		9A19382825CCDF9900E56444 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A19382725CCDF9900E56444 /* Toast.swift */; };
+		9A2BB0C425D4CDEF00D76E7E /* ItemManager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A2BB0C325D4CDEF00D76E7E /* ItemManager.storyboard */; };
 		9A3650F025C8982900FE57A6 /* ItemsCheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3650EF25C8982900FE57A6 /* ItemsCheckboxCell.swift */; };
-		9A4E9ED325C34D2C000D8B58 /* ItemManagerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E9ED225C34D2C000D8B58 /* ItemManagerVC.swift */; };
+		9A4E9ED325C34D2C000D8B58 /* StoreManagerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E9ED225C34D2C000D8B58 /* StoreManagerVC.swift */; };
 		9A4E9ED925C3906E000D8B58 /* StoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E9ED725C3906E000D8B58 /* StoreCell.swift */; };
 		9A4E9EDA25C3906E000D8B58 /* StoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E9ED825C3906E000D8B58 /* StoreCell.xib */; };
 		9A892FD425C6841500B15263 /* AddItemsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A892FD325C6841500B15263 /* AddItemsVC.swift */; };
@@ -69,14 +70,15 @@
 		6DC6F51F25AD66130042CE2A /* GroceryShoppingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryShoppingUITests.swift; sourceTree = "<group>"; };
 		6DC6F52125AD66130042CE2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DC6F53125AEA9C50042CE2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = GroceryShopping/Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
-		6DC6F53C25AEADA70042CE2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = GroceryShopping/Storyboards/Base.lproj/ItemManager.storyboard; sourceTree = "<group>"; };
+		6DC6F53C25AEADA70042CE2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = GroceryShopping/Storyboards/Base.lproj/HomeScreen.storyboard; sourceTree = "<group>"; };
 		6DC6F54F25B514220042CE2A /* InitialLaunch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InitialLaunch.storyboard; sourceTree = "<group>"; };
 		6DC6F55825B519FF0042CE2A /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		9A19381825CCCB0200E56444 /* StoreScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = StoreScreen.storyboard; sourceTree = "<group>"; };
 		9A19381F25CCCCDF00E56444 /* StoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreVC.swift; sourceTree = "<group>"; };
 		9A19382725CCDF9900E56444 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		9A2BB0C325D4CDEF00D76E7E /* ItemManager.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ItemManager.storyboard; sourceTree = "<group>"; };
 		9A3650EF25C8982900FE57A6 /* ItemsCheckboxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsCheckboxCell.swift; sourceTree = "<group>"; };
-		9A4E9ED225C34D2C000D8B58 /* ItemManagerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemManagerVC.swift; sourceTree = "<group>"; };
+		9A4E9ED225C34D2C000D8B58 /* StoreManagerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerVC.swift; sourceTree = "<group>"; };
 		9A4E9ED725C3906E000D8B58 /* StoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCell.swift; sourceTree = "<group>"; };
 		9A4E9ED825C3906E000D8B58 /* StoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StoreCell.xib; sourceTree = "<group>"; };
 		9A892FD325C6841500B15263 /* AddItemsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemsVC.swift; sourceTree = "<group>"; };
@@ -182,11 +184,12 @@
 		6DC6F53625AEA9F80042CE2A /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				6DC6F53B25AEADA70042CE2A /* ItemManager.storyboard */,
+				6DC6F53B25AEADA70042CE2A /* HomeScreen.storyboard */,
 				9A19381825CCCB0200E56444 /* StoreScreen.storyboard */,
 				9AA0ED5D25CC8267000EFE15 /* AddStore.storyboard */,
 				6DC6F53025AEA9C50042CE2A /* Settings.storyboard */,
 				6DC6F50325AD660F0042CE2A /* Main.storyboard */,
+				9A2BB0C325D4CDEF00D76E7E /* ItemManager.storyboard */,
 				6DC6F54F25B514220042CE2A /* InitialLaunch.storyboard */,
 			);
 			path = Storyboards;
@@ -195,7 +198,7 @@
 		6DC6F53725AEAA110042CE2A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				9A4E9ED125C34D13000D8B58 /* ItemManager */,
+				9A4E9ED125C34D13000D8B58 /* Store Manager */,
 				6DC6F55725B519CB0042CE2A /* InitialLaunch */,
 			);
 			path = ViewControllers;
@@ -212,7 +215,7 @@
 		9A19381D25CCCC9900E56444 /* Home Screen */ = {
 			isa = PBXGroup;
 			children = (
-				9A4E9ED225C34D2C000D8B58 /* ItemManagerVC.swift */,
+				9A4E9ED225C34D2C000D8B58 /* StoreManagerVC.swift */,
 				9A4E9ED725C3906E000D8B58 /* StoreCell.swift */,
 				9A4E9ED825C3906E000D8B58 /* StoreCell.xib */,
 			);
@@ -239,14 +242,14 @@
 			path = "Add Store";
 			sourceTree = "<group>";
 		};
-		9A4E9ED125C34D13000D8B58 /* ItemManager */ = {
+		9A4E9ED125C34D13000D8B58 /* Store Manager */ = {
 			isa = PBXGroup;
 			children = (
 				9A19381E25CCCCC400E56444 /* Store Screen */,
 				9A19381D25CCCC9900E56444 /* Home Screen */,
 				9A3650EE25C8980400FE57A6 /* Add Store */,
 			);
-			path = ItemManager;
+			path = "Store Manager";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,10 +358,11 @@
 				9AA0ED5E25CC8267000EFE15 /* AddStore.storyboard in Resources */,
 				6DC6F50A25AD66130042CE2A /* LaunchScreen.storyboard in Resources */,
 				9A19381925CCCB0200E56444 /* StoreScreen.storyboard in Resources */,
+				9A2BB0C425D4CDEF00D76E7E /* ItemManager.storyboard in Resources */,
 				9A4E9EDA25C3906E000D8B58 /* StoreCell.xib in Resources */,
 				6DC6F50725AD66130042CE2A /* Assets.xcassets in Resources */,
 				6DC6F50525AD660F0042CE2A /* Main.storyboard in Resources */,
-				6DC6F53D25AEADA70042CE2A /* ItemManager.storyboard in Resources */,
+				6DC6F53D25AEADA70042CE2A /* HomeScreen.storyboard in Resources */,
 				6DC6F53225AEA9C50042CE2A /* Settings.storyboard in Resources */,
 				6DC6F55025B514220042CE2A /* InitialLaunch.storyboard in Resources */,
 			);
@@ -388,7 +392,7 @@
 				9AB0A14825BC16F8004B681D /* Alert.swift in Sources */,
 				6DC6F4FE25AD660F0042CE2A /* AppDelegate.swift in Sources */,
 				6DC6F50025AD660F0042CE2A /* SceneDelegate.swift in Sources */,
-				9A4E9ED325C34D2C000D8B58 /* ItemManagerVC.swift in Sources */,
+				9A4E9ED325C34D2C000D8B58 /* StoreManagerVC.swift in Sources */,
 				9AA818F225CE6D5700B70A40 /* ItemCell.swift in Sources */,
 				6D42C28E25B8058A00CD63ED /* Store.swift in Sources */,
 				9AB7443725C1458600DC3913 /* Item.swift in Sources */,
@@ -460,12 +464,12 @@
 			name = Settings.storyboard;
 			sourceTree = "<group>";
 		};
-		6DC6F53B25AEADA70042CE2A /* ItemManager.storyboard */ = {
+		6DC6F53B25AEADA70042CE2A /* HomeScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				6DC6F53C25AEADA70042CE2A /* Base */,
 			);
-			name = ItemManager.storyboard;
+			name = HomeScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

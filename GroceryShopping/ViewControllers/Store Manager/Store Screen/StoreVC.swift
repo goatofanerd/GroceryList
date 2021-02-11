@@ -26,11 +26,17 @@ class StoreVC: UIViewController {
         
         addNewItemField.delegate = self
         storeName = self.navigationItem.title!
+        navigationItem.largeTitleDisplayMode = .always
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadUserItems()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.setContentOffset(.zero, animated: true)
     }
     
     func loadUserItems() {
@@ -94,19 +100,17 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let notNeeded = notNeededAction(at: indexPath)
-        
-        return UISwipeActionsConfiguration(actions: [notNeeded])
-    }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let bought = boughtAction(at: indexPath)
-        
         return UISwipeActionsConfiguration(actions: [bought])
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = deleteAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
+    
     func boughtAction(at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: "Bought") { (action, view, completion) in
+        let action = UIContextualAction(style: .destructive, title: "Bought") { (action, view, completion) in
             
             if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
                 self.existingItems[index].changeBoughtTime()
@@ -114,27 +118,29 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
             }
             self.items.remove(at: indexPath.row)
             
-            self.tableView.deleteRows(at: [indexPath], with: .left)
+            self.tableView.deleteRows(at: [indexPath], with: .middle)
+            self.showSuccessToast(message: "Marked item as bought.")
             completion(true)
             
         }
-        action.backgroundColor = .green
+        action.backgroundColor = .systemGreen
         
         return action
     }
     
-    func notNeededAction(at indexPath: IndexPath) -> UIContextualAction {
+    func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         
-        let action = UIContextualAction(style: .normal, title: "Not Needed") { (action, view, completion) in
+        let action = UIContextualAction(style: .destructive, title: "") { (action, view, completion) in
             if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
                 self.existingItems[index].removeStore(withName: self.storeName)
             }
             self.items.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .right)
+            self.tableView.deleteRows(at: [indexPath], with: .middle)
+            self.showToast(message: "Deleted item.", image: UIImage(systemName: "trash")!, color: .red, fontColor: .red)
             completion(true)
             
         }
-        action.backgroundColor = .orange
+        action.image = UIImage(systemName: "trash")
         
         return action
     }
@@ -145,7 +151,6 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
 
 extension StoreVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
         addItemToList()
         addNewItemField.text = ""
         return true
@@ -177,7 +182,7 @@ extension StoreVC: UITextFieldDelegate {
         
         tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: .left)
         
-        addNewItemField.becomeFirstResponder()
+        tableView.scrollToRow(at: IndexPath(row: items.count - 1, section: 0), at: .bottom, animated: true)
     }
 }
 
