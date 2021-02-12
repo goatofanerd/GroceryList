@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ViewAnimator
 
 class StoreVC: UIViewController {
     
@@ -13,6 +14,8 @@ class StoreVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var existingItems: [Item] = []
     var items: [Item] = []
+    var notNeeded: [Item] = []
+    var boughtItems: [Item] = []
     var storeName: String!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +35,14 @@ class StoreVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadUserItems()
+        tableView.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.setContentOffset(.zero, animated: true)
+        tableView.isHidden = false
+        let animation = AnimationType.from(direction: .top, offset: 300)
+        UIView.animate(views: tableView.visibleCells, animations: [animation])
     }
     
     func loadUserItems() {
@@ -47,7 +53,7 @@ class StoreVC: UIViewController {
             showFailureToast(message: "Error getting items")
         }
         
-        for var item in existingItems {
+        for item in existingItems {
             if item.stores.containsStore(Store(name: storeName)) {
                 items.append(item)
             }
@@ -71,6 +77,10 @@ class StoreVC: UIViewController {
             navigationController?.viewControllers[0].showFailureToast(message: "Error saving items!")
         }
     }
+    
+    func isNeeded(item: Item) -> Bool {
+        return item.neededStores.containsStore(Store(name: storeName))
+    }
 }
 
 extension StoreVC: UITableViewDelegate, UITableViewDataSource {
@@ -88,6 +98,13 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
             cell.lastBought.text = ""
         }
         
+        if isNeeded(item: items[indexPath.row]) {
+            cell.itemName.textColor = .label
+            cell.itemName.text = items[indexPath.row].name
+        } else {
+            cell.itemName.textColor = .gray
+        }
+    
         //Separator Full Line
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = .zero
@@ -106,7 +123,8 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = deleteAction(at: indexPath)
-        return UISwipeActionsConfiguration(actions: [delete])
+        let notNeeded = notNeededAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete, notNeeded])
     }
     
     func boughtAction(at indexPath: IndexPath) -> UIContextualAction {
@@ -116,6 +134,7 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
                 self.existingItems[index].changeBoughtTime()
                 self.existingItems[index].removeStore(withName: self.storeName)
             }
+            self.boughtItems.append(self.items[indexPath.row])
             self.items.remove(at: indexPath.row)
             
             self.tableView.deleteRows(at: [indexPath], with: .middle)
@@ -128,6 +147,32 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
         return action
     }
     
+    func notNeededAction(at indexPath: IndexPath) -> UIContextualAction {
+        var title: String
+        var backgroundColor = UIColor()
+        
+        if self.items[indexPath.row].neededStores.containsStore(Store(name: self.storeName)) {
+            title = "Not Needed"
+            backgroundColor = .systemOrange
+        } else {
+            title = "Bring Back"
+            backgroundColor = .systemBlue
+        }
+        
+        let action = UIContextualAction(style: .destructive, title: title) { (action, view, completion) in
+            if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
+                self.existingItems[index].markStoreAsOpposite(store: Store(name: self.storeName))
+            }
+            self.items[indexPath.row].markStoreAsOpposite(store: Store(name: self.storeName))
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            completion(true)
+            
+        }
+        
+        action.backgroundColor = backgroundColor
+        return action
+    }
+      
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         
         let action = UIContextualAction(style: .destructive, title: "") { (action, view, completion) in
@@ -189,6 +234,7 @@ extension StoreVC: UITextFieldDelegate {
 
 
 //MARK: -Delete Store
+/*
 extension StoreVC {
     @IBAction func deleteStore(_ sender: Any) {
         let alert = UIAlertController(title: "Are you sure you want to delete?", message: "This action is irreversible!", preferredStyle: .alert)
@@ -218,3 +264,4 @@ extension StoreVC {
     }
     
 }
+ */

@@ -39,7 +39,7 @@ class AddItemsVC: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         var indexPaths: [IndexPath] = []
-        for (index, var item) in filteredItems.enumerated() {
+        for (index, item) in filteredItems.enumerated() {
             if item.stores.containsStore(Store(name: storeName)) {
                 checkedItems.append(item)
                 indexPaths.append(IndexPath(row: index, section: 0))

@@ -1,13 +1,14 @@
 //
-//  StoreManagerVC.swift
+//  ShoppingVC.swift
 //  GroceryShopping
 //
 //  Created by Saahil Sukhija on 1/28/21.
 //
 
 import UIKit
+import ViewAnimator
 
-class StoreManagerVC: UIViewController {
+class ShoppingVC: UIViewController {
     @IBOutlet weak var storeCollectionView: UICollectionView!
     var stores: [Store] = []
     var items: [Item] = []
@@ -21,20 +22,19 @@ class StoreManagerVC: UIViewController {
         let layout = UICollectionViewFlowLayout()
         storeCollectionView.collectionViewLayout = layout
         storeCollectionView.register(StoreCell.nib(), forCellWithReuseIdentifier: StoreCell.identifier)
+        
+        UIView.animate(views: storeCollectionView.visibleCells, animations: [AnimationType.from(direction: .top, offset: 300)])
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         checkFirstLaunch()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        storeCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
     }
 }
 
 
 //MARK: -Collection View Methods
-extension StoreManagerVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ShoppingVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return stores.count + 1
     }
@@ -79,7 +79,7 @@ extension StoreManagerVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 }
 
-extension StoreManagerVC: UICollectionViewDelegateFlowLayout {
+extension ShoppingVC: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat = 10
@@ -90,7 +90,7 @@ extension StoreManagerVC: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: -Show Success/Failure
-extension StoreManagerVC: StoreAddedToastDelegate {
+extension ShoppingVC: StoreAddedToastDelegate {
     func showMessage(message: String, type: SuccessToastEnum) {
         switch type {
             
@@ -112,7 +112,7 @@ enum SuccessToastEnum: Int {
 }
 
 //MARK: -First Launch
-extension StoreManagerVC {
+extension ShoppingVC {
     func checkFirstLaunch() {
         let hasLaunched = UserDefaults.standard.bool(forKey: "hasLaunched")
         if !hasLaunched{

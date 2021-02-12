@@ -11,16 +11,23 @@ struct Item: Codable, Equatable {
     var name: String!
     var stores: [Store] = []
     var lastBought: DateComponents?
-    
-    init(name: String, stores: [Store] = [], lastBought: DateComponents? = nil) {
+    var neededStores: [Store] = []
+    init(name: String, stores: [Store] = [], lastBought: DateComponents? = nil, neededStores: [Store] = []) {
         self.name = name
         self.stores = stores
         self.lastBought = lastBought
+        
+        if neededStores.isEmpty {
+            self.neededStores = stores
+        } else {
+            self.neededStores = neededStores
+        }
     }
     
     mutating func addStore(_ store: String) {
-        if !stores.contains(Store(name: store)) {
+        if !stores.containsStore(Store(name: store)) {
             stores.append(Store(name: store))
+            neededStores.append(Store(name: store))
         }
     }
     
@@ -29,12 +36,25 @@ struct Item: Codable, Equatable {
     }
     
     mutating func removeStore(at index: Int) {
+        do {
+            try neededStores.removeStore(withStore: stores[index].name)
+        } catch {}
         stores.remove(at: index)
     }
     
     mutating func removeStore(withName: String) {
         if let index = stores.firstIndex(of: Store(name: withName)) {
             removeStore(at: index)
+        }
+    }
+    
+    mutating func markStoreAsOpposite(store: Store) {
+        if neededStores.containsStore(store) {
+            do {
+                try neededStores.removeStore(withStore: store.name)
+            } catch {}
+        } else {
+            neededStores.append(store)
         }
     }
     

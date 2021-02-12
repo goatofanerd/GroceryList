@@ -12,7 +12,7 @@ struct Store: Codable, Equatable {
 }
 
 extension Array where Element == Store {
-    mutating func containsStore(_ element: Store) -> Bool {
+    func containsStore(_ element: Store) -> Bool {
         let names = getNames()
         return names.contains(element.name)
     }
@@ -20,7 +20,10 @@ extension Array where Element == Store {
     mutating func removeStore(withStore name: String) throws {
         let names = getNames()
         
-        self.remove(at: names.firstIndex(of: name)!)
+        if let index = names.firstIndex(of: name) {
+            remove(at: index)
+        }
+        
     }
     
     private func getNames() -> [String] {
