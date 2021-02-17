@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bJd-i5-OiK">
-                                <rect key="frame" x="0.0" y="140" width="414" height="667"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="719"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="xqL-4D-FCi" customClass="ItemCell" customModule="GroceryShopping" customModuleProvider="target">
@@ -88,6 +88,12 @@
                                 <action selector="backToHomeScreen:" destination="GHE-WI-lPA" id="xs0-CL-06D"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="line.horizontal.3" catalog="system" id="HH0-8Z-AGj">
+                            <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="filterButtonTapped:" destination="GHE-WI-lPA" id="0VV-pB-Mkw"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -120,6 +126,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
         <image name="multiply" catalog="system" width="128" height="111"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

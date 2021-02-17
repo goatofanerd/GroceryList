@@ -16,7 +16,10 @@ class StoreVC: UIViewController {
     var items: [Item] = []
     var notNeeded: [Item] = []
     var boughtItems: [Item] = []
+    var filteredItems: [Item] = []
     var storeName: String!
+    var state = FilteredState.all
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,6 +68,34 @@ class StoreVC: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        let actionSheet = UIAlertController(title: "Filter Items", message: nil, preferredStyle: .actionSheet)
+        
+        if state == .all {
+            actionSheet.addAction(UIAlertAction(title: "Show Only Uncompleted", style: .default, handler: {[self]_ in
+                state = .notCompleted
+                
+                filteredItems.removeAll()
+                for item in items {
+                    if isNeeded(item: item) {
+                        filteredItems.append(item)
+                    }
+                }
+                
+                tableView.reloadData()
+                
+            }))
+        } else {
+            actionSheet.addAction(UIAlertAction(title: "Show All", style: .default, handler: { [self]_ in
+                filteredItems.removeAll()
+                state = .all
+                tableView.reloadData()
+            }))
+        }
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         save()
@@ -85,26 +116,45 @@ class StoreVC: UIViewController {
 
 extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+        if state != .all {
+            return filteredItems.count
+        }
+        
         return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ItemCell.identifier) as! ItemCell
-        cell.itemName.text = items[indexPath.row].name
-        if let date = items[indexPath.row].lastBought {
-            cell.lastBought.text = "\(date.month!)/\(date.day!)"
-        } else {
-            cell.lastBought.text = ""
-        }
         
-        if isNeeded(item: items[indexPath.row]) {
-            cell.itemName.textColor = .label
+        if filteredItems.isEmpty {
             cell.itemName.text = items[indexPath.row].name
+            if let date = items[indexPath.row].lastBought {
+                cell.lastBought.text = "\(date.month!)/\(date.day!)"
+            } else {
+                cell.lastBought.text = ""
+            }
+            
+            if isNeeded(item: items[indexPath.row]) {
+                cell.itemName.textColor = .label
+            } else {
+                cell.itemName.textColor = .gray
+            }
         } else {
-            cell.itemName.textColor = .gray
+            cell.itemName.text = filteredItems[indexPath.row].name
+            if let date = filteredItems[indexPath.row].lastBought {
+                cell.lastBought.text = "\(date.month!)/\(date.day!)"
+            } else {
+                cell.lastBought.text = ""
+            }
+            
+            if isNeeded(item: filteredItems[indexPath.row]) {
+                cell.itemName.textColor = .label
+            } else {
+                cell.itemName.textColor = .gray
+            }
+            cell.itemName.textColor = .label
+            
         }
-    
         //Separator Full Line
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = .zero
@@ -128,17 +178,35 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func boughtAction(at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Bought") { (action, view, completion) in
+        
+        let action = UIContextualAction(style: .destructive, title: "Bought") { [self] (action, view, completion) in
             
-            if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
-                self.existingItems[index].changeBoughtTime()
-                self.existingItems[index].removeStore(withName: self.storeName)
+            var showingItems: [Item] = []
+            if state == .all {
+                showingItems = items
+            } else {
+                showingItems = filteredItems
             }
-            self.boughtItems.append(self.items[indexPath.row])
-            self.items.remove(at: indexPath.row)
             
-            self.tableView.deleteRows(at: [indexPath], with: .middle)
-            self.showSuccessToast(message: "Marked item as bought.")
+            if let index = existingItems.firstIndex(of: showingItems[indexPath.row]) {
+                existingItems[index].changeBoughtTime()
+                existingItems[index].removeStore(withName: storeName)
+            }
+            boughtItems.append(showingItems[indexPath.row])
+            
+            if state == .all {
+                print("all")
+                items.remove(at: indexPath.row)
+            } else {
+                print("select")
+                do {
+                    try items.removeItem(withItem: filteredItems[indexPath.row].name)
+                } catch {}
+                filteredItems.remove(at: indexPath.row)
+            }
+
+            tableView.deleteRows(at: [indexPath], with: .middle)
+            showSuccessToast(message: "Marked item as bought.")
             completion(true)
             
         }
@@ -151,7 +219,13 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
         var title: String
         var backgroundColor = UIColor()
         
-        if self.items[indexPath.row].neededStores.containsStore(Store(name: self.storeName)) {
+        var showingItems: [Item] = []
+        if state == .all {
+            showingItems = items
+        } else {
+            showingItems = filteredItems
+        }
+        if showingItems[indexPath.row].neededStores.containsStore(Store(name: self.storeName)) {
             title = "Not Needed"
             backgroundColor = .systemOrange
         } else {
@@ -159,12 +233,23 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
             backgroundColor = .systemBlue
         }
         
-        let action = UIContextualAction(style: .destructive, title: title) { (action, view, completion) in
-            if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
-                self.existingItems[index].markStoreAsOpposite(store: Store(name: self.storeName))
+        let action = UIContextualAction(style: .destructive, title: title) { [self] (action, view, completion) in
+            
+            if state == .all {
+                if let index = existingItems.firstIndex(of: items[indexPath.row]) {
+                    existingItems[index].markStoreAsOpposite(store: Store(name: storeName))
+                }
+                items[indexPath.row].markStoreAsOpposite(store: Store(name: storeName))
+                tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-            self.items[indexPath.row].markStoreAsOpposite(store: Store(name: self.storeName))
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            else {
+                if let index = existingItems.firstIndex(of: filteredItems[indexPath.row]) {
+                    existingItems[index].markStoreAsOpposite(store: Store(name: storeName))
+                }
+                items[items.firstIndex(of: filteredItems[indexPath.row])!].markStoreAsOpposite(store: Store(name: storeName))
+                filteredItems.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .left)
+            }
             completion(true)
             
         }
@@ -175,13 +260,24 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
       
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         
-        let action = UIContextualAction(style: .destructive, title: "") { (action, view, completion) in
-            if let index = self.existingItems.firstIndex(of: self.items[indexPath.row]) {
-                self.existingItems[index].removeStore(withName: self.storeName)
+        let action = UIContextualAction(style: .destructive, title: "") { [self] (action, view, completion) in
+            if let index = existingItems.firstIndex(of: items[indexPath.row]) {
+                existingItems[index].removeStore(withName: storeName)
             }
-            self.items.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .middle)
-            self.showToast(message: "Deleted item.", image: UIImage(systemName: "trash")!, color: .red, fontColor: .red)
+            
+            do {
+                if state == .all {
+                    try items.removeItem(withItem: (tableView.cellForRow(at: indexPath) as! ItemCell).itemName.text!)
+                } else {
+                    try items.removeItem(withItem: filteredItems[indexPath.row].name)
+                    filteredItems.remove(at: indexPath.row)
+                }
+            } catch {
+                showFailureToast(message: "Error Deleting")
+            }
+            
+            tableView.deleteRows(at: [indexPath], with: .middle)
+            showToast(message: "Deleted item.", image: UIImage(systemName: "trash")!, color: .red, fontColor: .red)
             completion(true)
             
         }
@@ -202,6 +298,11 @@ extension StoreVC: UITextFieldDelegate {
     }
     
     func addItemToList() {
+        guard addNewItemField.text != "" else {
+            showFailureToast(message: "No Item Entered!")
+            return
+        }
+        
         guard !items.containsItem(Item(name: addNewItemField.text!)) else {
             showFailureToast(message: "Item already exists!")
             return
@@ -215,6 +316,10 @@ extension StoreVC: UITextFieldDelegate {
                 added = true
                 existingItems[index] = item
                 items.append(item)
+                
+                if state != .all {
+                    filteredItems.append(item)
+                }
             }
             
         }
@@ -223,11 +328,25 @@ extension StoreVC: UITextFieldDelegate {
             let newItem = Item(name: addNewItemField.text!, stores: [Store(name: storeName)])
             items.append(newItem)
             existingItems.append(newItem)
+            
+            if state != .all {
+                filteredItems.append(newItem)
+            }
         }
         
-        tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: .left)
-        
-        tableView.scrollToRow(at: IndexPath(row: items.count - 1, section: 0), at: .bottom, animated: true)
+        if state == .all {
+            tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: .left)
+            tableView.scrollToRow(at: IndexPath(row: items.count - 1, section: 0), at: .bottom, animated: true)
+        } else {
+            tableView.insertRows(at: [IndexPath(row: filteredItems.count - 1, section: 0)], with: .left)
+            tableView.scrollToRow(at: IndexPath(row: filteredItems.count - 1, section: 0), at: .bottom, animated: true)
+        }
+    }
+    
+    enum FilteredState: String {
+        case all = "Show All"
+        case notCompleted = "Show Completed"
+        case completed = "Show Uncompleted"
     }
 }
 
