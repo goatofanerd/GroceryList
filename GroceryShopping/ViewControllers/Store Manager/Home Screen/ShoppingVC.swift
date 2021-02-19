@@ -12,7 +12,6 @@ class ShoppingVC: UIViewController {
     @IBOutlet weak var storeCollectionView: UICollectionView!
     var stores: [Store] = []
     var items: [Item] = []
-    var storeColors = [UIColor(named: "Blue")!, UIColor(named: "Green")!, UIColor(named: "Purple")!, UIColor(named: "Red")!, UIColor(named: "Orange")!, UIColor(named: "Lime")!, UIColor(named: "LightBlue")!, UIColor(named: "Pink")!]
     
     
     override func viewDidLoad() {
@@ -26,8 +25,12 @@ class ShoppingVC: UIViewController {
         UIView.animate(views: storeCollectionView.visibleCells, animations: [AnimationType.from(direction: .top, offset: 300)])
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        checkFirstLaunch()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         checkFirstLaunch()
     }
 }
@@ -44,12 +47,12 @@ extension ShoppingVC: UICollectionViewDelegate, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreCell.identifier, for: indexPath) as! StoreCell
         
         cell.storeName.textColor = .white
-        let dividend = storeColors.count
+
         
         if indexPath.row == stores.count{
             cell.configure(storeName: "Add Store", backgroundColor: UIColor(named: "AddStoreColor")!)
         } else {
-            cell.configure(storeName: stores[indexPath.row].name, backgroundColor: storeColors[indexPath.row % dividend])
+            cell.configure(storeName: stores[indexPath.row].name, backgroundColor: stores[indexPath.row].color.color)
         }
         
         return cell
@@ -125,7 +128,6 @@ extension ShoppingVC {
             self.present(signUpScreen, animated: false, completion: nil)
         }
         else {
-            print("already launched")
             storeCollectionView.delegate = self
             storeCollectionView.dataSource = self
             loadUserItems()

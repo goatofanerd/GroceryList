@@ -5,13 +5,27 @@
 //  Created by Saahil Sukhija on 1/19/21.
 //
 
-import Foundation
+import UIKit
 struct Store: Codable, Equatable {
+    static func == (lhs: Store, rhs: Store) -> Bool {
+        return lhs.name == rhs.name
+    }
     
     var name: String
+    var color: Color
+    
+    init(name: String, color: UIColor = .systemBlue) {
+        self.name = name
+        self.color = Color(color: color)
+    }
 }
 
 extension Array where Element == Store {
+    func firstStore(name: String) -> Int? {
+        let names = getNames()
+        
+        return names.firstIndex(of: name)
+    }
     func containsStore(_ element: Store) -> Bool {
         let names = getNames()
         return names.contains(element.name)
@@ -35,17 +49,17 @@ extension Array where Element == Store {
     }
 }
 
-//struct Color: Codable {
-//    var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
-//
-//    var color: UIColor {
-//        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
-//    }
-//
-//    init(color: UIColor) {
-//        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-//    }
-//}
+struct Color: Codable {
+    var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0, alpha: CGFloat = 0.0
+
+    var color: UIColor {
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    }
+
+    init(color: UIColor) {
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+    }
+}
 // MARK: - UserDefaults extensions
 
 public extension UserDefaults {

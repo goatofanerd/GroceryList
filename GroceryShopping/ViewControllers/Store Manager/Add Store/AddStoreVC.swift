@@ -8,18 +8,41 @@
 import UIKit
 
 class AddStoreVC: UIViewController {
-
+    
+    @IBOutlet weak var storeColorView: UIView!
+    @IBOutlet weak var colorPreview: UIImageView!
     @IBOutlet weak var createButton: UIBarButtonItem!
     @IBOutlet weak var itemName: UIButton!
+    var color: UIColor = .systemBlue
     public var successDelegate: StoreAddedToastDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         itemName.layer.borderWidth = 2
         itemName.layer.borderColor = UIColor.gray.cgColor
         createButton.tintColor = .gray
+        
+        storeColorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.launchColorPicker(sender:))))
     }
+    
+    @objc func launchColorPicker(sender: UITapGestureRecognizer) {
+        let colorPicker = UIColorPickerViewController()
+        colorPicker.selectedColor = color
+        colorPicker.delegate = self
+        present(colorPicker, animated: true, completion: nil)
+    }
+    
+}
+
+extension AddStoreVC: UIColorPickerViewControllerDelegate {
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        color = viewController.selectedColor
+        colorPreview.tintColor = color
+    }
+}
+
+extension AddStoreVC {
     
     @IBAction func cancel(_ sender: Any) {
         successDelegate.showMessage(message: "Successfully discarded store!", type: .normal)
@@ -32,11 +55,16 @@ class AddStoreVC: UIViewController {
             return
             
         }
-        guard let store = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else { Alert.regularAlert(title: "Empty Store Name", message: "Please have a proper store name.", vc: self); return }
+        guard let store = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            showFailureToast(message: "No name entered!")
+            return
+        }
+        
         do {
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+            
             if !stores.containsStore(Store(name: store)) {
-                stores.append(Store(name: store))
+                stores.append(Store(name: store, color: color))
                 try UserDefaults.standard.set(object: stores, forKey: "stores")
                 self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
                 navigationController?.popViewController(animated: true)
@@ -45,7 +73,7 @@ class AddStoreVC: UIViewController {
                 
                 alert.addAction(UIAlertAction(title: "Replace", style: UIAlertAction.Style.default, handler: {_ in
                     
-                    stores[stores.firstIndex(of: Store(name: store))!] = Store(name: store)
+                    stores[stores.firstStore(name: store)!] = Store(name: store, color: self.color)
                     self.successDelegate.showMessage(message: "Successfully replaced store!", type: .success)
                     self.navigationController?.popViewController(animated: true)
                 }))
@@ -58,7 +86,7 @@ class AddStoreVC: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         } catch {
-            print("error getting/retrieving stores")
+            showFailureToast(message: "Error, try rebooting the application.")
         }
     }
     @IBAction func addStoreButtonTapped(_ sender: Any) {

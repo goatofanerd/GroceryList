@@ -49,13 +49,50 @@
                                     <action selector="addItemsButtonTapped:" destination="ZDU-tX-aHK" eventType="touchUpInside" id="9sf-bA-DJU"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uui-JU-g0e">
+                                <rect key="frame" x="20" y="295" width="374" height="40"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fOJ-jS-JeE">
+                                        <rect key="frame" x="10" y="5.5" width="30" height="29"/>
+                                        <color key="tintColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="fOJ-jS-JeE" secondAttribute="height" multiplier="1:1" id="kbx-VW-fid"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick Store Color" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kq2-dz-4a7">
+                                        <rect key="frame" x="50" y="5" width="324" height="30"/>
+                                        <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Asd-Nk-eeA"/>
+                                    <constraint firstItem="Kq2-dz-4a7" firstAttribute="top" secondItem="uui-JU-g0e" secondAttribute="top" constant="5" id="NdY-1f-0L4"/>
+                                    <constraint firstAttribute="bottom" secondItem="Kq2-dz-4a7" secondAttribute="bottom" constant="5" id="QId-gB-Ttk"/>
+                                    <constraint firstAttribute="bottom" secondItem="fOJ-jS-JeE" secondAttribute="bottom" constant="5" id="bXw-iu-yi8"/>
+                                    <constraint firstItem="fOJ-jS-JeE" firstAttribute="leading" secondItem="uui-JU-g0e" secondAttribute="leading" constant="10" id="c0n-gv-riE"/>
+                                    <constraint firstItem="fOJ-jS-JeE" firstAttribute="top" secondItem="uui-JU-g0e" secondAttribute="top" constant="5" id="nqd-mA-fYO"/>
+                                    <constraint firstItem="Kq2-dz-4a7" firstAttribute="leading" secondItem="fOJ-jS-JeE" secondAttribute="trailing" constant="10" id="t8P-Z2-cHd"/>
+                                    <constraint firstAttribute="trailing" secondItem="Kq2-dz-4a7" secondAttribute="trailing" id="zwR-XX-YMa"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mUG-uD-wd7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="wzM-QT-AgQ" firstAttribute="top" secondItem="mUG-uD-wd7" secondAttribute="top" id="1FF-YU-Eol"/>
                             <constraint firstItem="eB4-ob-JT7" firstAttribute="top" secondItem="wzM-QT-AgQ" secondAttribute="bottom" constant="20" id="G47-h7-rUi"/>
+                            <constraint firstItem="mUG-uD-wd7" firstAttribute="trailing" secondItem="uui-JU-g0e" secondAttribute="trailing" constant="20" id="Hf9-Wp-uSU"/>
                             <constraint firstItem="mUG-uD-wd7" firstAttribute="trailing" secondItem="wzM-QT-AgQ" secondAttribute="trailing" constant="20" id="dXc-qg-cbS"/>
+                            <constraint firstItem="uui-JU-g0e" firstAttribute="leading" secondItem="mUG-uD-wd7" secondAttribute="leading" constant="20" id="e6H-dD-kTY"/>
+                            <constraint firstItem="uui-JU-g0e" firstAttribute="top" secondItem="eB4-ob-JT7" secondAttribute="bottom" constant="20" id="fBi-Q9-DT8"/>
                             <constraint firstItem="wzM-QT-AgQ" firstAttribute="leading" secondItem="mUG-uD-wd7" secondAttribute="leading" constant="20" id="sZb-ZI-lad"/>
                             <constraint firstItem="eB4-ob-JT7" firstAttribute="centerX" secondItem="oqR-U6-6A6" secondAttribute="centerX" id="xgH-7v-Ej0"/>
                         </constraints>
@@ -77,8 +114,10 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="colorPreview" destination="fOJ-jS-JeE" id="jQk-U1-QjI"/>
                         <outlet property="createButton" destination="xli-Hr-dKg" id="Flb-jp-3fY"/>
                         <outlet property="itemName" destination="wzM-QT-AgQ" id="y6B-6l-rfc"/>
+                        <outlet property="storeColorView" destination="uui-JU-g0e" id="FUQ-Ll-KvG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Flg-ii-YLq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -105,21 +144,21 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="Y27-Ub-Ixh" customClass="ItemsCheckboxCell" customModule="GroceryShopping" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="45"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="45.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y27-Ub-Ixh" id="RtB-lt-kil">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9e-GD-FD8">
-                                                    <rect key="frame" x="10" y="12.5" width="20" height="20"/>
+                                                    <rect key="frame" x="10" y="13" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="bkM-xp-42W"/>
                                                         <constraint firstAttribute="width" secondItem="s9e-GD-FD8" secondAttribute="height" multiplier="1:1" id="pqw-4v-W4h"/>
                                                     </constraints>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="21h-zY-wYS">
-                                                    <rect key="frame" x="60" y="11" width="334" height="23"/>
+                                                    <rect key="frame" x="60" y="11" width="334" height="23.5"/>
                                                     <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="19"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -252,12 +291,16 @@
         </scene>
     </scenes>
     <resources>
+        <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="multiply" catalog="system" width="128" height="111"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
             <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

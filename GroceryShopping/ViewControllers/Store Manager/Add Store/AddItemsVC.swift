@@ -27,6 +27,7 @@ class AddItemsVC: UIViewController {
         tableView.rowHeight = 50
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         addNewItemField.delegate = self
         searchBar.delegate = self
         reorderTable = LongPressReorderTableView(tableView)
