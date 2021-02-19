@@ -80,7 +80,11 @@ extension Array where Element == Item {
     mutating func removeItem(withItem name: String) throws {
         let names = getNames()
         
-        self.remove(at: names.firstIndex(of: name)!)
+        if let firstIndex = names.firstIndex(of: name) {
+            self.remove(at: firstIndex)
+        } else {
+            throw "Error Deleting"
+        }
     }
     
     private func getNames() -> [String] {
@@ -91,3 +95,5 @@ extension Array where Element == Item {
         return names
     }
 }
+
+extension String: Error {}

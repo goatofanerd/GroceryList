@@ -58,7 +58,7 @@ class ItemManagerVC: UIViewController {
     
     func loadUserStores() {
         do {
-            stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")!
+            stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
         } catch {
             showFailureToast(message: "No stores found.")
         }
@@ -69,22 +69,21 @@ class ItemManagerVC: UIViewController {
 }
 
 extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        stores.count
+        return stores.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        //TODO: have store color
         cell.backgroundColor = stores[indexPath.row].color.color
         cell.textLabel?.text = stores[indexPath.row].name
         cell.textLabel?.textColor = .white
+        cell.textLabel?.font = UIFont(name: "DIN Alternate Bold", size: 22)
         cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.gray.cgColor
+        cell.layer.borderColor = UIColor.darkGray.cgColor
         cell.layer.cornerRadius = 10
-        cell.contentView.frame = cell.contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-        
-        
+
         return cell
     }
     
