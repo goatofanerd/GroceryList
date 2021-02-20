@@ -21,14 +21,14 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="xqL-4D-FCi" customClass="ItemCell" customModule="GroceryShopping" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="51"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xqL-4D-FCi" id="sd6-8E-zc3">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uBJ-Oo-gvO" userLabel="Last Bought">
-                                                    <rect key="frame" x="324" y="11" width="70" height="21.5"/>
+                                                    <rect key="frame" x="324" y="11" width="70" height="29"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="70" id="Vdt-RI-4cI"/>
                                                     </constraints>
@@ -37,8 +37,8 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9DM-Ze-Wj7" userLabel="Item Name">
-                                                    <rect key="frame" x="25" y="11" width="289" height="21.5"/>
-                                                    <fontDescription key="fontDescription" name="Farah" family="Farah" pointSize="21"/>
+                                                    <rect key="frame" x="25" y="11" width="289" height="29"/>
+                                                    <fontDescription key="fontDescription" name="SinhalaSangamMN" family="Sinhala Sangam MN" pointSize="21"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -104,6 +104,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fFr-uq-hj5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2120.289855072464" y="109.82142857142857"/>
+        </scene>
+        <!--Bought ItemsVC-->
+        <scene sceneID="oK9-BA-kmK">
+            <objects>
+                <viewController storyboardIdentifier="BoughtItemsScreen" id="num-MA-sPQ" customClass="BoughtItemsVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WXl-sS-QPe">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap an item to bring it back." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfS-Uq-mUE">
+                                <rect key="frame" x="10" y="54" width="394" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="FW0-Jk-Obr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="51z-cx-ohd">
+                                <rect key="frame" x="0.0" y="104" width="414" height="758"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="xVJ-6O-Rp3"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gfS-Uq-mUE" firstAttribute="top" secondItem="xVJ-6O-Rp3" secondAttribute="top" constant="10" id="5iU-8f-K6D"/>
+                            <constraint firstItem="gfS-Uq-mUE" firstAttribute="leading" secondItem="xVJ-6O-Rp3" secondAttribute="leading" constant="10" id="Eif-8p-ebx"/>
+                            <constraint firstItem="xVJ-6O-Rp3" firstAttribute="trailing" secondItem="51z-cx-ohd" secondAttribute="trailing" id="ZEZ-t9-ZNb"/>
+                            <constraint firstItem="51z-cx-ohd" firstAttribute="top" secondItem="gfS-Uq-mUE" secondAttribute="bottom" constant="10" id="b8z-DT-gR5"/>
+                            <constraint firstItem="xVJ-6O-Rp3" firstAttribute="trailing" secondItem="gfS-Uq-mUE" secondAttribute="trailing" constant="10" id="ebP-eI-Kng"/>
+                            <constraint firstItem="51z-cx-ohd" firstAttribute="leading" secondItem="xVJ-6O-Rp3" secondAttribute="leading" id="iO9-Te-few"/>
+                            <constraint firstItem="xVJ-6O-Rp3" firstAttribute="bottom" secondItem="51z-cx-ohd" secondAttribute="bottom" id="qOF-Mm-Gbh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="51z-cx-ohd" id="ZZu-gI-LG5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31f-58-GUu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3017" y="110"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="G0Q-rL-MjI">

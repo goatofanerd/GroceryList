@@ -83,7 +83,7 @@ extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate {
         cell.layer.borderWidth = 1
         cell.layer.borderColor = UIColor.darkGray.cgColor
         cell.layer.cornerRadius = 10
-
+        
         return cell
     }
     

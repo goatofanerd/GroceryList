@@ -10,6 +10,7 @@ import ViewAnimator
 
 class StoreVC: UIViewController {
     
+    let cartBarButton = BadgedButtonItem(with: UIImage(systemName: "cart.fill"))
     @IBOutlet weak var addNewItemField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     var existingItems: [Item] = []
@@ -29,10 +30,31 @@ class StoreVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
+        self.tableView.contentInsetAdjustmentBehavior = .never
+        navigationItem.largeTitleDisplayMode = .always
         
         addNewItemField.delegate = self
         storeName = self.navigationItem.title!
-        navigationItem.largeTitleDisplayMode = .always
+        
+        let tapNavBar = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        navigationController?.navigationBar.addGestureRecognizer(tapNavBar)
+        
+        cartBarButton.badgeAnimation = true
+        cartBarButton.badgeTintColor = .systemBlue
+        cartBarButton.badgeTextColor = .white
+        cartBarButton.position = .right
+        cartBarButton.hasBorder = true
+        cartBarButton.borderColor = .black
+        cartBarButton.tapAction = {
+            self.launchBoughtItems()
+        }
+        self.navigationItem.rightBarButtonItems?.append(cartBarButton)
+    }
+    
+    @objc func launchBoughtItems() {
+        let boughtItemsVC = storyboard!.instantiateViewController(identifier: "BoughtItemsScreen") as! BoughtItemsVC
+        boughtItemsVC.setBoughtItems(boughtItems)
+        navigationController?.pushViewController(boughtItemsVC, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -193,7 +215,7 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
                 existingItems[index].removeStore(withName: storeName)
             }
             boughtItems.append(showingItems[indexPath.row])
-            
+            cartBarButton.setBadge(with: boughtItems.count)
             if state == .all {
                 print("all")
                 items.remove(at: indexPath.row)
