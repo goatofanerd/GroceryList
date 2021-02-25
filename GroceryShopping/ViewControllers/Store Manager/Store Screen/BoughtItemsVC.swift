@@ -11,6 +11,7 @@ class BoughtItemsVC: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var boughtItems: [Item] = []
+    var removedItems: [Item] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,6 +19,7 @@ class BoughtItemsVC: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.tableFooterView = UIView()
     }
     
     func setBoughtItems(_ boughtItems: [Item]) {
@@ -34,7 +36,15 @@ class BoughtItemsVC: UIViewController {
     }
     
     @objc private func dismissScreen() {
+        let storeVC = navigationController?.viewControllers[1] as! StoreVC
+        storeVC.addBackItems(removedItems)
         navigationController?.popViewController(animated: true)
+        
+        if removedItems.count == 1 {
+            storeVC.showSuccessToast(message: "Added back \(removedItems.count) item.")
+        } else {
+            storeVC.showSuccessToast(message: "Added back \(removedItems.count) items.")
+        }
     }
 
 }
@@ -46,12 +56,19 @@ extension BoughtItemsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = boughtItems[indexPath.row].name
+        cell.textLabel?.text = "    " + boughtItems[indexPath.row].name
         cell.textLabel?.textColor = .systemGreen
+        cell.textLabel?.font = UIFont(name: "DIN Alternate Bold", size: 18)
+        
+        //Separator Full Line
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = .zero
+        cell.layoutMargins = .zero
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        removedItems.append(boughtItems[indexPath.row])
         boughtItems.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
         showAnimationToast(animationName: "TrashOpening", message: "Brought Back Item.")

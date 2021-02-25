@@ -43,15 +43,23 @@ extension UIViewController {
     
     ///Shows a green toast
     func showSuccessToast(message: String) {
-        showToast(message: message, image: UIImage(systemName: "checkmark")!, color: .green, fontColor: .green)
+        showAnimationToast(animationName: "CheckMark", message: message, color: .green, fontColor: .green)
     }
     
     ///Shows a red toast
     func showFailureToast(message: String) {
+        showAnimationToast(animationName: "CrossX", message: message, color: .red, fontColor: .red)
+    }
+    
+    func showNotAnimatedSuccessToast(message: String) {
+        showToast(message: message, image: UIImage(systemName: "checkmark")!, color: .green, fontColor: .green)
+    }
+    
+    func showNotAnimatedFailureToast(message: String) {
         showToast(message: message, image: UIImage(systemName: "multiply")!, color: .red, fontColor: .red)
     }
     
-    func showAnimationToast(animationName: String, message: String, duration: Double = 3, image: UIImage = UIImage(systemName: "cart")!, color: UIColor = .label, fontColor: UIColor = .label) {
+    func showAnimationToast(animationName: String, message: String, duration: Double = 3, color: UIColor = .label, fontColor: UIColor = .label) {
         view.endEditing(true)
         let toastView = UIView(frame: CGRect(x: 10, y: view.frame.size.height - view.safeAreaInsets.bottom, width: view.frame.size.width - 20, height: 60))
         toastView.layer.borderWidth = 2
@@ -59,8 +67,7 @@ extension UIViewController {
         toastView.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
         
         let animationView = AnimationView(name: animationName)
-        animationView.frame = CGRect(x: 0, y: -20, width: 60, height: 100)
-        animationView.animationSpeed = 0.6
+        animationView.frame = CGRect(x: 5, y: 5, width: 50, height: 50)
         animationView.contentMode = .scaleAspectFill
         toastView.addSubview(animationView)
         

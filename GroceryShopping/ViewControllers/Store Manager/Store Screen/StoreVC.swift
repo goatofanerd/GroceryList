@@ -87,6 +87,15 @@ class StoreVC: UIViewController {
     
     
     @IBAction func backToHomeScreen(_ sender: Any) {
+        
+        if boughtItems.count > 0 {
+            let alert = UIAlertController(title: "Are you sure you want to leave?", message: "Leaving the store screen will abandon the \(boughtItems.count) items in your cart.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Continue", style: .default, handler: {_ in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
         navigationController?.popViewController(animated: true)
     }
     
@@ -133,6 +142,30 @@ class StoreVC: UIViewController {
     
     func isNeeded(item: Item) -> Bool {
         return item.neededStores.containsStore(Store(name: storeName))
+    }
+    
+    func addBackItems(_ addedItems: [Item]) {
+        var indexPaths: [IndexPath] = []
+        for (index, item) in addedItems.enumerated() {
+            items.append(item)
+            
+            indexPaths.append(IndexPath(row: index, section: 0))
+            do {
+                try boughtItems.removeItem(withItem: item.name)
+                cartBarButton.setBadge(with: boughtItems.count)
+            } catch {}
+            
+            if let indexOfItem = existingItems.firstIndex(of: item) {
+                existingItems[indexOfItem].addStore(storeName)
+            } else {
+                existingItems.append(item)
+            }
+        }
+        
+        save()
+        loadUserItems()
+        tableView.reloadData()
+        
     }
 }
 
@@ -196,7 +229,7 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = deleteAction(at: indexPath)
         let notNeeded = notNeededAction(at: indexPath)
-        return UISwipeActionsConfiguration(actions: [delete, notNeeded])
+        return UISwipeActionsConfiguration(actions: [notNeeded, delete])
     }
     
     func boughtAction(at indexPath: IndexPath) -> UIContextualAction {

@@ -33,6 +33,8 @@
 		9A8B00D625E092B500FEDB9E /* BadgeBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8B00D525E092B500FEDB9E /* BadgeBarButton.swift */; };
 		9A8B00DB25E09FFD00FEDB9E /* BoughtItemsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8B00DA25E09FFD00FEDB9E /* BoughtItemsVC.swift */; };
 		9A8B00F525E0B20200FEDB9E /* TrashOpening.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A8B00F425E0B20200FEDB9E /* TrashOpening.json */; };
+		9A8B00FF25E5F21400FEDB9E /* CrossX.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A8B00FE25E5F21400FEDB9E /* CrossX.json */; };
+		9A8B010425E5F2F300FEDB9E /* CheckMark.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A8B010325E5F2F300FEDB9E /* CheckMark.json */; };
 		9A8D434925C49FDB00A12A10 /* AddStoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8D434825C49FDB00A12A10 /* AddStoreVC.swift */; };
 		9A8D434E25C4B48500A12A10 /* StoreNameEnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8D434D25C4B48500A12A10 /* StoreNameEnterVC.swift */; };
 		9AA0ED5E25CC8267000EFE15 /* AddStore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AA0ED5D25CC8267000EFE15 /* AddStore.storyboard */; };
@@ -92,6 +94,8 @@
 		9A8B00D525E092B500FEDB9E /* BadgeBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeBarButton.swift; sourceTree = "<group>"; };
 		9A8B00DA25E09FFD00FEDB9E /* BoughtItemsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoughtItemsVC.swift; sourceTree = "<group>"; };
 		9A8B00F425E0B20200FEDB9E /* TrashOpening.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TrashOpening.json; path = ../../../TrashOpening.json; sourceTree = "<group>"; };
+		9A8B00FE25E5F21400FEDB9E /* CrossX.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CrossX.json; path = ../../../CrossX.json; sourceTree = "<group>"; };
+		9A8B010325E5F2F300FEDB9E /* CheckMark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CheckMark.json; path = ../../../CheckMark.json; sourceTree = "<group>"; };
 		9A8D434825C49FDB00A12A10 /* AddStoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStoreVC.swift; sourceTree = "<group>"; };
 		9A8D434D25C4B48500A12A10 /* StoreNameEnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreNameEnterVC.swift; sourceTree = "<group>"; };
 		9AA0ED5D25CC8267000EFE15 /* AddStore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddStore.storyboard; sourceTree = "<group>"; };
@@ -282,6 +286,8 @@
 		9A8B00DF25E0AC5200FEDB9E /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				9A8B010325E5F2F300FEDB9E /* CheckMark.json */,
+				9A8B00FE25E5F21400FEDB9E /* CrossX.json */,
 				9A8B00F425E0B20200FEDB9E /* TrashOpening.json */,
 			);
 			path = Animations;
@@ -410,10 +416,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AA0ED5E25CC8267000EFE15 /* AddStore.storyboard in Resources */,
+				9A8B00FF25E5F21400FEDB9E /* CrossX.json in Resources */,
 				9A8B00F525E0B20200FEDB9E /* TrashOpening.json in Resources */,
 				6DC6F50A25AD66130042CE2A /* LaunchScreen.storyboard in Resources */,
 				9A19381925CCCB0200E56444 /* StoreScreen.storyboard in Resources */,
 				9A2BB0C425D4CDEF00D76E7E /* ItemManager.storyboard in Resources */,
+				9A8B010425E5F2F300FEDB9E /* CheckMark.json in Resources */,
 				9A4E9EDA25C3906E000D8B58 /* StoreCell.xib in Resources */,
 				6DC6F50725AD66130042CE2A /* Assets.xcassets in Resources */,
 				6DC6F50525AD660F0042CE2A /* Main.storyboard in Resources */,
