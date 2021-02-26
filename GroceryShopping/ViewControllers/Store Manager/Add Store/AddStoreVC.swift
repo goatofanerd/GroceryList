@@ -27,6 +27,7 @@ class AddStoreVC: UIViewController {
     }
     
     @objc func launchColorPicker(sender: UITapGestureRecognizer) {
+        storeColorView.backgroundColor = .systemGray4
         let colorPicker = UIColorPickerViewController()
         colorPicker.selectedColor = color
         colorPicker.delegate = self
@@ -37,6 +38,7 @@ class AddStoreVC: UIViewController {
 
 extension AddStoreVC: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        storeColorView.backgroundColor = .systemGray6
         color = viewController.selectedColor
         colorPreview.tintColor = color
     }
@@ -45,7 +47,7 @@ extension AddStoreVC: UIColorPickerViewControllerDelegate {
 extension AddStoreVC {
     
     @IBAction func cancel(_ sender: Any) {
-        successDelegate.showMessage(message: "Successfully discarded store!", type: .normal)
+        successDelegate.showMessage(message: "Discarded store.", type: .normal)
         navigationController?.popViewController(animated: true)
     }
     

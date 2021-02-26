@@ -155,13 +155,17 @@ class StoreVC: UIViewController {
                 cartBarButton.setBadge(with: boughtItems.count)
             } catch {}
             
-            if let indexOfItem = existingItems.firstIndex(of: item) {
-                existingItems[indexOfItem].addStore(storeName)
+            if existingItems.containsItem(item) {
+                print("item Exists")
+                existingItems[existingItems.indexOfItem(item)!].addStore(storeName)
             } else {
+                print(item)
+                print(existingItems)
                 existingItems.append(item)
             }
         }
-        
+        //GroceryShopping.Item(name: Optional("Apples"), stores: [], lastBought: Optional(month: 2 day: 25 isLeapMonth: false ), neededStores: [])
+        //GroceryShopping.Item(name: Optional("Apples"), stores: [], lastBought: Optional(month: 2 day: 25 isLeapMonth: false ), neededStores: [])
         save()
         loadUserItems()
         tableView.reloadData()

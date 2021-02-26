@@ -35,6 +35,7 @@
 		9A8B00F525E0B20200FEDB9E /* TrashOpening.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A8B00F425E0B20200FEDB9E /* TrashOpening.json */; };
 		9A8B00FF25E5F21400FEDB9E /* CrossX.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A8B00FE25E5F21400FEDB9E /* CrossX.json */; };
 		9A8B010425E5F2F300FEDB9E /* CheckMark.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A8B010325E5F2F300FEDB9E /* CheckMark.json */; };
+		9A8B011425E833EA00FEDB9E /* StoreManageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8B011325E833EA00FEDB9E /* StoreManageVC.swift */; };
 		9A8D434925C49FDB00A12A10 /* AddStoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8D434825C49FDB00A12A10 /* AddStoreVC.swift */; };
 		9A8D434E25C4B48500A12A10 /* StoreNameEnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8D434D25C4B48500A12A10 /* StoreNameEnterVC.swift */; };
 		9AA0ED5E25CC8267000EFE15 /* AddStore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AA0ED5D25CC8267000EFE15 /* AddStore.storyboard */; };
@@ -96,6 +97,7 @@
 		9A8B00F425E0B20200FEDB9E /* TrashOpening.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TrashOpening.json; path = ../../../TrashOpening.json; sourceTree = "<group>"; };
 		9A8B00FE25E5F21400FEDB9E /* CrossX.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CrossX.json; path = ../../../CrossX.json; sourceTree = "<group>"; };
 		9A8B010325E5F2F300FEDB9E /* CheckMark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CheckMark.json; path = ../../../CheckMark.json; sourceTree = "<group>"; };
+		9A8B011325E833EA00FEDB9E /* StoreManageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManageVC.swift; sourceTree = "<group>"; };
 		9A8D434825C49FDB00A12A10 /* AddStoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStoreVC.swift; sourceTree = "<group>"; };
 		9A8D434D25C4B48500A12A10 /* StoreNameEnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreNameEnterVC.swift; sourceTree = "<group>"; };
 		9AA0ED5D25CC8267000EFE15 /* AddStore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddStore.storyboard; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				9A8B00CD25DCA21D00FEDB9E /* ItemManagerVC.swift */,
+				9A8B011325E833EA00FEDB9E /* StoreManageVC.swift */,
 			);
 			path = "Item Manager";
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AB0A14825BC16F8004B681D /* Alert.swift in Sources */,
+				9A8B011425E833EA00FEDB9E /* StoreManageVC.swift in Sources */,
 				9A8B00D625E092B500FEDB9E /* BadgeBarButton.swift in Sources */,
 				9A8B00DB25E09FFD00FEDB9E /* BoughtItemsVC.swift in Sources */,
 				6DC6F4FE25AD660F0042CE2A /* AppDelegate.swift in Sources */,

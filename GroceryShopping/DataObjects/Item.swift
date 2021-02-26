@@ -94,6 +94,11 @@ extension Array where Element == Item {
         }
         return names
     }
+    
+    func indexOfItem(_ item: Item) -> Int? {
+        let names = getNames()
+        return names.firstIndex(of: item.name)
+    }
 }
 
 extension String: Error {}

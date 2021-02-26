@@ -43,7 +43,7 @@ extension UIViewController {
     
     ///Shows a green toast
     func showSuccessToast(message: String) {
-        showAnimationToast(animationName: "CheckMark", message: message, color: .green, fontColor: .green)
+        showAnimationToast(animationName: "CheckMark", message: message, color: .systemGreen, fontColor: .systemGreen)
     }
     
     ///Shows a red toast
@@ -52,7 +52,7 @@ extension UIViewController {
     }
     
     func showNotAnimatedSuccessToast(message: String) {
-        showToast(message: message, image: UIImage(systemName: "checkmark")!, color: .green, fontColor: .green)
+        showToast(message: message, image: UIImage(systemName: "checkmark")!, color: .systemGreen, fontColor: .systemGreen)
     }
     
     func showNotAnimatedFailureToast(message: String) {

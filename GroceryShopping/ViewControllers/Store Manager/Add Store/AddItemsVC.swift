@@ -15,6 +15,7 @@ class AddItemsVC: UIViewController {
     @IBOutlet weak var closeButton: UIBarButtonItem!
     
     var existingItems: [Item] = []
+    var showingItems: [Item] = []
     var checkedItems: [Item] = []
     var filteredItems: [Item] = []
     var reorderTable: LongPressReorderTableView!
@@ -35,6 +36,10 @@ class AddItemsVC: UIViewController {
         reorderTable.delegate = self
         
         self.hideKeyboardWhenTappedAround()
+        
+        //hide keyboard when tapped navigation bar.
+        let tapOff = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        navigationController?.navigationBar.addGestureRecognizer(tapOff)
     
     }
     override func viewDidLayoutSubviews() {
@@ -73,7 +78,8 @@ class AddItemsVC: UIViewController {
     func loadUserItems() {
         
         do {
-            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? [/*Item(name: "Item1"), Item(name: "Item2"), Item(name: "Item3"), Item(name: "Item4"), Item(name: "Item5"), Item(name: "Item6"), Item(name: "Item7"), Item(name: "Item8"), Item(name: "Item9"), Item(name: "Item10"), Item(name: "Item11"), Item(name: "Item12"), Item(name: "Item13"), Item(name: "Item14"), Item(name: "Item15"), Item(name: "Item16"), Item(name: "Item17"), Item(name: "Item18"), Item(name: "Item19"), Item(name: "Item20"), Item(name: "Item21"), Item(name: "Item22"), Item(name: "Item23"), Item(name: "Item24"), Item(name: "Item25"), Item(name: "Item26"), Item(name: "Item27"), Item(name: "Item28")*/]
+            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
+            showingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "showingItems") ?? existingItems
             
         } catch {
             print("Error getting items")
@@ -108,6 +114,7 @@ class AddItemsVC: UIViewController {
         
         do {
             try UserDefaults.standard.set(object: existingItems, forKey: "items")
+            try UserDefaults.standard.set(object: showingItems, forKey: "showingItems")
         } catch {
             print("error setting items")
         }
@@ -155,7 +162,7 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
                 }
             }
             filteredItems.remove(at: indexPath.row)
-            existingItems.remove(at: indexPath.row)
+            showingItems.remove(at: indexPath.row)
             // delete the table view row
             tableView.deleteRows(at: [indexPath], with: .left)
             
@@ -233,11 +240,11 @@ extension AddItemsVC: UITextFieldDelegate {
         
         guard addNewItemField.text != "" else {
             addNewItemField.resignFirstResponder()
-            showFailureToast(message: "Empty text field!")
             return
         }
         existingItems.insert(Item(name: addNewItemField.text!), at: 0)
         filteredItems.insert(Item(name: addNewItemField.text!), at: 0)
+        showingItems.insert(Item(name: addNewItemField.text!), at: 0)
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
         tableView.setContentOffset(.zero, animated: false)
         searchBar.delegate?.searchBar?(searchBar, textDidChange: searchBar.text!)

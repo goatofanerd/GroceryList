@@ -21,7 +21,7 @@ class ShoppingVC: UIViewController {
         let layout = UICollectionViewFlowLayout()
         storeCollectionView.collectionViewLayout = layout
         storeCollectionView.register(StoreCell.nib(), forCellWithReuseIdentifier: StoreCell.identifier)
-        
+        self.storeCollectionView.contentInsetAdjustmentBehavior = .never
         UIView.animate(views: storeCollectionView.visibleCells, animations: [AnimationType.from(direction: .top, offset: 300)])
     }
     
@@ -29,8 +29,8 @@ class ShoppingVC: UIViewController {
         super.viewWillLayoutSubviews()
         checkFirstLaunch()
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         checkFirstLaunch()
     }
 }
@@ -125,7 +125,7 @@ extension ShoppingVC {
             let signUpScreen = storyboard.instantiateViewController(withIdentifier: "signUp")
             signUpScreen.modalPresentationStyle = .fullScreen
             UserDefaults.standard.set(true, forKey: "hasLaunched")
-            self.present(signUpScreen, animated: false, completion: nil)
+            self.present(signUpScreen, animated: true, completion: nil)
         }
         else {
             storeCollectionView.delegate = self

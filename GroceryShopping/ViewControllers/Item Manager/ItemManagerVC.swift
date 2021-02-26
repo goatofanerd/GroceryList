@@ -19,7 +19,7 @@ class ItemManagerVC: UIViewController {
         // Do any additional setup after loading the view.
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.rowHeight = 50
+        tableView.rowHeight = 58
         tableView.tableFooterView = UIView()
         
         reorderTableView = LongPressReorderTableView(tableView)
@@ -65,30 +65,63 @@ class ItemManagerVC: UIViewController {
         
         tableView.reloadData()
     }
-
+    
 }
 
-extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate {
+extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate, StoreAddedToastDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if stores.isEmpty {
+            return 1
+        }
         return stores.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.backgroundColor = stores[indexPath.row].color.color
-        cell.textLabel?.text = stores[indexPath.row].name
-        cell.textLabel?.textColor = .white
-        cell.textLabel?.font = UIFont(name: "DIN Alternate Bold", size: 22)
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.darkGray.cgColor
-        cell.layer.cornerRadius = 10
+        
+        if stores.isEmpty {
+            cell.backgroundColor = .systemGray4
+            cell.textLabel?.text = "No stores are available. Add a store!"
+        } else {
+            cell.backgroundColor = stores[indexPath.row].color.color
+            cell.textLabel?.text = stores[indexPath.row].name
+            cell.textLabel?.textColor = .white
+            cell.textLabel?.font = UIFont(name: "DIN Alternate Bold", size: 22)
+            cell.layer.borderWidth = 4
+            cell.layer.borderColor = UIColor.systemBackground.cgColor
+            cell.layer.cornerRadius = 10
+        }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        if !stores.isEmpty {
+            let vc = storyboard?.instantiateViewController(identifier: "Store Manage Screen") as! StoreManageVC
+            vc.storeName = stores[indexPath.row].name
+            navigationController?.pushViewController(vc, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
+        } else {
+            //Launch Add Store Screen
+            let gotoVC = (UIStoryboard(name: "AddStore", bundle: nil).instantiateViewController(withIdentifier: "AddItem")) as! AddStoreVC
+            gotoVC.successDelegate = self
+            gotoVC.modalPresentationStyle = .fullScreen
+            gotoVC.navigationItem.backButtonTitle = " "
+            navigationController?.pushViewController(gotoVC, animated: true)
+        }
+    }
+    
+    func showMessage(message: String, type: SuccessToastEnum) {
+        switch type {
+            
+        case .success:
+            self.showSuccessToast(message: message)
+        case .failure:
+            self.showFailureToast(message: message)
+        case .normal:
+            self.showToast(message: message)
+        }
     }
     
 }
