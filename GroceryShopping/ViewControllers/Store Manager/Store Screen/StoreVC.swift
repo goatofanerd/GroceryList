@@ -30,7 +30,7 @@ class StoreVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
-        self.tableView.contentInsetAdjustmentBehavior = .never
+        tableView.contentInsetAdjustmentBehavior = .never
         navigationItem.largeTitleDisplayMode = .always
         
         addNewItemField.delegate = self

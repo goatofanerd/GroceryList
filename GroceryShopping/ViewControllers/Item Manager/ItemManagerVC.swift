@@ -114,7 +114,6 @@ extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate, StoreAddedT
     
     func showMessage(message: String, type: SuccessToastEnum) {
         switch type {
-            
         case .success:
             self.showSuccessToast(message: message)
         case .failure:

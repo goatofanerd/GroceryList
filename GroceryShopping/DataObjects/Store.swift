@@ -4,7 +4,6 @@
 //
 //  Created by Saahil Sukhija on 1/19/21.
 //
-
 import UIKit
 struct Store: Codable, Equatable {
     static func == (lhs: Store, rhs: Store) -> Bool {
@@ -61,7 +60,6 @@ struct Color: Codable {
     }
 }
 // MARK: - UserDefaults extensions
-
 public extension UserDefaults {
 
     /// Set Codable object into UserDefaults

@@ -15,7 +15,6 @@ class AddItemsVC: UIViewController {
     @IBOutlet weak var closeButton: UIBarButtonItem!
     
     var existingItems: [Item] = []
-    var showingItems: [Item] = []
     var checkedItems: [Item] = []
     var filteredItems: [Item] = []
     var reorderTable: LongPressReorderTableView!
@@ -79,7 +78,6 @@ class AddItemsVC: UIViewController {
         
         do {
             existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
-            showingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "showingItems") ?? existingItems
             
         } catch {
             print("Error getting items")
@@ -114,7 +112,6 @@ class AddItemsVC: UIViewController {
         
         do {
             try UserDefaults.standard.set(object: existingItems, forKey: "items")
-            try UserDefaults.standard.set(object: showingItems, forKey: "showingItems")
         } catch {
             print("error setting items")
         }
@@ -161,8 +158,11 @@ extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
                     print("error deleting")
                 }
             }
+            
+            do {
+                try existingItems.removeItem(withItem: filteredItems[indexPath.row].name)
+            } catch {}
             filteredItems.remove(at: indexPath.row)
-            showingItems.remove(at: indexPath.row)
             // delete the table view row
             tableView.deleteRows(at: [indexPath], with: .left)
             
@@ -244,7 +244,6 @@ extension AddItemsVC: UITextFieldDelegate {
         }
         existingItems.insert(Item(name: addNewItemField.text!), at: 0)
         filteredItems.insert(Item(name: addNewItemField.text!), at: 0)
-        showingItems.insert(Item(name: addNewItemField.text!), at: 0)
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
         tableView.setContentOffset(.zero, animated: false)
         searchBar.delegate?.searchBar?(searchBar, textDidChange: searchBar.text!)

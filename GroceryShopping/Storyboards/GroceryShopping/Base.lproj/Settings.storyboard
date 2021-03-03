@@ -11,24 +11,27 @@
         <!--Settings-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Settings" id="BYZ-38-t0r" userLabel="Settings" sceneMemberID="viewController">
+                <viewController title="Settings" id="BYZ-38-t0r" userLabel="Settings" customClass="BaseSettingsVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Wge-4L-nzS">
-                                <rect key="frame" x="20" y="140" width="374" height="673"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <sections/>
-                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWU-SU-HSA">
+                                <rect key="frame" x="167" y="433" width="80" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="vIg-7t-sKc"/>
+                                </constraints>
+                                <state key="normal" title="Log In"/>
+                                <connections>
+                                    <action selector="logIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ssi-Is-fSd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Wge-4L-nzS" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="2Wd-vK-wnj"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Wge-4L-nzS" secondAttribute="trailing" constant="20" id="4mx-Xx-u97"/>
-                            <constraint firstItem="Wge-4L-nzS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Qwx-kq-XZj"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Wge-4L-nzS" secondAttribute="bottom" id="SsN-c8-XF9"/>
+                            <constraint firstItem="GWU-SU-HSA" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="CvA-rd-mOU"/>
+                            <constraint firstItem="GWU-SU-HSA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LXn-gw-cON"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="5fh-AL-HWZ"/>

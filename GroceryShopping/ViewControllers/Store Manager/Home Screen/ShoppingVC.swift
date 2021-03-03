@@ -7,7 +7,7 @@
 
 import UIKit
 import ViewAnimator
-
+import GoogleSignIn
 class ShoppingVC: UIViewController {
     @IBOutlet weak var storeCollectionView: UICollectionView!
     var stores: [Store] = []
@@ -23,12 +23,14 @@ class ShoppingVC: UIViewController {
         storeCollectionView.register(StoreCell.nib(), forCellWithReuseIdentifier: StoreCell.identifier)
         self.storeCollectionView.contentInsetAdjustmentBehavior = .never
         UIView.animate(views: storeCollectionView.visibleCells, animations: [AnimationType.from(direction: .top, offset: 300)])
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if let user = GIDSignIn.sharedInstance()?.currentUser?.profile?.name {
+                self.showAnimationToast(animationName: "LoginSuccess", message: "Welcome " + user, color: .systemBlue, fontColor: .systemBlue)
+            }
+        }
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        checkFirstLaunch()
-    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkFirstLaunch()
@@ -118,12 +120,13 @@ enum SuccessToastEnum: Int {
 extension ShoppingVC {
     func checkFirstLaunch() {
         let hasLaunched = UserDefaults.standard.bool(forKey: "hasLaunched")
-        if !hasLaunched{
+        if !hasLaunched {
             //Launch Sign Up Screen
             print("new launch")
             let storyboard = UIStoryboard(name: "InitialLaunch", bundle: nil)
-            let signUpScreen = storyboard.instantiateViewController(withIdentifier: "signUp")
+            let signUpScreen = storyboard.instantiateViewController(withIdentifier: "signUp") as! SignUpController
             signUpScreen.modalPresentationStyle = .fullScreen
+            signUpScreen.presentingVC = self
             UserDefaults.standard.set(true, forKey: "hasLaunched")
             self.present(signUpScreen, animated: true, completion: nil)
         }

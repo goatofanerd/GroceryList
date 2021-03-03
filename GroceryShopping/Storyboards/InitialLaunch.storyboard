@@ -17,51 +17,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yYL-sj-1MN">
-                                <rect key="frame" x="20" y="782" width="374" height="60"/>
-                                <color key="backgroundColor" name="blueColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="ao6-Zv-hYe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="29"/>
-                                <state key="normal" title="Go">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="nextPage:" destination="O2c-bl-OTo" eventType="touchUpInside" id="xd4-cX-wSW"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="okd-Y3-TSt">
-                                <rect key="frame" x="60" y="742" width="294" height="30"/>
-                                <state key="normal" title="I already have an account">
+                                <rect key="frame" x="60" y="762" width="294" height="30"/>
+                                <state key="normal" title="Use Without Account">
                                     <color key="titleColor" name="secondChoiceColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="useAsGuest:" destination="O2c-bl-OTo" eventType="touchUpInside" id="3kN-u4-324"/>
+                                </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FEa-nD-Pp6">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FEa-nD-Pp6">
                                 <rect key="frame" x="20" y="64" width="374" height="40.666666666666657"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAs-T6-jVl" customClass="GIDSignInButton">
+                                <rect key="frame" x="20" y="792" width="374" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="GXL-qk-7ow"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="rUo-v1-F0e"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="FEa-nD-Pp6" firstAttribute="leading" secondItem="rUo-v1-F0e" secondAttribute="leading" constant="20" id="0xS-aX-GuS"/>
+                            <constraint firstItem="KAs-T6-jVl" firstAttribute="leading" secondItem="rUo-v1-F0e" secondAttribute="leading" constant="20" id="4IO-od-JzK"/>
                             <constraint firstItem="okd-Y3-TSt" firstAttribute="leading" secondItem="rUo-v1-F0e" secondAttribute="leading" constant="60" id="6Mh-mj-p4b"/>
-                            <constraint firstItem="rUo-v1-F0e" firstAttribute="bottom" secondItem="yYL-sj-1MN" secondAttribute="bottom" constant="20" id="9eZ-gv-SmH"/>
                             <constraint firstItem="rUo-v1-F0e" firstAttribute="trailing" secondItem="FEa-nD-Pp6" secondAttribute="trailing" constant="20" id="Bia-kh-wIP"/>
-                            <constraint firstItem="yYL-sj-1MN" firstAttribute="top" secondItem="okd-Y3-TSt" secondAttribute="bottom" constant="10" id="Db8-n2-Z2Q"/>
-                            <constraint firstItem="yYL-sj-1MN" firstAttribute="leading" secondItem="rUo-v1-F0e" secondAttribute="leading" constant="20" id="Jgl-ad-N1H"/>
+                            <constraint firstItem="KAs-T6-jVl" firstAttribute="top" secondItem="okd-Y3-TSt" secondAttribute="bottom" id="OMo-7R-zob"/>
+                            <constraint firstItem="rUo-v1-F0e" firstAttribute="trailing" secondItem="KAs-T6-jVl" secondAttribute="trailing" constant="20" id="S9K-hF-Jcs"/>
+                            <constraint firstItem="rUo-v1-F0e" firstAttribute="bottom" secondItem="KAs-T6-jVl" secondAttribute="bottom" constant="20" id="fGe-yS-OEf"/>
                             <constraint firstItem="rUo-v1-F0e" firstAttribute="trailing" secondItem="okd-Y3-TSt" secondAttribute="trailing" constant="60" id="fwP-vj-azg"/>
                             <constraint firstItem="FEa-nD-Pp6" firstAttribute="top" secondItem="rUo-v1-F0e" secondAttribute="top" constant="20" id="pAx-kI-dh5"/>
-                            <constraint firstItem="rUo-v1-F0e" firstAttribute="trailing" secondItem="yYL-sj-1MN" secondAttribute="trailing" constant="20" id="tmu-nx-lH9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="sp3-hF-Sga"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="doneButton" destination="yYL-sj-1MN" id="acm-BQ-Z1t"/>
+                        <outlet property="googleSignIn" destination="KAs-T6-jVl" id="vma-2d-vzh"/>
+                        <outlet property="useWithoutAccount" destination="okd-Y3-TSt" id="E5h-BB-USL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XJa-Ee-xnV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -88,9 +85,6 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="blueColor">
-            <color red="0.15099999308586121" green="0.41299998760223389" blue="0.86000001430511475" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="secondChoiceColor">
             <color red="0.69999998807907104" green="0.69999998807907104" blue="0.69999998807907104" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -8,27 +8,36 @@
 import UIKit
 
 class StoreManageVC: UIViewController {
-
-    @IBOutlet weak var colorPreviewView: UIView!
-    @IBOutlet weak var colorPreview: UIImageView!
+    
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var tableView: UITableView!
+    var colorChanger: UIBarButtonItem!
     var storeName: String!
     var store: Store!
+    var items: [Item] = []
+    var existingItems: [Item] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setNavBarItems()
+        hideKeyboardWhenTappedAround()
         
-        //Change Store Color
-        let tapGestureRecognizerColor = UITapGestureRecognizer(target: self, action: #selector(launchPickerView))
-        colorPreviewView.addGestureRecognizer(tapGestureRecognizerColor)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = 50
+        tableView.tableFooterView = UIView()
+        tableView.contentInsetAdjustmentBehavior = .never
+        
+        textField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getStore()
         
-        colorPreview.tintColor = store.color.color
+        colorChanger.tintColor = store.color.color
+        loadUserItems()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -37,24 +46,119 @@ class StoreManageVC: UIViewController {
         save()
     }
     
+    func loadUserItems() {
+        do {
+            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items")!
+            for item in existingItems {
+                if item.stores.containsStore(Store(name: storeName)) {
+                    items.append(item)
+                }
+            }
+        } catch {
+            showFailureToast(message: "Error getting items")
+        }
+    }
     func save() {
         do {
+            //Save color
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")
             if let existingStore = stores?.firstStore(name: storeName) {
-                stores![existingStore].color = Color(color: colorPreview.tintColor)
+                stores![existingStore].color = Color(color: colorChanger.tintColor!)
             } else {
                 showFailureToast(message: "Error saving color.")
             }
             
+            //Save Items
+            try UserDefaults.standard.set(object: existingItems, forKey: "items")
             
             try UserDefaults.standard.set(object: stores, forKey: "stores")
         } catch {
             print("error saving")
         }
     }
-
+    
 }
 
+extension StoreManageVC: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldItemManagerCell.identifier) as! TextFieldItemManagerCell
+        
+        if indexPath.row != items.count {
+            cell.configure(withText: items[indexPath.row].name, delegate: self, tag: indexPath.row)
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = deleteAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
+    
+    func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
+        
+        let action = UIContextualAction(style: .destructive, title: "") { [self] (action, view, completion) in
+            if let index = existingItems.firstIndex(of: items[indexPath.row]) {
+                existingItems[index].removeStore(withName: storeName)
+            }
+            
+            items.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .middle)
+            showToast(message: "Deleted item.", image: UIImage(systemName: "trash")!, color: .red, fontColor: .red)
+            completion(true)
+            
+        }
+        action.image = UIImage(systemName: "trash")
+        
+        return action
+    }
+    
+    
+    
+    //Text Field Delegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard textField.text != "" else {
+            showFailureToast(message: "No Item Entered!")
+            textField.text = ""
+            return true
+        }
+        
+        guard !items.containsItem(Item(name: textField.text!)) else {
+            showFailureToast(message: "Item already exists!")
+            textField.text = ""
+            return true
+        }
+        
+        var added = false
+        for (index, var item) in existingItems.enumerated() {
+            
+            if item.name == textField.text! {
+                item.addStore(storeName)
+                added = true
+                existingItems[index] = item
+                items.append(item)
+            }
+            
+        }
+        
+        if !added {
+            let newItem = Item(name: textField.text!, stores: [Store(name: storeName)])
+            items.append(newItem)
+            existingItems.append(newItem)
+        }
+        
+        tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: .left)
+        textField.text = ""
+        view.endEditing(true)
+        return true
+    }
+    
+    
+}
 //MARK: -Initial Setup
 extension StoreManageVC {
     func setNavBarItems() {
@@ -65,10 +169,16 @@ extension StoreManageVC {
         xButton.tintColor = .label
         self.navigationItem.leftBarButtonItem = xButton
         
+        //Color Changer
+        colorChanger = UIBarButtonItem(image: UIImage(systemName: "circle.fill"), style: .plain, target: self, action: #selector(launchPickerView))
+        
         //Trash Button
         let trashButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteStore))
         trashButton.tintColor = .systemRed
-        self.navigationItem.rightBarButtonItem = trashButton
+       
+        self.navigationItem.rightBarButtonItems = [trashButton, colorChanger]
+        
+        
     }
     
     @objc func dismissScreen() {
@@ -114,15 +224,13 @@ extension StoreManageVC {
 
 extension StoreManageVC: UIColorPickerViewControllerDelegate {
     @objc func launchPickerView() {
-        colorPreviewView.backgroundColor = .systemGray4
         let colorPicker = UIColorPickerViewController()
-        colorPicker.selectedColor = colorPreview.tintColor
+        colorPicker.selectedColor = colorChanger.tintColor ?? .blue
         colorPicker.delegate = self
         present(colorPicker, animated: true, completion: nil)
     }
     
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        colorPreviewView.backgroundColor = .systemGray6
-        colorPreview.tintColor = viewController.selectedColor
+        colorChanger.tintColor = viewController.selectedColor
     }
 }
