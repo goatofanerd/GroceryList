@@ -12,15 +12,15 @@ class AddStoreVC: UIViewController {
     @IBOutlet weak var storeColorView: UIView!
     @IBOutlet weak var colorPreview: UIImageView!
     @IBOutlet weak var createButton: UIBarButtonItem!
-    @IBOutlet weak var itemName: UIButton!
+    @IBOutlet weak var storeName: UIButton!
     var color: UIColor = .systemBlue
     public var successDelegate: StoreAddedToastDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        itemName.layer.borderWidth = 2
-        itemName.layer.borderColor = UIColor.gray.cgColor
+        storeName.layer.borderWidth = 2
+        storeName.layer.borderColor = UIColor.gray.cgColor
         createButton.tintColor = .gray
         
         storeColorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.launchColorPicker(sender:))))
@@ -47,46 +47,54 @@ extension AddStoreVC: UIColorPickerViewControllerDelegate {
 extension AddStoreVC {
     
     @IBAction func cancel(_ sender: Any) {
-        successDelegate.showMessage(message: "Discarded store.", type: .normal)
-        navigationController?.popViewController(animated: true)
+        if let store = storeName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            
+            let alert = UIAlertController(title: "You have saved data.", message: "You have some saved data, are you sure you want to discard your store?", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { [self]_ in
+                do {
+                    var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+                    stores.append(Store(name: store, color: color))
+                    try UserDefaults.standard.set(object: stores, forKey: "stores")
+                    self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
+                    navigationController?.popViewController(animated: true)
+                } catch {
+                    showFailureToast(message: "Error, try rebooting the application.")
+                }
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Discard", style: .destructive, handler: {_ in
+                self.navigationController?.popViewController(animated: true)
+                self.successDelegate.showMessage(message: "Discarded store.", type: .normal)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            present(alert, animated: true, completion: nil)
+        }
+        else {
+            successDelegate.showMessage(message: "Discarded store.", type: .normal)
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func createStoreAndExit(_ sender: Any) {
-        guard createButton.tintColor != .gray else {
+        guard let store = storeName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
             showFailureToast(message: "No name entered!")
             return
-            
         }
-        guard let store = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+        
+        guard createButton.tintColor != .gray else {
             showFailureToast(message: "No name entered!")
             return
         }
         
         do {
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
-            
-            if !stores.containsStore(Store(name: store)) {
-                stores.append(Store(name: store, color: color))
-                try UserDefaults.standard.set(object: stores, forKey: "stores")
-                self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
-                navigationController?.popViewController(animated: true)
-            } else {
-                let alert = UIAlertController(title: "Duplicate Store Names", message: "Duplicate store names, either replace the existing one with the new one, or discard the new one.", preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Replace", style: UIAlertAction.Style.default, handler: {_ in
-                    
-                    stores[stores.firstStore(name: store)!] = Store(name: store, color: self.color)
-                    self.successDelegate.showMessage(message: "Successfully replaced store!", type: .success)
-                    self.navigationController?.popViewController(animated: true)
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Discard", style: .destructive, handler: {_ in
-                    
-                    self.successDelegate.showMessage(message: "Successfully discarded store!", type: .success)
-                    self.navigationController?.popViewController(animated: true)
-                }))
-                self.present(alert, animated: true, completion: nil)
-            }
+            stores.append(Store(name: store, color: color))
+            try UserDefaults.standard.set(object: stores, forKey: "stores")
+            self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
+            navigationController?.popViewController(animated: true)
         } catch {
             showFailureToast(message: "Error, try rebooting the application.")
         }
@@ -100,14 +108,14 @@ extension AddStoreVC {
     }
     
     @IBAction func addItemsButtonTapped(_ sender: Any) {
-        guard let title = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+        guard let title = storeName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
             Alert.regularAlert(title: "Enter store name first", message: "Please enter the store name before you can add items", vc: self)
             return
             
         }
         let newItemVC = storyboard?.instantiateViewController(identifier: "AddItemsNew") as! AddItemsVC
         let navController = UINavigationController(rootViewController: newItemVC) // Creating a navigation controller with VC1 at the root of the navigation stack.
-        if let title = itemName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) {
+        if let title = storeName.title(for: .normal)?.trimmingCharacters(in: .whitespacesAndNewlines) {
             newItemVC.navigationItem.title = title + " List"
         } else {
             newItemVC.navigationItem.title = "Add Items"
@@ -124,8 +132,8 @@ protocol StoreAddedToastDelegate {
 }
 extension AddStoreVC: StoreDelegate {
     func addStore(_ store: String) {
-        itemName.setTitleColor(UIColor.label, for: .normal)
-        itemName.setTitle("   " + store.trimmingCharacters(in: .whitespacesAndNewlines), for: .normal)
+        storeName.setTitleColor(UIColor.label, for: .normal)
+        storeName.setTitle("   " + store.trimmingCharacters(in: .whitespacesAndNewlines), for: .normal)
         createButton.tintColor = .label
     }
 }

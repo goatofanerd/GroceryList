@@ -10,7 +10,6 @@ import UIKit
 class AddItemsVC: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var addNewItemField: UITextField!
     @IBOutlet weak var closeButton: UIBarButtonItem!
     
@@ -29,7 +28,6 @@ class AddItemsVC: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         addNewItemField.delegate = self
-        searchBar.delegate = self
         reorderTable = LongPressReorderTableView(tableView)
         reorderTable.enableLongPressReorder()
         reorderTable.delegate = self
@@ -117,15 +115,12 @@ class AddItemsVC: UIViewController {
         }
         
     }
-}
-
-
-extension AddItemsVC: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    
+    @IBAction func textFieldEdit(_ sender: Any) {
         filteredItems = []
         for (index, item) in existingItems.enumerated(){
             
-            if item.name.lowercased().starts(with: searchText.lowercased()) {
+            if item.name.lowercased().starts(with: addNewItemField.text!.lowercased()) {
                 filteredItems.append(existingItems[index])
             }
             
@@ -133,40 +128,12 @@ extension AddItemsVC: UISearchBarDelegate {
         self.viewDidLayoutSubviews()
         tableView.reloadData()
     }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        view.endEditing(true)
-    }
 }
 
 extension AddItemsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredItems.count
-    }
-    
-    // this method handles row deletion
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
-        if editingStyle == .delete {
-            
-            // remove the item from the data model
-            if(checkedItems.contains(filteredItems[indexPath.row])) {
-                do {
-                    try checkedItems.removeItem(withItem: filteredItems[indexPath.row].name)
-                } catch {
-                    print("error deleting")
-                }
-            }
-            
-            do {
-                try existingItems.removeItem(withItem: filteredItems[indexPath.row].name)
-            } catch {}
-            filteredItems.remove(at: indexPath.row)
-            // delete the table view row
-            tableView.deleteRows(at: [indexPath], with: .left)
-            
-        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -246,12 +213,11 @@ extension AddItemsVC: UITextFieldDelegate {
         filteredItems.insert(Item(name: addNewItemField.text!), at: 0)
         tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .left)
         tableView.setContentOffset(.zero, animated: false)
-        searchBar.delegate?.searchBar?(searchBar, textDidChange: searchBar.text!)
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
         
         addNewItemField.text = ""
-        
+        textFieldEdit(addNewItemField as Any)
         //save()
         //loadUserItems()
         //tableView.reloadData()
