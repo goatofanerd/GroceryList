@@ -51,6 +51,32 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1lG-is-Rws">
                                 <rect key="frame" x="0.0" y="44" width="414" height="753"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TextFieldCell" id="SZ9-lL-bKh" customClass="TextFieldItemManagerCell" customModule="GroceryShopping" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="34.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SZ9-lL-bKh" id="RCb-tx-FCE">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="34.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6m6-zP-uFI">
+                                                    <rect key="frame" x="20" y="0.0" width="394" height="34.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="6m6-zP-uFI" firstAttribute="leading" secondItem="RCb-tx-FCE" secondAttribute="leading" constant="20" id="cLM-pT-Gsa"/>
+                                                <constraint firstAttribute="bottom" secondItem="6m6-zP-uFI" secondAttribute="bottom" id="giQ-pH-gsW"/>
+                                                <constraint firstItem="6m6-zP-uFI" firstAttribute="top" secondItem="RCb-tx-FCE" secondAttribute="top" id="jbZ-8B-QC7"/>
+                                                <constraint firstAttribute="trailing" secondItem="6m6-zP-uFI" secondAttribute="trailing" id="nYv-Pc-kWB"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textField" destination="6m6-zP-uFI" id="vAu-Hy-SrI"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add Item..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hoi-qJ-EiW">
                                 <rect key="frame" x="0.0" y="797" width="414" height="45"/>

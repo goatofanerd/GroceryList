@@ -30,7 +30,7 @@ class SignUpController: UIViewController {
         let grayView = UIView(frame: view.frame)
         grayView.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
         view.addSubview(grayView)
-        showAnimationToast(animationName: "LoggingIn", message: "Logging in...")
+        showAnimationToast(animationName: "LoggingIn", message: "Logging in...", duration: 1.1)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if GIDSignIn.sharedInstance()?.currentUser.profile != nil {

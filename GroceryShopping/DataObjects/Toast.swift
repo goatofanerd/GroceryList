@@ -10,6 +10,7 @@ import Lottie
 extension UIViewController {
     func showToast(message: String, duration: Double = 2, image: UIImage = UIImage(systemName: "cart")!, color: UIColor = .label, fontColor: UIColor = .label) {
         view.endEditing(true)
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first!
         let toastView = UIView(frame: CGRect(x: 10, y: view.frame.size.height - view.safeAreaInsets.bottom, width: view.frame.size.width - 20, height: 50))
         toastView.layer.borderWidth = 2
         toastView.layer.borderColor = color.cgColor
@@ -26,7 +27,7 @@ extension UIViewController {
         messageLabel.font = UIFont(name: "DIN Alternate Bold", size: 20)
         messageLabel.textColor = fontColor
         toastView.addSubview(messageLabel)
-        view.addSubview(toastView)
+        window.addSubview(toastView)
         
         toastView.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.2, delay: 0, animations: {
@@ -61,6 +62,7 @@ extension UIViewController {
     
     func showAnimationToast(animationName: String, message: String, duration: Double = 3, color: UIColor = .label, fontColor: UIColor = .label) {
         view.endEditing(true)
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first!
         let toastView = UIView(frame: CGRect(x: 10, y: view.frame.size.height - view.safeAreaInsets.bottom, width: view.frame.size.width - 20, height: 60))
         toastView.layer.borderWidth = 2
         toastView.layer.borderColor = color.cgColor
@@ -76,7 +78,7 @@ extension UIViewController {
         messageLabel.font = UIFont(name: "DIN Alternate Bold", size: 22)
         messageLabel.textColor = fontColor
         toastView.addSubview(messageLabel)
-        view.addSubview(toastView)
+        window.addSubview(toastView)
         
         toastView.isUserInteractionEnabled = false
         UIView.animate(withDuration: 0.2, delay: 0, animations: {
