@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hA2-oa-3b7">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Start Shopping-->
+        <scene sceneID="ZaS-sV-TBF">
+            <objects>
+                <viewController id="EGD-mF-ToY" customClass="ShoppingVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xyx-FG-5PU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LyY-tn-sab">
+                                <rect key="frame" x="20" y="140" width="374" height="663"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YGN-ms-Bsg">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="WcD-Ds-y4p"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="WcD-Ds-y4p" firstAttribute="bottom" secondItem="LyY-tn-sab" secondAttribute="bottom" constant="10" id="4m1-K4-5HZ"/>
+                            <constraint firstItem="LyY-tn-sab" firstAttribute="leading" secondItem="WcD-Ds-y4p" secondAttribute="leading" constant="20" id="GF1-HU-pDE"/>
+                            <constraint firstItem="WcD-Ds-y4p" firstAttribute="trailing" secondItem="LyY-tn-sab" secondAttribute="trailing" constant="20" id="i6m-lN-Wry"/>
+                            <constraint firstItem="LyY-tn-sab" firstAttribute="top" secondItem="WcD-Ds-y4p" secondAttribute="top" id="jsQ-FA-dJq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Start Shopping" largeTitleDisplayMode="always" id="IE0-8n-dN8"/>
+                    <connections>
+                        <outlet property="storeCollectionView" destination="LyY-tn-sab" id="ByE-II-lFl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fVB-uD-ulx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1305.7971014492755" y="75.669642857142847"/>
+        </scene>
+        <!--Shopping-->
+        <scene sceneID="FNf-G5-pGj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hA2-oa-3b7" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Shopping" image="cart" catalog="system" id="Ur5-sV-Zhb"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="Jol-7b-h6c">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="EGD-mF-ToY" kind="relationship" relationship="rootViewController" id="BcH-DL-6H6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="az1-Ud-wx0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="395.6521739130435" y="75.669642857142847"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cart" catalog="system" width="128" height="102"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

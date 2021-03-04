@@ -40,6 +40,48 @@
             </objects>
             <point key="canvasLocation" x="1205.7971014492755" y="103.79464285714285"/>
         </scene>
+        <!--Store ManageVC-->
+        <scene sceneID="QzL-Ur-xKx">
+            <objects>
+                <viewController storyboardIdentifier="Store Manage Screen" hidesBottomBarWhenPushed="YES" id="f8x-0C-Hlr" customClass="StoreManageVC" customModule="GroceryShopping" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jyI-0m-AlN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1lG-is-Rws">
+                                <rect key="frame" x="0.0" y="44" width="414" height="753"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add Item..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hoi-qJ-EiW">
+                                <rect key="frame" x="0.0" y="797" width="414" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="pSh-r3-cra"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SinhalaSangamMN" family="Sinhala Sangam MN" pointSize="23"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Lrf-2P-utr"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="1lG-is-Rws" firstAttribute="top" secondItem="Lrf-2P-utr" secondAttribute="top" id="67t-bM-bmB"/>
+                            <constraint firstItem="1lG-is-Rws" firstAttribute="leading" secondItem="Lrf-2P-utr" secondAttribute="leading" id="CVG-2d-MIe"/>
+                            <constraint firstItem="Lrf-2P-utr" firstAttribute="trailing" secondItem="1lG-is-Rws" secondAttribute="trailing" id="OPG-Gd-MaJ"/>
+                            <constraint firstItem="Lrf-2P-utr" firstAttribute="trailing" secondItem="Hoi-qJ-EiW" secondAttribute="trailing" id="SM7-kA-TCW"/>
+                            <constraint firstItem="Hoi-qJ-EiW" firstAttribute="leading" secondItem="Lrf-2P-utr" secondAttribute="leading" id="fFP-GW-uag"/>
+                            <constraint firstItem="Hoi-qJ-EiW" firstAttribute="top" secondItem="1lG-is-Rws" secondAttribute="bottom" id="ogR-rS-Km9"/>
+                            <constraint firstItem="Lrf-2P-utr" firstAttribute="bottom" secondItem="Hoi-qJ-EiW" secondAttribute="bottom" constant="20" id="pbP-U7-PxP" customClass="KeyboardLayoutConstraint" customModule="GroceryShopping" customModuleProvider="target"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="1lG-is-Rws" id="Y5c-dg-P8h"/>
+                        <outlet property="textField" destination="Hoi-qJ-EiW" id="XEm-7b-cJV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="95a-Df-dR3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2119" y="104"/>
+        </scene>
         <!--Manage-->
         <scene sceneID="ban-Qk-iys">
             <objects>
