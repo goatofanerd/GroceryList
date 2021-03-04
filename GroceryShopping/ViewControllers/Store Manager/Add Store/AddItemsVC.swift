@@ -218,9 +218,6 @@ extension AddItemsVC: UITextFieldDelegate {
         
         addNewItemField.text = ""
         textFieldEdit(addNewItemField as Any)
-        //save()
-        //loadUserItems()
-        //tableView.reloadData()
     }
     
 }
