@@ -138,7 +138,7 @@ extension ShoppingVC {
                     
                 }
                 
-                //TODO: -Get profile picture
+                //TODO: Get profile picture
 //                if user.profile.hasImage {
 //                    let url = user.profile.imageURL(withDimension: 50)
 //                    DispatchQueue.global().async {
