@@ -8,11 +8,13 @@
 import UIKit
 import ViewAnimator
 import GoogleSignIn
+import FirebaseDatabase
 class ShoppingVC: UIViewController {
     @IBOutlet weak var storeCollectionView: UICollectionView!
+    @IBOutlet weak var profilePicture: UIBarButtonItem!
     var stores: [Store] = []
     var items: [Item] = []
-    
+    var ref: DatabaseReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,10 +25,11 @@ class ShoppingVC: UIViewController {
         storeCollectionView.register(StoreCell.nib(), forCellWithReuseIdentifier: StoreCell.identifier)
         self.storeCollectionView.contentInsetAdjustmentBehavior = .never
         UIView.animate(views: storeCollectionView.visibleCells, animations: [AnimationType.from(direction: .top, offset: 300)])
+        ref = Database.database().reference()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if let user = GIDSignIn.sharedInstance()?.currentUser?.profile?.name {
-                self.showAnimationToast(animationName: "LoginSuccess", message: "Welcome " + user, color: .systemBlue, fontColor: .systemBlue)
+            if let user = GIDSignIn.sharedInstance()?.currentUser?.profile?.givenName {
+                self.showAnimationToast(animationName: "LoginSuccess", message: "Welcome, " + user, color: .systemBlue, fontColor: .systemBlue)
             }
         }
     }
@@ -67,7 +70,6 @@ extension ShoppingVC: UICollectionViewDelegate, UICollectionViewDataSource {
             //Launch Add Store Screen
             var gotoVC: AddStoreVC
             gotoVC = (UIStoryboard(name: "AddStore", bundle: nil).instantiateViewController(withIdentifier: "AddItem")) as! AddStoreVC
-            gotoVC.successDelegate = self
             gotoVC.modalPresentationStyle = .fullScreen
             gotoVC.navigationItem.backButtonTitle = " "
             navigationController?.pushViewController(gotoVC, animated: true)
@@ -94,28 +96,6 @@ extension ShoppingVC: UICollectionViewDelegateFlowLayout {
     
 }
 
-//MARK: -Show Success/Failure
-extension ShoppingVC: StoreAddedToastDelegate {
-    func showMessage(message: String, type: SuccessToastEnum) {
-        switch type {
-            
-        case .success:
-            self.showSuccessToast(message: message)
-        case .failure:
-            self.showFailureToast(message: message)
-        case .normal:
-            self.showToast(message: message)
-        }
-    }
-}
-
-
-enum SuccessToastEnum: Int {
-    case success = 0
-    case failure = 1
-    case normal = 2
-}
-
 //MARK: -First Launch
 extension ShoppingVC {
     func checkFirstLaunch() {
@@ -126,7 +106,6 @@ extension ShoppingVC {
             let storyboard = UIStoryboard(name: "InitialLaunch", bundle: nil)
             let signUpScreen = storyboard.instantiateViewController(withIdentifier: "signUp") as! SignUpController
             signUpScreen.modalPresentationStyle = .fullScreen
-            signUpScreen.presentingVC = self
             UserDefaults.standard.set(true, forKey: "hasLaunched")
             self.present(signUpScreen, animated: true, completion: nil)
         }
@@ -139,12 +118,81 @@ extension ShoppingVC {
     
     func loadUserItems() {
         do {
-            stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
-            items = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
+            if userIsLoggedIn() {
+                let loadingScreen = createLoadingScreen(frame: view.frame, message: "Creating, please wait.", animation: "Loading")
+                let user = GIDSignIn.sharedInstance().currentUser!
+                Family.getFamily(email: user.profile.email) { (familyID) in
+                    Family.id = familyID
+                    
+                    self.getStores(user: user) { (stores) in
+                        self.stores = stores
+                        self.storeCollectionView.reloadData()
+                    }
+                    
+                    self.getItems(user: user) { (items) in
+                        self.items = items
+                        self.storeCollectionView.reloadData()
+                    }
+                    loadingScreen.removeFromSuperview()
+                    
+                    
+                }
+                
+                //TODO: -Get profile picture
+//                if user.profile.hasImage {
+//                    let url = user.profile.imageURL(withDimension: 50)
+//                    DispatchQueue.global().async {
+//                        let data = try? Data(contentsOf: url!)
+//                        DispatchQueue.main.async {
+//                            self.profilePicture.image = UIImage(data: data!)
+//                        }
+//                    }
+//                } else {
+//                    print("no image")
+//                }
+                
+            } else {
+                stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+                items = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
+            }
         } catch {
             print("error getting stores/items")
         }
         
         storeCollectionView.reloadData()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        Family.stores = stores
+        Family.items = items
+        if userIsLoggedIn() {
+            uploadUserStuffToDatabase() { (completion) in
+                if !completion {
+                    print("error saving")
+                }
+            }
+        }
+    }
+}
+
+extension UIImage {
+    
+  convenience init?(url: URL?) {
+    
+    guard let url = url else {
+        print("error with url")
+        return nil
+    }
+            
+    do {
+      self.init(data: try Data(contentsOf: url))
+    } catch {
+      print("Cannot load image from url: \(url) with error: \(error)")
+      return nil
+    }
+    
+  }
+    
 }

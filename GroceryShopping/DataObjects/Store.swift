@@ -59,6 +59,8 @@ struct Color: Codable {
         color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
     }
 }
+
+
 // MARK: - UserDefaults extensions
 public extension UserDefaults {
 

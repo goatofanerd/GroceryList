@@ -14,7 +14,6 @@ class AddStoreVC: UIViewController {
     @IBOutlet weak var createButton: UIBarButtonItem!
     @IBOutlet weak var storeName: UIButton!
     var color: UIColor = .systemBlue
-    public var successDelegate: StoreAddedToastDelegate!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,6 +23,10 @@ class AddStoreVC: UIViewController {
         createButton.tintColor = .gray
         
         storeColorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.launchColorPicker(sender:))))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
     }
     
     @objc func launchColorPicker(sender: UITapGestureRecognizer) {
@@ -56,7 +59,7 @@ extension AddStoreVC {
                     var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
                     stores.append(Store(name: store, color: color))
                     try UserDefaults.standard.set(object: stores, forKey: "stores")
-                    self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
+                    showSuccessToast(message: "Successfully added \(store)!")
                     navigationController?.popViewController(animated: true)
                 } catch {
                     showFailureToast(message: "Error, try rebooting the application.")
@@ -65,7 +68,7 @@ extension AddStoreVC {
             
             alert.addAction(UIAlertAction(title: "Discard", style: .destructive, handler: {_ in
                 self.navigationController?.popViewController(animated: true)
-                self.successDelegate.showMessage(message: "Discarded store.", type: .normal)
+                self.showToast(message: "Discarded store.")
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -73,7 +76,7 @@ extension AddStoreVC {
             present(alert, animated: true, completion: nil)
         }
         else {
-            successDelegate.showMessage(message: "Discarded store.", type: .normal)
+            showToast(message: "Discarded store.")
             navigationController?.popViewController(animated: true)
         }
     }
@@ -93,8 +96,27 @@ extension AddStoreVC {
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
             stores.append(Store(name: store, color: color))
             try UserDefaults.standard.set(object: stores, forKey: "stores")
-            self.successDelegate.showMessage(message: "Successfully added \(store)!", type: .success)
-            navigationController?.popViewController(animated: true)
+            
+            if userIsLoggedIn() {
+                let loadingScreen = createLoadingScreen(frame: view.frame, message: "Uploading, please wait.", animation: "Loading")
+                view.addSubview(loadingScreen)
+                Family.stores = stores
+                uploadUserStuffToDatabase { (completed) in
+                    if completed {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                            self.showSuccessNotification(message: "Added Store!")
+                            loadingScreen.removeFromSuperview()
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                    } else {
+                        loadingScreen.removeFromSuperview()
+                        self.showErrorNotification(message: "An error occurred, please try again.")
+                    }
+                }
+            } else {
+                self.showSuccessToast(message: "Added Store!")
+                self.navigationController?.popViewController(animated: true)
+            }
         } catch {
             showFailureToast(message: "Error, try rebooting the application.")
         }
@@ -127,9 +149,6 @@ extension AddStoreVC {
     
 }
 
-protocol StoreAddedToastDelegate {
-    func showMessage(message: String, type: SuccessToastEnum)
-}
 extension AddStoreVC: StoreDelegate {
     func addStore(_ store: String) {
         storeName.setTitleColor(UIColor.label, for: .normal)

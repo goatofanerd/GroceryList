@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import GoogleSignIn
 class AddItemsVC: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
@@ -75,8 +75,11 @@ class AddItemsVC: UIViewController {
     func loadUserItems() {
         
         do {
-            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
-            
+            if userIsLoggedIn() {
+                existingItems = Family.items
+            } else {
+                existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
+            }
         } catch {
             print("Error getting items")
         }
@@ -91,6 +94,14 @@ class AddItemsVC: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         save()
+        if userIsLoggedIn() {
+            Family.items = existingItems
+            uploadUserStuffToDatabase { (completion) in
+                if !completion {
+                    self.showErrorNotification(message: "Error uploading information to cloud")
+                }
+            }
+        }
     }
     
     func save() {

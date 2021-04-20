@@ -13,4 +13,24 @@ extension Notification.Name {
     static var signInGoogleCompleted: Notification.Name {
         return .init(rawValue: #function)
     }
+    
+    /// Notification when current user has signed into their family
+    static var signedIntoFamily: Notification.Name {
+        return .init(rawValue: #function)
+    }
+    
+    /// Notification when an item in a store is changed by a separate user
+    static var individualStoreUpdated: Notification.Name {
+        return .init(rawValue: #function)
+    }
+    
+    /// Notification when a new user has joined the family
+    static var newMemberAdded: Notification.Name {
+        return .init(rawValue: #function)
+    }
+    
+    /// Notification when another store has been added by a separate user.
+    static var newStoreAdded: Notification.Name {
+        return .init(rawValue: #function)
+    }
 }

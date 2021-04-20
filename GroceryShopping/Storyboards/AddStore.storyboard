@@ -137,21 +137,21 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Item Cell" id="Y27-Ub-Ixh" customClass="ItemsCheckboxCell" customModule="GroceryShopping" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="45"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="45.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y27-Ub-Ixh" id="RtB-lt-kil">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9e-GD-FD8">
-                                                    <rect key="frame" x="10" y="12.5" width="20" height="20"/>
+                                                    <rect key="frame" x="10" y="13" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="bkM-xp-42W"/>
                                                         <constraint firstAttribute="width" secondItem="s9e-GD-FD8" secondAttribute="height" multiplier="1:1" id="pqw-4v-W4h"/>
                                                     </constraints>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="21h-zY-wYS">
-                                                    <rect key="frame" x="60" y="11" width="334" height="23"/>
+                                                    <rect key="frame" x="60" y="11" width="334" height="23.5"/>
                                                     <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="19"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -225,7 +225,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter name of store..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gTr-1q-bn0">
-                                <rect key="frame" x="20" y="44" width="374" height="50"/>
+                                <rect key="frame" x="0.0" y="44" width="394" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="DQb-IU-ZuH"/>
                                 </constraints>
@@ -243,7 +243,7 @@
                         <viewLayoutGuide key="safeArea" id="Bca-wL-4rR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="gTr-1q-bn0" firstAttribute="leading" secondItem="Bca-wL-4rR" secondAttribute="leading" constant="20" id="3Jz-jX-k6z"/>
+                            <constraint firstItem="gTr-1q-bn0" firstAttribute="leading" secondItem="Bca-wL-4rR" secondAttribute="leading" id="3Jz-jX-k6z"/>
                             <constraint firstItem="BXr-G0-x1F" firstAttribute="leading" secondItem="Bca-wL-4rR" secondAttribute="leading" id="Qyv-rf-mWW"/>
                             <constraint firstItem="Bca-wL-4rR" firstAttribute="bottom" secondItem="BXr-G0-x1F" secondAttribute="bottom" id="Uur-hZ-gJE"/>
                             <constraint firstItem="BXr-G0-x1F" firstAttribute="top" secondItem="gTr-1q-bn0" secondAttribute="bottom" id="YF5-jt-v8b"/>

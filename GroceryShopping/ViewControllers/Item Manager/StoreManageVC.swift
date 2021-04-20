@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import GoogleSignIn
 class StoreManageVC: UIViewController {
     
     @IBOutlet weak var textField: UITextField!
@@ -44,28 +44,38 @@ class StoreManageVC: UIViewController {
         super.viewWillDisappear(animated)
         
         save()
+        if userIsLoggedIn() {
+            uploadUserStuffToDatabase { (completion) in
+                if !completion {
+                    self.showErrorNotification(message: "Error uploading information to cloud")
+                }
+            }
+        }
     }
     
     func loadUserItems() {
         do {
-            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items")!
-            for item in existingItems {
-                if item.stores.containsStore(Store(name: storeName)) {
-                    items.append(item)
-                }
+            if userIsLoggedIn() {
+                existingItems = Family.items
+            } else {
+                existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
             }
         } catch {
             showFailureToast(message: "Error getting items")
         }
+        for item in existingItems {
+            if item.stores.containsStore(Store(name: storeName)) {
+                items.append(item)
+            }
+        }
     }
+    
     func save() {
         do {
             //Save color
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")
             if let existingStore = stores?.firstStore(name: storeName) {
                 stores![existingStore].color = Color(color: colorChanger.tintColor!)
-            } else {
-                showFailureToast(message: "Error saving color.")
             }
             
             //Save Items
@@ -175,7 +185,7 @@ extension StoreManageVC {
         //Trash Button
         let trashButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteStore))
         trashButton.tintColor = .systemRed
-       
+        
         self.navigationItem.rightBarButtonItems = [trashButton, colorChanger]
         
         
@@ -203,7 +213,7 @@ extension StoreManageVC {
                 var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")!
                 try stores.removeStore(withStore: storeName)
                 try UserDefaults.standard.set(object: stores, forKey: "stores")
-                self.navigationController?.viewControllers[0].showSuccessToast(message: "Successfully deleted!")
+                self.showSuccessToast(message: "Successfully deleted!")
                 self.navigationController?.popViewController(animated: true)
             } catch {
                 self.showFailureToast(message: "Error deleting!")

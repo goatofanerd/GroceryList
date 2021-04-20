@@ -7,7 +7,7 @@
 
 import UIKit
 import ViewAnimator
-
+import GoogleSignIn
 class StoreVC: UIViewController {
     
     let cartBarButton = BadgedButtonItem(with: UIImage(systemName: "cart.fill"))
@@ -73,7 +73,11 @@ class StoreVC: UIViewController {
     func loadUserItems() {
         items = []
         do {
-            existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
+            if userIsLoggedIn() {
+                existingItems = Family.items
+            } else {
+                existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
+            }
         } catch {
             showFailureToast(message: "Error getting items")
         }
@@ -127,16 +131,24 @@ class StoreVC: UIViewController {
         self.present(actionSheet, animated: true, completion: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         save()
+        if userIsLoggedIn() {
+            Family.items = existingItems
+            uploadUserStuffToDatabase { (completion) in
+                if !completion {
+                    self.showErrorNotification(message: "Error uploading information to cloud")
+                }
+            }
+        }
     }
     
     func save() {
         do {
             try UserDefaults.standard.set(object: existingItems, forKey: "items")
         } catch {
-            navigationController?.viewControllers[0].showFailureToast(message: "Error saving items!")
+            showFailureToast(message: "Error saving items!")
         }
     }
     
@@ -164,8 +176,6 @@ class StoreVC: UIViewController {
                 existingItems.append(item)
             }
         }
-        //GroceryShopping.Item(name: Optional("Apples"), stores: [], lastBought: Optional(month: 2 day: 25 isLeapMonth: false ), neededStores: [])
-        //GroceryShopping.Item(name: Optional("Apples"), stores: [], lastBought: Optional(month: 2 day: 25 isLeapMonth: false ), neededStores: [])
         save()
         loadUserItems()
         tableView.reloadData()

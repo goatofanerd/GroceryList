@@ -52,13 +52,17 @@ class ItemManagerVC: UIViewController {
             try UserDefaults.standard.set(object: stores, forKey: "stores")
             (tabBarController?.viewControllers?[0] as? ShoppingVC)?.storeCollectionView.reloadData()
         } catch {
-            navigationController?.viewControllers[0].showFailureToast(message: "Error Saving Stores")
+            showFailureToast(message: "Error Saving Stores")
         }
     }
     
     func loadUserStores() {
         do {
-            stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+            if userIsLoggedIn() {
+                stores = Family.stores
+            } else {
+                stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+            }
         } catch {
             showFailureToast(message: "No stores found.")
         }
@@ -68,7 +72,7 @@ class ItemManagerVC: UIViewController {
     
 }
 
-extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate, StoreAddedToastDelegate {
+extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if stores.isEmpty {
@@ -105,21 +109,9 @@ extension ItemManagerVC: UITableViewDataSource, UITableViewDelegate, StoreAddedT
         } else {
             //Launch Add Store Screen
             let gotoVC = (UIStoryboard(name: "AddStore", bundle: nil).instantiateViewController(withIdentifier: "AddItem")) as! AddStoreVC
-            gotoVC.successDelegate = self
             gotoVC.modalPresentationStyle = .fullScreen
             gotoVC.navigationItem.backButtonTitle = " "
             navigationController?.pushViewController(gotoVC, animated: true)
-        }
-    }
-    
-    func showMessage(message: String, type: SuccessToastEnum) {
-        switch type {
-        case .success:
-            self.showSuccessToast(message: message)
-        case .failure:
-            self.showFailureToast(message: message)
-        case .normal:
-            self.showToast(message: message)
         }
     }
     
