@@ -135,6 +135,10 @@ extension ShoppingVC {
                     }
                     loadingScreen.removeFromSuperview()
                     
+                    if !Family.hasAddedNotifications, let id = familyID {
+                        print("adding notifications")
+                        Family.addNotificationsForStorageUpdates(familyRef: self.ref.child("families").child(id), user: GIDSignIn.sharedInstance().currentUser)
+                    }
                     
                 }
                 
@@ -167,13 +171,13 @@ extension ShoppingVC {
         
         Family.stores = stores
         Family.items = items
-        if userIsLoggedIn() {
-            uploadUserStuffToDatabase() { (completion) in
-                if !completion {
-                    print("error saving")
-                }
-            }
-        }
+//        if userIsLoggedIn() {
+//            uploadUserStuffToDatabase() { (completion) in
+//                if !completion {
+//                    print("error saving")
+//                }
+//            }
+//        }
     }
 }
 

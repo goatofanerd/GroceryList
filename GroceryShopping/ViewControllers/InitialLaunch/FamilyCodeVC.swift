@@ -68,13 +68,12 @@ class FamilyCodeVC: UIViewController {
         let currentUser = GIDSignIn.sharedInstance()!.currentUser
         ref.child("families").child(id).child("people").setValue(currentUser?.profile.email)
         ref.child("user_emails").child(currentUser!.profile.email.toLegalStorageEmail()).child("family").setValue(id)
-        
+        self.dismiss(animated: true, completion: nil)
         NotificationCenter.default.post(name: .signedIntoFamily, object: nil)
     }
     
     func joinFamily(_ family: String) {
         let currentUser = GIDSignIn.sharedInstance()!.currentUser
-        ref.child("user_emails").child(currentUser!.profile.email.toLegalStorageEmail()).child("family").setValue([family])
         
         let familyRef = ref.child("families").child(family).child("people")
         
@@ -83,7 +82,7 @@ class FamilyCodeVC: UIViewController {
                 Alert.regularAlert(title: "This family doesn't exist", message: "Create a new family or re enter the old one!", vc: self)
                 return
             }
-            
+            self.ref.child("user_emails").child(currentUser!.profile.email.toLegalStorageEmail()).child("family").setValue(family)
             var existingPeople: [String] = []
             if (snap.value as? String) != nil {
                 existingPeople.append(snap.value as! String)

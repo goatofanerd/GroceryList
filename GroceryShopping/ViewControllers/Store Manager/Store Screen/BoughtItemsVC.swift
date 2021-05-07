@@ -12,6 +12,7 @@ class BoughtItemsVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var boughtItems: [Item] = []
     var removedItems: [Item] = []
+    var storeVC: StoreVC!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,8 +23,12 @@ class BoughtItemsVC: UIViewController {
         tableView.tableFooterView = UIView()
     }
     
-    func setBoughtItems(_ boughtItems: [Item]) {
-        self.boughtItems = boughtItems
+    func setBoughtItems(_ items: [Item]) {
+        self.boughtItems = items
+    }
+    
+    func setStoreVC(_ vc: StoreVC) {
+        self.storeVC = vc
     }
     
     private func setNavBarButtons() {
@@ -36,15 +41,8 @@ class BoughtItemsVC: UIViewController {
     }
     
     @objc private func dismissScreen() {
-        let storeVC = navigationController?.viewControllers[1] as! StoreVC
-        storeVC.addBackItems(removedItems)
-        navigationController?.popViewController(animated: true)
         
-        if removedItems.count == 1 {
-            storeVC.showSuccessToast(message: "Added back \(removedItems.count) item.")
-        } else {
-            storeVC.showSuccessToast(message: "Added back \(removedItems.count) items.")
-        }
+        navigationController?.popViewController(animated: true)
     }
 
 }
@@ -58,7 +56,7 @@ extension BoughtItemsVC: UITableViewDataSource, UITableViewDelegate {
         let cell = UITableViewCell()
         cell.textLabel?.text = "    " + boughtItems[indexPath.row].name
         cell.textLabel?.textColor = .systemGreen
-        cell.textLabel?.font = UIFont(name: "DIN Alternate Bold", size: 18)
+        cell.textLabel?.font = UIFont(name: "Sinhala Sangam MN", size: 21)
         
         //Separator Full Line
         cell.preservesSuperviewLayoutMargins = false
@@ -68,10 +66,11 @@ extension BoughtItemsVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //storeVC.addBackItem(boughtItems[indexPath.row])
         removedItems.append(boughtItems[indexPath.row])
         boughtItems.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
-        showAnimationToast(animationName: "TrashOpening", message: "Brought Back Item.")
+        self.showSuccessToast(message: "(didnt) Added back item")
     }
     
     

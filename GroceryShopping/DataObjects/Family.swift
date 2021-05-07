@@ -12,10 +12,11 @@ struct Family {
     static var items: [Item] = []
     static var stores: [Store] = []
     static var id: String?
-    
+    static var hasAddedNotifications = false
     static func reset() {
         self.items.removeAll()
         self.stores.removeAll()
+        hasAddedNotifications = false
         id = nil
     }
     

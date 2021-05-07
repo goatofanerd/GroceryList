@@ -29,7 +29,11 @@ class StoreNameEnterVC: UIViewController {
     
     func loadUserStores() {
         do {
-            stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+            if userIsLoggedIn() {
+                stores = Family.stores
+            } else {
+                stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+            }
         } catch {
             print("error getting stores")
         }

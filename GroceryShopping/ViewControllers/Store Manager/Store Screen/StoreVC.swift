@@ -8,6 +8,7 @@
 import UIKit
 import ViewAnimator
 import GoogleSignIn
+import FirebaseDatabase
 class StoreVC: UIViewController {
     
     let cartBarButton = BadgedButtonItem(with: UIImage(systemName: "cart.fill"))
@@ -20,7 +21,8 @@ class StoreVC: UIViewController {
     var filteredItems: [Item] = []
     var storeName: String!
     var state = FilteredState.all
-    
+    var familyRef: DatabaseReference!
+    var currentUserName: String!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,6 +51,9 @@ class StoreVC: UIViewController {
             self.launchBoughtItems()
         }
         self.navigationItem.rightBarButtonItems?.append(cartBarButton)
+        
+        //handle notifications
+        addObservers()
     }
     
     @objc func launchBoughtItems() {
@@ -68,6 +73,10 @@ class StoreVC: UIViewController {
         tableView.isHidden = false
         let animation = AnimationType.from(direction: .top, offset: 300)
         UIView.animate(views: tableView.visibleCells, animations: [animation])
+        
+        if userIsLoggedIn() {
+            currentUserName = GIDSignIn.sharedInstance()?.currentUser.profile.givenName
+        }
     }
     
     func loadUserItems() {
@@ -136,11 +145,11 @@ class StoreVC: UIViewController {
         save()
         if userIsLoggedIn() {
             Family.items = existingItems
-            uploadUserStuffToDatabase { (completion) in
-                if !completion {
-                    self.showErrorNotification(message: "Error uploading information to cloud")
-                }
-            }
+//            uploadUserStuffToDatabase { (completion) in
+//                if !completion {
+//                    self.showErrorNotification(message: "Error uploading information to cloud")
+//                }
+//            }
         }
     }
     
@@ -177,12 +186,48 @@ class StoreVC: UIViewController {
             }
         }
         save()
+        if userIsLoggedIn() {
+            uploadUserStuffToDatabase { (completed) in
+                self.uploadMostRecentChange(message: self.currentUserName + " added \(addedItems.count) item(s) back onto the list!")
+            }
+        }
         loadUserItems()
         tableView.reloadData()
         
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
+//MARK: -Cloud has changed
+extension StoreVC {
+    
+    func addObservers() {
+        if userIsLoggedIn(), let id = Family.id {
+            familyRef = Database.database().reference().child("families").child(id)
+            NotificationCenter.default.addObserver(self, selector: #selector(itemChanged), name: .individualStoreUpdated, object: nil)
+        }
+    }
+    
+    @objc func itemChanged() {
+        getItems(user: GIDSignIn.sharedInstance()!.currentUser) { (items) in
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            Family.items = items
+            self.loadUserItems()
+            self.tableView.reloadData()
+            Family.getMostRecentChange(familyRef: self.familyRef) { (message, user) in
+                guard user != GIDSignIn.sharedInstance()!.currentUser.profile.email else {
+                    print("same user")
+                    return
+                }
+                
+                self.showAnimationNotification(animationName: "EnvelopeSharing", message: message, duration: 2.5 ,color: .systemBlue, fontColor: .systemBlue)
+            }
+        }
+    }
+}
 extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if state != .all {
@@ -276,6 +321,17 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
 
             tableView.deleteRows(at: [indexPath], with: .middle)
             showSuccessToast(message: "Marked item as bought.")
+            
+            Family.items = existingItems
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: currentUserName + " marked the item \(showingItems[indexPath.row].name ?? "(error)") as bought!")
+                }
+            } else {
+                print("user not logged in")
+            }
+            
             completion(true)
             
         }
@@ -304,8 +360,10 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
         
         let action = UIContextualAction(style: .destructive, title: title) { [self] (action, view, completion) in
             
+            var nameOfItem = ""
             if state == .all {
                 if let index = existingItems.firstIndex(of: items[indexPath.row]) {
+                    nameOfItem = existingItems[index].name
                     existingItems[index].markStoreAsOpposite(store: Store(name: storeName))
                 }
                 items[indexPath.row].markStoreAsOpposite(store: Store(name: storeName))
@@ -319,6 +377,16 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
                 filteredItems.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .left)
             }
+            
+            Family.items = existingItems
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: currentUserName + " marked the item '\(nameOfItem)' as Not Needed!")
+                }
+            } else {
+                print("not logged in")
+            }
             completion(true)
             
         }
@@ -330,7 +398,10 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         
         let action = UIContextualAction(style: .destructive, title: "") { [self] (action, view, completion) in
+            var deletedItemName = ""
+            
             if let index = existingItems.firstIndex(of: items[indexPath.row]) {
+                deletedItemName = existingItems[index].name
                 existingItems[index].removeStore(withName: storeName)
             }
             
@@ -347,6 +418,16 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
             
             tableView.deleteRows(at: [indexPath], with: .middle)
             showToast(message: "Deleted item.", image: UIImage(systemName: "trash")!, color: .red, fontColor: .red)
+            
+            Family.items = existingItems
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: currentUserName + " deleted the item '" + deletedItemName + "'")
+                }
+            } else {
+                print("user not logged in")
+            }
             completion(true)
             
         }
@@ -401,6 +482,16 @@ extension StoreVC: UITextFieldDelegate {
             if state != .all {
                 filteredItems.append(newItem)
             }
+        }
+        
+        Family.items = existingItems
+        if userIsLoggedIn() {
+            uploadUserStuffToDatabase { [self] (completed) in
+                print("uploaded")
+                uploadMostRecentChange(message: currentUserName + " added the item '\(addNewItemField.text!)' to the list!")
+            }
+        } else {
+            print("not logged in")
         }
         
         if state == .all {

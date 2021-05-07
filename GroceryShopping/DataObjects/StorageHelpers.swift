@@ -41,8 +41,8 @@ extension UIViewController {
         let ref = Database.database().reference()
         
         do {
-            let storesEncoded = try encodeToJSON(stores)
-            let itemsEncoded = try encodeToJSON(items)
+            let storesEncoded = try HelperFunctions.encodeToJSON(stores)
+            let itemsEncoded = try HelperFunctions.encodeToJSON(items)
             
             if let familyID = Family.id {
                 ref.child("families").child(familyID).child("stores").setValue(storesEncoded)
@@ -66,7 +66,7 @@ extension UIViewController {
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 do {
-                    completion(try self.decodeFromString(snapshot.value as! String, objectType: [Store].self))
+                    completion(try HelperFunctions.decodeFromString(snapshot.value as! String, objectType: [Store].self))
                 } catch {
                     completion([])
                 }
@@ -86,7 +86,7 @@ extension UIViewController {
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 do {
-                    completion(try self.decodeFromString(snapshot.value as! String, objectType: [Item].self))
+                    completion(try HelperFunctions.decodeFromString(snapshot.value as! String, objectType: [Item].self))
                 } catch {
                     print("error")
                     completion([])
@@ -96,15 +96,6 @@ extension UIViewController {
                 completion([])
             }
         }
-    }
-    
-    func encodeToJSON<T: Codable>(_ object: T) throws -> String {
-        let data = try JSONEncoder().encode(object)
-        return String(decoding: data, as: UTF8.self)
-    }
-    
-    func decodeFromString<T: Codable>(_ string: String, objectType: T.Type) throws -> T {
-        return try JSONDecoder().decode(objectType, from: string.data(using: .utf8)!)
     }
     
     func userIsLoggedIn() -> Bool {
@@ -140,6 +131,28 @@ extension UIViewController {
         loadingScreen.addSubview(messageView)
         
         return loadingScreen
+    }
+    
+    func uploadMostRecentChange(message: String) {
+        guard let familyID = Family.id else {
+            print("no family ID")
+            return
+        }
+        
+        let familyRef = Database.database().reference().child("families").child(familyID)
+        familyRef.child("recent_change").child("message").setValue(message)
+        familyRef.child("recent_change").child("user").setValue(GIDSignIn.sharedInstance()?.currentUser.profile.email)
+    }
+}
+
+struct HelperFunctions {
+    static func encodeToJSON<T: Codable>(_ object: T) throws -> String {
+        let data = try JSONEncoder().encode(object)
+        return String(decoding: data, as: UTF8.self)
+    }
+    
+    static func decodeFromString<T: Codable>(_ string: String, objectType: T.Type) throws -> T {
+        return try JSONDecoder().decode(objectType, from: string.data(using: .utf8)!)
     }
 }
 
