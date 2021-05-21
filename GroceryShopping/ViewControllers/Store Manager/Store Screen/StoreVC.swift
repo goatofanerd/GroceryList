@@ -58,6 +58,7 @@ class StoreVC: UIViewController {
     
     @objc func launchBoughtItems() {
         let boughtItemsVC = storyboard!.instantiateViewController(identifier: "BoughtItemsScreen") as! BoughtItemsVC
+        boughtItemsVC.setStoreVC(self)
         boughtItemsVC.setBoughtItems(boughtItems)
         navigationController?.pushViewController(boughtItemsVC, animated: true)
     }
@@ -84,6 +85,7 @@ class StoreVC: UIViewController {
         do {
             if userIsLoggedIn() {
                 existingItems = Family.items
+                boughtItems = Family.boughtItems
             } else {
                 existingItems = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items") ?? []
             }
@@ -96,19 +98,13 @@ class StoreVC: UIViewController {
                 items.append(item)
             }
         }
+        
+        cartBarButton.setBadge(with: boughtItems.count)
     }
     
     
     @IBAction func backToHomeScreen(_ sender: Any) {
-        
-        if boughtItems.count > 0 {
-            let alert = UIAlertController(title: "Are you sure you want to leave?", message: "Leaving the store screen will abandon the \(boughtItems.count) items in your cart.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Continue", style: .default, handler: {_ in
-                self.navigationController?.popViewController(animated: true)
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            present(alert, animated: true, completion: nil)
-        }
+
         navigationController?.popViewController(animated: true)
     }
     
@@ -143,6 +139,7 @@ class StoreVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         save()
+        NotificationCenter.default.removeObserver(self)
         if userIsLoggedIn() {
             Family.items = existingItems
 //            uploadUserStuffToDatabase { (completion) in
@@ -165,34 +162,45 @@ class StoreVC: UIViewController {
         return item.neededStores.containsStore(Store(name: storeName))
     }
     
-    func addBackItems(_ addedItems: [Item]) {
-        var indexPaths: [IndexPath] = []
-        for (index, item) in addedItems.enumerated() {
-            items.append(item)
+    func addBackItem(_ addedItem: Item) {
+        var item = addedItem
+        do {
+            try boughtItems.removeItem(withItem: item.name)
             
-            indexPaths.append(IndexPath(row: index, section: 0))
-            do {
-                try boughtItems.removeItem(withItem: item.name)
-                cartBarButton.setBadge(with: boughtItems.count)
-            } catch {}
+            item.addStore(storeName)
+            item.removeFromStore(nil)
+            item.removeBoughtTime()
             
-            if existingItems.containsItem(item) {
-                print("item Exists")
-                existingItems[existingItems.indexOfItem(item)!].addStore(storeName)
+            if addedItem.storeRemovedFrom?.name == storeName {
+                items.append(item)
+            }
+            
+            if let index = existingItems.indexOfItem(addedItem) {
+                existingItems[index] = item
+            }
+            
+            
+            
+            Family.items = existingItems
+            Family.boughtItems = boughtItems
+            
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { [self] (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: currentUserName + " brought back the item \(addedItem.name ?? "(error)") from the cart!")
+                }
             } else {
-                print(item)
-                print(existingItems)
-                existingItems.append(item)
+                print("user not logged in")
             }
+            
+            
+            
+        } catch {
+            showFailureToast(message: "Error Bringing Back Item!")
         }
-        save()
-        if userIsLoggedIn() {
-            uploadUserStuffToDatabase { (completed) in
-                self.uploadMostRecentChange(message: self.currentUserName + " added \(addedItems.count) item(s) back onto the list!")
-            }
-        }
-        loadUserItems()
+        
         tableView.reloadData()
+        cartBarButton.setBadge(with: boughtItems.count)
         
     }
     
@@ -208,28 +216,53 @@ extension StoreVC {
         if userIsLoggedIn(), let id = Family.id {
             familyRef = Database.database().reference().child("families").child(id)
             NotificationCenter.default.addObserver(self, selector: #selector(itemChanged), name: .individualStoreUpdated, object: nil)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(boughtItemsChanged), name: .itemAddedToCart, object: nil)
         }
     }
     
     @objc func itemChanged() {
         getItems(user: GIDSignIn.sharedInstance()!.currentUser) { (items) in
             UINotificationFeedbackGenerator().notificationOccurred(.success)
-            Family.items = items
-            self.loadUserItems()
-            self.tableView.reloadData()
+            
             Family.getMostRecentChange(familyRef: self.familyRef) { (message, user) in
                 guard user != GIDSignIn.sharedInstance()!.currentUser.profile.email else {
-                    print("same user")
                     return
                 }
                 
+                guard message != "" else {
+                    return
+                }
+                
+                Family.items = items
+                self.loadUserItems()
+                self.tableView.reloadData()
+                
                 self.showAnimationNotification(animationName: "EnvelopeSharing", message: message, duration: 2.5 ,color: .systemBlue, fontColor: .systemBlue)
+            }
+        }
+        
+    }
+    
+    @objc func boughtItemsChanged() {
+        getBoughtItems(user: GIDSignIn.sharedInstance()!.currentUser) { (boughtItems) in
+            
+            Family.getMostRecentChange(familyRef: self.familyRef) { (message, user) in
+                guard user != GIDSignIn.sharedInstance()!.currentUser.profile.email else {
+                    return
+                }
+                
+                self.boughtItems = boughtItems
+                Family.boughtItems = boughtItems
+                self.cartBarButton.setBadge(with: boughtItems.count)
+                
             }
         }
     }
 }
 extension StoreVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if state != .all {
             return filteredItems.count
         }
@@ -303,10 +336,13 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             if let index = existingItems.firstIndex(of: showingItems[indexPath.row]) {
-                existingItems[index].changeBoughtTime()
+                //existingItems[index].changeBoughtTime()
                 existingItems[index].removeStore(withName: storeName)
+                existingItems[index].removeFromStore(storeName)
             }
+            
             boughtItems.append(showingItems[indexPath.row])
+            boughtItems[boughtItems.count - 1].removeFromStore(storeName)
             cartBarButton.setBadge(with: boughtItems.count)
             if state == .all {
                 print("all")
@@ -323,6 +359,7 @@ extension StoreVC: UITableViewDelegate, UITableViewDataSource {
             showSuccessToast(message: "Marked item as bought.")
             
             Family.items = existingItems
+            Family.boughtItems = boughtItems
             if userIsLoggedIn() {
                 uploadUserStuffToDatabase { (completed) in
                     print("uploaded")

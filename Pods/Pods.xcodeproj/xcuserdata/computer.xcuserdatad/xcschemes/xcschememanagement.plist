@@ -81,12 +81,22 @@
 			<key>orderHint</key>
 			<integer>8</integer>
 		</dict>
+		<key>Pods-GroceryShopping-GroceryShoppingUITests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>17</integer>
+		</dict>
 		<key>Pods-GroceryShopping.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>14</integer>
+		</dict>
+		<key>Pods-GroceryShoppingTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>18</integer>
 		</dict>
 		<key>PromisesObjC.xcscheme</key>
 		<dict>

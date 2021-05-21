@@ -17,7 +17,6 @@ extension Family {
     static func addNotificationsForStorageUpdates(familyRef: DatabaseReference, user: GIDGoogleUser) {
         
         self.hasAddedNotifications = true
-        print("added!")
         
         familyRef.child("items").observe(.value) { (snapshot) in
             print("items changed")
@@ -44,9 +43,14 @@ extension Family {
             }
         }
         
-        familyRef.child("people").observe(.childChanged) { (snapshot) in
+        familyRef.child("people").observe(.value) { (snapshot) in
             print("people changed")
             NotificationCenter.default.post(name: .newMemberAdded, object: nil)
+        }
+        
+        familyRef.child("bought_items").observe(.value) { (snapshot) in
+            print("bought items changed")
+            NotificationCenter.default.post(name: .itemAddedToCart, object: nil)
         }
     }
     

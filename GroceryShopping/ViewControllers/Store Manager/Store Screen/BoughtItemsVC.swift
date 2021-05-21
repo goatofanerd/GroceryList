@@ -38,11 +38,20 @@ class BoughtItemsVC: UIViewController {
         let xButton = UIBarButtonItem(image: UIImage(systemName: "multiply"), style: .plain, target: self, action: #selector(dismissScreen))
         xButton.tintColor = .label
         self.navigationItem.leftBarButtonItem = xButton
+        
+        //Checkout Button
+        let checkoutButton = UIBarButtonItem(title: "Checkout", style: .done, target: self, action: #selector(checkout))
+        xButton.tintColor = .label
+        self.navigationItem.rightBarButtonItem = checkoutButton
     }
     
     @objc private func dismissScreen() {
         
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func checkout() {
+        print("checkout")
     }
 
 }
@@ -66,11 +75,11 @@ extension BoughtItemsVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //storeVC.addBackItem(boughtItems[indexPath.row])
+        storeVC.addBackItem(boughtItems[indexPath.row]) 
         removedItems.append(boughtItems[indexPath.row])
         boughtItems.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
-        self.showSuccessToast(message: "(didnt) Added back item")
+        self.showSuccessToast(message: "Added back item")
     }
     
     

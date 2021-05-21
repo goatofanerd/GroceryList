@@ -33,4 +33,9 @@ extension Notification.Name {
     static var newStoreAdded: Notification.Name {
         return .init(rawValue: #function)
     }
+    
+    /// Notification when an item has been marked as bought/removed from bought
+    static var itemAddedToCart: Notification.Name {
+        return .init(rawValue: #function)
+    }
 }

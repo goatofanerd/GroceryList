@@ -44,6 +44,7 @@ class StoreManageVC: UIViewController {
         super.viewWillDisappear(animated)
         
         save()
+
         if userIsLoggedIn() {
             uploadUserStuffToDatabase { (completion) in
                 if !completion {
@@ -82,6 +83,9 @@ class StoreManageVC: UIViewController {
             try UserDefaults.standard.set(object: existingItems, forKey: "items")
             
             try UserDefaults.standard.set(object: stores, forKey: "stores")
+            
+            Family.items = existingItems
+            Family.stores = stores!
         } catch {
             print("error saving")
         }

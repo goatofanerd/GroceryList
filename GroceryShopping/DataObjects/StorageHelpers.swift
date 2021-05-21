@@ -37,16 +37,18 @@ extension UIViewController {
         
         let items = Family.items
         let stores = Family.stores
+        let boughtItems = Family.boughtItems
         
         let ref = Database.database().reference()
         
         do {
             let storesEncoded = try HelperFunctions.encodeToJSON(stores)
             let itemsEncoded = try HelperFunctions.encodeToJSON(items)
-            
+            let boughtItemsEncoded = try HelperFunctions.encodeToJSON(boughtItems)
             if let familyID = Family.id {
                 ref.child("families").child(familyID).child("stores").setValue(storesEncoded)
                 ref.child("families").child(familyID).child("items").setValue(itemsEncoded)
+                ref.child("families").child(familyID).child("bought_items").setValue(boughtItemsEncoded)
             }
             
             completion(true)
@@ -82,6 +84,28 @@ extension UIViewController {
             return
         }
         let ref = Database.database().reference().child("families").child(familyID).child("items")
+        
+        ref.observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists() {
+                do {
+                    completion(try HelperFunctions.decodeFromString(snapshot.value as! String, objectType: [Item].self))
+                } catch {
+                    print("error")
+                    completion([])
+                }
+            } else {
+                print("doesnt exist")
+                completion([])
+            }
+        }
+    }
+    
+    func getBoughtItems(user: GIDGoogleUser, completion: @escaping(([Item]) -> Void)) {
+        guard let familyID = Family.id else {
+            completion([])
+            return
+        }
+        let ref = Database.database().reference().child("families").child(familyID).child("bought_items")
         
         ref.observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {

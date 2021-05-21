@@ -11,11 +11,15 @@ import FirebaseDatabase
 struct Family {
     static var items: [Item] = []
     static var stores: [Store] = []
+    static var boughtItems: [Item] = []
+    
     static var id: String?
     static var hasAddedNotifications = false
     static func reset() {
         self.items.removeAll()
         self.stores.removeAll()
+        self.boughtItems.removeAll()
+        
         hasAddedNotifications = false
         id = nil
     }

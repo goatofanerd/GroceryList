@@ -96,6 +96,8 @@ class AddItemsVC: UIViewController {
         save()
         if userIsLoggedIn() {
             Family.items = existingItems
+            
+            uploadMostRecentChange(message: "")
             uploadUserStuffToDatabase { (completion) in
                 if !completion {
                     self.showErrorNotification(message: "Error uploading information to cloud")

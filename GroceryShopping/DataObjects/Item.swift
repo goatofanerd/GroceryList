@@ -12,10 +12,12 @@ struct Item: Codable, Equatable {
     var stores: [Store] = []
     var lastBought: DateComponents?
     var neededStores: [Store] = []
-    init(name: String, stores: [Store] = [], lastBought: DateComponents? = nil, neededStores: [Store] = []) {
+    var storeRemovedFrom: Store?
+    init(name: String, stores: [Store] = [], lastBought: DateComponents? = nil, neededStores: [Store] = [], storeRemovedFrom: Store? = nil) {
         self.name = name
         self.stores = stores
         self.lastBought = lastBought
+        self.storeRemovedFrom = storeRemovedFrom
         
         if neededStores.isEmpty {
             self.neededStores = stores
@@ -33,6 +35,10 @@ struct Item: Codable, Equatable {
     
     mutating func changeBoughtTime() {
         lastBought = DateComponents(month: Calendar.current.component(.month, from: Date()), day: Calendar.current.component(.day, from: Date()))
+    }
+    
+    mutating func removeBoughtTime() {
+        lastBought = nil
     }
     
     mutating func removeStore(at index: Int) {
@@ -56,6 +62,24 @@ struct Item: Codable, Equatable {
         } else {
             neededStores.append(store)
         }
+    }
+    
+    //Store parameter
+    mutating func removeFromStore(_ store: Store?) {
+        self.storeRemovedFrom = store
+    }
+    
+    //Name parameter
+    mutating func removeFromStore(_ store: String) {
+        self.storeRemovedFrom = Store(name: store)
+    }
+    
+    func removedFromStore() -> Bool {
+        if storeRemovedFrom != nil {
+            return true
+        }
+        
+        return false
     }
     
     func getYear() -> Int? {

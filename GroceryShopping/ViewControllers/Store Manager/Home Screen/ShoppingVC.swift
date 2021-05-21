@@ -14,6 +14,7 @@ class ShoppingVC: UIViewController {
     @IBOutlet weak var profilePicture: UIBarButtonItem!
     var stores: [Store] = []
     var items: [Item] = []
+    var boughtItems: [Item] = []
     var ref: DatabaseReference!
     
     override func viewDidLoad() {
@@ -120,6 +121,7 @@ extension ShoppingVC {
         do {
             if userIsLoggedIn() {
                 let loadingScreen = createLoadingScreen(frame: view.frame, message: "Creating, please wait.", animation: "Loading")
+                view.addSubview(loadingScreen)
                 let user = GIDSignIn.sharedInstance().currentUser!
                 Family.getFamily(email: user.profile.email) { (familyID) in
                     Family.id = familyID
@@ -131,6 +133,11 @@ extension ShoppingVC {
                     
                     self.getItems(user: user) { (items) in
                         self.items = items
+                        self.storeCollectionView.reloadData()
+                    }
+                    
+                    self.getBoughtItems(user: user) { (boughtItems) in
+                        self.boughtItems = boughtItems
                         self.storeCollectionView.reloadData()
                     }
                     loadingScreen.removeFromSuperview()
@@ -171,6 +178,7 @@ extension ShoppingVC {
         
         Family.stores = stores
         Family.items = items
+        Family.boughtItems = boughtItems
 //        if userIsLoggedIn() {
 //            uploadUserStuffToDatabase() { (completion) in
 //                if !completion {
