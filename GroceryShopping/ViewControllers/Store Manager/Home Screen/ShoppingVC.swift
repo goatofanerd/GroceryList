@@ -120,27 +120,26 @@ extension ShoppingVC {
     func loadUserItems() {
         do {
             if userIsLoggedIn() {
-                let loadingScreen = createLoadingScreen(frame: view.frame, message: "Creating, please wait.", animation: "Loading")
+                let loadingScreen = createLoadingScreen(frame: view.frame, message: "Loading stores, please wait.", animation: "Loading")
                 view.addSubview(loadingScreen)
                 let user = GIDSignIn.sharedInstance().currentUser!
                 Family.getFamily(email: user.profile.email) { (familyID) in
                     Family.id = familyID
                     
-                    self.getStores(user: user) { (stores) in
+                    
+                    self.getAllUserData(user: user) { stores, items, boughtItems in
+                        
                         self.stores = stores
-                        self.storeCollectionView.reloadData()
-                    }
-                    
-                    self.getItems(user: user) { (items) in
                         self.items = items
-                        self.storeCollectionView.reloadData()
-                    }
-                    
-                    self.getBoughtItems(user: user) { (boughtItems) in
                         self.boughtItems = boughtItems
+                        
                         self.storeCollectionView.reloadData()
+                        loadingScreen.removeFromSuperview()
+                        
+                        Family.stores = stores
+                        Family.items = items
+                        Family.boughtItems = boughtItems
                     }
-                    loadingScreen.removeFromSuperview()
                     
                     if !Family.hasAddedNotifications, let id = familyID {
                         print("adding notifications")

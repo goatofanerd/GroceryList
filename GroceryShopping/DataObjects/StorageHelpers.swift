@@ -58,7 +58,7 @@ extension UIViewController {
         }
     }
     
-    func getStores(user: GIDGoogleUser, completion: @escaping(([Store]) -> Void)) {
+    func getStores(user: GIDGoogleUser, completion: @escaping([Store]) -> Void) {
         guard let familyID = Family.id else {
             completion([])
             return
@@ -78,7 +78,7 @@ extension UIViewController {
         }
     }
     
-    func getItems(user: GIDGoogleUser, completion: @escaping(([Item]) -> Void)) {
+    func getItems(user: GIDGoogleUser, completion: @escaping([Item]) -> Void) {
         guard let familyID = Family.id else {
             completion([])
             return
@@ -100,7 +100,7 @@ extension UIViewController {
         }
     }
     
-    func getBoughtItems(user: GIDGoogleUser, completion: @escaping(([Item]) -> Void)) {
+    func getBoughtItems(user: GIDGoogleUser, completion: @escaping([Item]) -> Void) {
         guard let familyID = Family.id else {
             completion([])
             return
@@ -122,6 +122,37 @@ extension UIViewController {
         }
     }
     
+    func getAllUserData(user: GIDGoogleUser, completion: @escaping([Store], [Item], [Item]) -> Void) {
+        guard let familyID = Family.id else {
+            completion([], [], [])
+            return
+        }
+        let ref = Database.database().reference().child("families").child(familyID)
+        
+        ref.observeSingleEvent(of: .value) { snapshot in
+            if snapshot.exists() {
+                do {
+                    let storesSnapshot = snapshot.childSnapshot(forPath: "stores")
+                    let itemsSnapshot = snapshot.childSnapshot(forPath: "items")
+                    let boughtItemsSnapshot = snapshot.childSnapshot(forPath: "bought_items")
+                    
+                    let stores = try HelperFunctions.decodeFromString(storesSnapshot.value as! String, objectType: [Store].self)
+                    let items = try HelperFunctions.decodeFromString(itemsSnapshot.value as! String, objectType: [Item].self)
+                    let boughtItems = try HelperFunctions.decodeFromString(boughtItemsSnapshot.value as! String, objectType: [Item].self)
+        
+                    completion(stores, items, boughtItems)
+                } catch {
+                    print("error")
+                    completion([], [], [])
+                }
+            } else {
+                print("doesnt exist")
+                completion([], [], [])
+            }
+        }
+        
+        
+    }
     func userIsLoggedIn() -> Bool {
         if GIDSignIn.sharedInstance()?.currentUser == nil {
             return false

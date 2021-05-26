@@ -162,14 +162,18 @@ class StoreVC: UIViewController {
         return item.neededStores.containsStore(Store(name: storeName))
     }
     
-    func addBackItem(_ addedItem: Item) {
+    func addBackItem(_ addedItem: Item, checkedOut: Bool) {
         var item = addedItem
         do {
             try boughtItems.removeItem(withItem: item.name)
             
             item.addStore(storeName)
             item.removeFromStore(nil)
-            item.removeBoughtTime()
+            if checkedOut {
+                item.changeBoughtTime()
+            } else {
+                item.removeBoughtTime()
+            }
             
             if addedItem.storeRemovedFrom?.name == storeName {
                 items.append(item)
@@ -184,13 +188,15 @@ class StoreVC: UIViewController {
             Family.items = existingItems
             Family.boughtItems = boughtItems
             
-            if userIsLoggedIn() {
-                uploadUserStuffToDatabase { [self] (completed) in
-                    print("uploaded")
-                    uploadMostRecentChange(message: currentUserName + " brought back the item \(addedItem.name ?? "(error)") from the cart!")
+            if !checkedOut {
+                if userIsLoggedIn() {
+                    uploadUserStuffToDatabase { [self] (completed) in
+                        print("uploaded")
+                        uploadMostRecentChange(message: currentUserName + " brought back the item \(addedItem.name ?? "(error)") from the cart!")
+                    }
+                } else {
+                    print("user not logged in")
                 }
-            } else {
-                print("user not logged in")
             }
             
             
@@ -201,6 +207,17 @@ class StoreVC: UIViewController {
         
         tableView.reloadData()
         cartBarButton.setBadge(with: boughtItems.count)
+        
+        if checkedOut {
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { [self] (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: currentUserName + " checked out the cart. All items are back in the list and marked as previously bought.")
+                }
+            } else {
+                print("user not logged in")
+            }
+        }
         
     }
     

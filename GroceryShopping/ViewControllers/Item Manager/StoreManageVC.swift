@@ -46,6 +46,7 @@ class StoreManageVC: UIViewController {
         save()
 
         if userIsLoggedIn() {
+            uploadMostRecentChange(message: "")
             uploadUserStuffToDatabase { (completion) in
                 if !completion {
                     self.showErrorNotification(message: "Error uploading information to cloud")
@@ -203,25 +204,50 @@ extension StoreManageVC {
         let alert = UIAlertController(title: "Are you sure you want to delete?", message: "This action is irreversible!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self]_ in
-            do {
-                var tempItems: [Item] = []
-                let items = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items")!
-                for var item in items {
-                    if item.stores.containsStore(Store(name: storeName)) {
-                        try item.stores.removeStore(withStore: storeName)
+            
+            if userIsLoggedIn() {
+                do {
+                    var tempItems: [Item] = []
+                    let items = Family.items
+                    for var item in items {
+                        if item.stores.containsStore(Store(name: storeName)) {
+                            try item.stores.removeStore(withStore: storeName)
+                        }
+                        tempItems.append(item)
                     }
-                    tempItems.append(item)
-                }
                 
-                try UserDefaults.standard.set(object: tempItems, forKey: "items")
-                var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")!
-                try stores.removeStore(withStore: storeName)
-                try UserDefaults.standard.set(object: stores, forKey: "stores")
-                self.showSuccessToast(message: "Successfully deleted!")
-                self.navigationController?.popViewController(animated: true)
-            } catch {
-                self.showFailureToast(message: "Error deleting!")
+                    Family.items = tempItems
+                    var stores = Family.stores
+                    try stores.removeStore(withStore: storeName)
+                    Family.stores = stores
+                    self.showSuccessToast(message: "Successfully deleted!")
+                    self.navigationController?.popViewController(animated: true)
+                } catch {
+                    self.showFailureToast(message: "Error deleting!")
+                }
             }
+            else {
+                do {
+                    var tempItems: [Item] = []
+                    let items = try UserDefaults.standard.get(objectType: [Item].self, forKey: "items")!
+                    for var item in items {
+                        if item.stores.containsStore(Store(name: storeName)) {
+                            try item.stores.removeStore(withStore: storeName)
+                        }
+                        tempItems.append(item)
+                    }
+                
+                    try UserDefaults.standard.set(object: tempItems, forKey: "items")
+                    var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")!
+                    try stores.removeStore(withStore: storeName)
+                    try UserDefaults.standard.set(object: stores, forKey: "stores")
+                    self.showSuccessToast(message: "Successfully deleted!")
+                    self.navigationController?.popViewController(animated: true)
+                } catch {
+                    self.showFailureToast(message: "Error deleting!")
+                }
+            }
+            
         }))
         self.present(alert, animated: true, completion: nil)
     }

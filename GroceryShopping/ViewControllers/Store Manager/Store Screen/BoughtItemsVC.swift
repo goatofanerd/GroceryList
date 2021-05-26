@@ -41,7 +41,7 @@ class BoughtItemsVC: UIViewController {
         
         //Checkout Button
         let checkoutButton = UIBarButtonItem(title: "Checkout", style: .done, target: self, action: #selector(checkout))
-        xButton.tintColor = .label
+        checkoutButton.tintColor = .label
         self.navigationItem.rightBarButtonItem = checkoutButton
     }
     
@@ -51,7 +51,23 @@ class BoughtItemsVC: UIViewController {
     }
     
     @objc private func checkout() {
-        print("checkout")
+        
+        let alert = UIAlertController(title: "Are you sure you want to check out?", message: "Checking out will mark these items as bought.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Continue", style: .default, handler: { [self] action in
+            
+            for item in boughtItems {
+                storeVC.addBackItem(item, checkedOut: true)
+                removedItems.append(item)
+            }
+            
+            dismissScreen()
+            
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 
 }
@@ -75,7 +91,7 @@ extension BoughtItemsVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        storeVC.addBackItem(boughtItems[indexPath.row]) 
+        storeVC.addBackItem(boughtItems[indexPath.row], checkedOut: false)
         removedItems.append(boughtItems[indexPath.row])
         boughtItems.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
