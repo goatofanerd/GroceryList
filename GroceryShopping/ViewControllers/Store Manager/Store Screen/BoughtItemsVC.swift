@@ -78,6 +78,7 @@ extension BoughtItemsVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = UITableViewCell()
         cell.textLabel?.text = "    " + boughtItems[indexPath.row].name
         cell.textLabel?.textColor = .systemGreen
@@ -95,7 +96,7 @@ extension BoughtItemsVC: UITableViewDataSource, UITableViewDelegate {
         removedItems.append(boughtItems[indexPath.row])
         boughtItems.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .left)
-        self.showSuccessToast(message: "Added back item")
+        showSuccessToast(message: "Added back item")
     }
     
     

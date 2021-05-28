@@ -23,6 +23,7 @@ class StoreVC: UIViewController {
     var state = FilteredState.all
     var familyRef: DatabaseReference!
     var currentUserName: String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -171,8 +172,6 @@ class StoreVC: UIViewController {
             item.removeFromStore(nil)
             if checkedOut {
                 item.changeBoughtTime()
-            } else {
-                item.removeBoughtTime()
             }
             
             if addedItem.storeRemovedFrom?.name == storeName {
@@ -188,16 +187,22 @@ class StoreVC: UIViewController {
             Family.items = existingItems
             Family.boughtItems = boughtItems
             
-            if !checkedOut {
-                if userIsLoggedIn() {
-                    uploadUserStuffToDatabase { [self] (completed) in
-                        print("uploaded")
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { [self] (completed) in
+                    print("uploaded")
+                    
+                    if !checkedOut {
+                        print("not checked out")
                         uploadMostRecentChange(message: currentUserName + " brought back the item \(addedItem.name ?? "(error)") from the cart!")
+                    } else {
+                        print("checked out")
+                        uploadMostRecentChange(message: currentUserName + " checked out the cart. All items are back in the list and marked as previously bought.")
                     }
-                } else {
-                    print("user not logged in")
                 }
+            } else {
+                print("user not logged in")
             }
+            
             
             
             
@@ -207,17 +212,6 @@ class StoreVC: UIViewController {
         
         tableView.reloadData()
         cartBarButton.setBadge(with: boughtItems.count)
-        
-        if checkedOut {
-            if userIsLoggedIn() {
-                uploadUserStuffToDatabase { [self] (completed) in
-                    print("uploaded")
-                    uploadMostRecentChange(message: currentUserName + " checked out the cart. All items are back in the list and marked as previously bought.")
-                }
-            } else {
-                print("user not logged in")
-            }
-        }
         
     }
     
