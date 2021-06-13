@@ -6,13 +6,15 @@
 //
 
 import UIKit
-
+import FirebaseDatabase
+import GoogleSignIn
 class BoughtItemsVC: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var boughtItems: [Item] = []
     var removedItems: [Item] = []
     var storeVC: StoreVC!
+    var familyRef: DatabaseReference!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,6 +23,36 @@ class BoughtItemsVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView()
+        
+        addObservers()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func addObservers() {
+        if userIsLoggedIn(), let id = Family.id {
+            familyRef = Database.database().reference().child("families").child(id)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(boughtItemsChanged), name: .itemAddedToCart, object: nil)
+        }
+    }
+    
+    @objc func boughtItemsChanged() {
+        getBoughtItems(user: GIDSignIn.sharedInstance()!.currentUser) { (boughtItems) in
+            
+            Family.getMostRecentChange(familyRef: self.familyRef) { (message, user) in
+                guard user != GIDSignIn.sharedInstance()!.currentUser.profile.email else {
+                    return
+                }
+                
+                self.boughtItems = boughtItems
+                Family.boughtItems = boughtItems
+                self.tableView.reloadData()
+                
+            }
+        }
     }
     
     func setBoughtItems(_ items: [Item]) {

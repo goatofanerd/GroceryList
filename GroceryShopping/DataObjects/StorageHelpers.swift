@@ -136,11 +136,17 @@ extension UIViewController {
                     let itemsSnapshot = snapshot.childSnapshot(forPath: "items")
                     let boughtItemsSnapshot = snapshot.childSnapshot(forPath: "bought_items")
                     
-                    let stores = try HelperFunctions.decodeFromString(storesSnapshot.value as! String, objectType: [Store].self)
-                    let items = try HelperFunctions.decodeFromString(itemsSnapshot.value as! String, objectType: [Item].self)
-                    let boughtItems = try HelperFunctions.decodeFromString(boughtItemsSnapshot.value as! String, objectType: [Item].self)
-        
-                    completion(stores, items, boughtItems)
+                    if storesSnapshot.exists() && itemsSnapshot.exists() && boughtItemsSnapshot.exists() {
+                        
+                        let stores = try HelperFunctions.decodeFromString(storesSnapshot.value as! String, objectType: [Store].self)
+                        let items = try HelperFunctions.decodeFromString(itemsSnapshot.value as! String, objectType: [Item].self)
+                        let boughtItems = try HelperFunctions.decodeFromString(boughtItemsSnapshot.value as! String, objectType: [Item].self)
+                        
+                        completion(stores, items, boughtItems)
+                    } else {
+                        print("doesnt exist")
+                        completion([], [], [])
+                    }
                 } catch {
                     print("error")
                     completion([], [], [])

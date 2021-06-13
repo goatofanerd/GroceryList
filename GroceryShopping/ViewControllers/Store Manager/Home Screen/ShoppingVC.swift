@@ -33,11 +33,39 @@ class ShoppingVC: UIViewController {
                 self.showAnimationToast(animationName: "LoginSuccess", message: "Welcome, " + user, color: .systemBlue, fontColor: .systemBlue)
             }
         }
+        
+        addObservers()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkFirstLaunch()
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(storesChanged), name: .newStoreAdded, object: nil)
+    }
+    
+    @objc func storesChanged() {
+        
+        Family.getMostRecentChange(familyRef: self.ref.child("families").child(Family.id!)) { [self] (message, user) in
+            print("hehehehehe")
+            guard user != GIDSignIn.sharedInstance()!.currentUser.profile.email else {
+                return
+            }
+            
+            guard message != "" else {
+                return
+            }
+            
+            self.showAnimationNotification(animationName: "EnvelopeSharing", message: message, duration: 2.5 ,color: .systemBlue, fontColor: .systemBlue)
+            checkFirstLaunch()
+            self.storeCollectionView.reloadData()
+        }
     }
 }
 

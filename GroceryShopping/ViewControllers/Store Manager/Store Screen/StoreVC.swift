@@ -55,6 +55,11 @@ class StoreVC: UIViewController {
         
         //handle notifications
         addObservers()
+        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func launchBoughtItems() {
@@ -140,7 +145,7 @@ class StoreVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         save()
-        NotificationCenter.default.removeObserver(self)
+        
         if userIsLoggedIn() {
             Family.items = existingItems
 //            uploadUserStuffToDatabase { (completion) in
@@ -210,14 +215,12 @@ class StoreVC: UIViewController {
             showFailureToast(message: "Error Bringing Back Item!")
         }
         
+        self.loadUserItems() //WARNING:
         tableView.reloadData()
         cartBarButton.setBadge(with: boughtItems.count)
         
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 }
 
 //MARK: -Cloud has changed

@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import FirebaseDatabase
 class StoreManageVC: UIViewController {
     
     @IBOutlet weak var textField: UITextField!
@@ -16,6 +17,9 @@ class StoreManageVC: UIViewController {
     var store: Store!
     var items: [Item] = []
     var existingItems: [Item] = []
+    var didDeleteStore = false
+    var familyRef: DatabaseReference!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,12 +34,48 @@ class StoreManageVC: UIViewController {
         tableView.contentInsetAdjustmentBehavior = .never
         
         textField.delegate = self
+        
+        addObservers()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func addObservers() {
+        if userIsLoggedIn(), let id = Family.id {
+            familyRef = Database.database().reference().child("families").child(id)
+            NotificationCenter.default.addObserver(self, selector: #selector(itemChanged), name: .individualStoreUpdated, object: nil)
+        }
+    }
+    
+    @objc func itemChanged() {
+        getItems(user: GIDSignIn.sharedInstance()!.currentUser) { (items) in
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            
+            Family.getMostRecentChange(familyRef: self.familyRef) { (message, user) in
+                guard user != GIDSignIn.sharedInstance()!.currentUser.profile.email else {
+                    return
+                }
+                
+                guard message != "" else {
+                    return
+                }
+                
+                Family.items = items
+                self.loadUserItems()
+                self.tableView.reloadData()
+                
+                self.showAnimationNotification(animationName: "EnvelopeSharing", message: message, duration: 2.5 ,color: .systemBlue, fontColor: .systemBlue)
+            }
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getStore()
-        
+        didDeleteStore = false
         colorChanger.tintColor = store.color.color
         loadUserItems()
     }
@@ -44,9 +84,9 @@ class StoreManageVC: UIViewController {
         super.viewWillDisappear(animated)
         
         save()
-
+        
         if userIsLoggedIn() {
-            uploadMostRecentChange(message: "")
+            uploadMostRecentChange(message: "\(GIDSignIn.sharedInstance().currentUser.profile.givenName!) made a change to \(store.name)")
             uploadUserStuffToDatabase { (completion) in
                 if !completion {
                     self.showErrorNotification(message: "Error uploading information to cloud")
@@ -65,6 +105,8 @@ class StoreManageVC: UIViewController {
         } catch {
             showFailureToast(message: "Error getting items")
         }
+        
+        items.removeAll()
         for item in existingItems {
             if item.stores.containsStore(Store(name: storeName)) {
                 items.append(item)
@@ -76,8 +118,11 @@ class StoreManageVC: UIViewController {
         do {
             //Save color
             var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")
-            if let existingStore = stores?.firstStore(name: storeName) {
-                stores![existingStore].color = Color(color: colorChanger.tintColor!)
+            
+            if !didDeleteStore {
+                if let existingStore = stores?.firstStore(name: storeName) {
+                    stores![existingStore].color = Color(color: colorChanger.tintColor!)
+                }
             }
             
             //Save Items
@@ -117,6 +162,7 @@ extension StoreManageVC: UITableViewDelegate, UITableViewDataSource, UITextField
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         
         let action = UIContextualAction(style: .destructive, title: "") { [self] (action, view, completion) in
+            let deletedItemName = items[indexPath.row].name
             if let index = existingItems.firstIndex(of: items[indexPath.row]) {
                 existingItems[index].removeStore(withName: storeName)
             }
@@ -124,6 +170,16 @@ extension StoreManageVC: UITableViewDelegate, UITableViewDataSource, UITextField
             items.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .middle)
             showToast(message: "Deleted item.", image: UIImage(systemName: "trash")!, color: .red, fontColor: .red)
+            
+            Family.items = existingItems
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: GIDSignIn.sharedInstance().currentUser.profile.givenName! + " deleted the item '" + deletedItemName! + "'")
+                }
+            } else {
+                print("user not logged in")
+            }
             completion(true)
             
         }
@@ -148,27 +204,60 @@ extension StoreManageVC: UITableViewDelegate, UITableViewDataSource, UITextField
             return true
         }
         
-        var added = false
-        for (index, var item) in existingItems.enumerated() {
+        if textField.tag == -1 {
+            //New Item
+            var added = false
+            for (index, var item) in existingItems.enumerated() {
+                
+                if item.name == textField.text! {
+                    item.addStore(storeName)
+                    added = true
+                    existingItems[index] = item
+                    items.append(item)
+                }
+                
+            }
             
-            if item.name == textField.text! {
-                item.addStore(storeName)
-                added = true
-                existingItems[index] = item
-                items.append(item)
+            if !added {
+                let newItem = Item(name: textField.text!, stores: [Store(name: storeName)])
+                items.append(newItem)
+                existingItems.append(newItem)
+            }
+            
+            tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: .left)
+            textField.text = ""
+            
+            Family.items = existingItems
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { [self] (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: GIDSignIn.sharedInstance().currentUser.profile.givenName! + " added the item '" + items.last!.name + "' to the list")
+                }
+            } else {
+                print("user not logged in")
             }
             
         }
-        
-        if !added {
-            let newItem = Item(name: textField.text!, stores: [Store(name: storeName)])
-            items.append(newItem)
-            existingItems.append(newItem)
+        else {
+            //Existing Item
+            let index = textField.tag
+            let oldItem = items[index]
+            items[index].name = textField.text!
+            
+            existingItems[existingItems.indexOfItem(oldItem)!].name = textField.text!
+            
+            Family.items = existingItems
+            if userIsLoggedIn() {
+                uploadUserStuffToDatabase { [self] (completed) in
+                    print("uploaded")
+                    uploadMostRecentChange(message: GIDSignIn.sharedInstance().currentUser.profile.givenName! + " changed the name of '\(oldItem.name!)' into '\(items[index].name!)'")
+                }
+            } else {
+                print("user not logged in")
+            }
         }
-        
-        tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: .left)
-        textField.text = ""
         view.endEditing(true)
+        
         return true
     }
     
@@ -205,6 +294,7 @@ extension StoreManageVC {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self]_ in
             
+            didDeleteStore = true
             if userIsLoggedIn() {
                 do {
                     var tempItems: [Item] = []
@@ -215,11 +305,16 @@ extension StoreManageVC {
                         }
                         tempItems.append(item)
                     }
-                
+                    
                     Family.items = tempItems
+                    
                     var stores = Family.stores
                     try stores.removeStore(withStore: storeName)
                     Family.stores = stores
+                    
+                    try UserDefaults.standard.set(object: tempItems, forKey: "items")
+                    try UserDefaults.standard.set(object: stores, forKey: "stores")
+                    
                     self.showSuccessToast(message: "Successfully deleted!")
                     self.navigationController?.popViewController(animated: true)
                 } catch {
@@ -236,7 +331,7 @@ extension StoreManageVC {
                         }
                         tempItems.append(item)
                     }
-                
+                    
                     try UserDefaults.standard.set(object: tempItems, forKey: "items")
                     var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores")!
                     try stores.removeStore(withStore: storeName)

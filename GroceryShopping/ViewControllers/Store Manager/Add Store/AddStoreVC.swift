@@ -93,7 +93,12 @@ extension AddStoreVC {
         }
         
         do {
-            var stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+            var stores: [Store] = []
+            if userIsLoggedIn() {
+                stores = Family.stores
+            } else {
+                stores = try UserDefaults.standard.get(objectType: [Store].self, forKey: "stores") ?? []
+            }
             stores.append(Store(name: store, color: color))
             try UserDefaults.standard.set(object: stores, forKey: "stores")
             
@@ -101,6 +106,7 @@ extension AddStoreVC {
                 let loadingScreen = createLoadingScreen(frame: view.frame, message: "Uploading, please wait.", animation: "Loading")
                 view.addSubview(loadingScreen)
                 Family.stores = stores
+                self.uploadMostRecentChange(message: "The store \(store) has been added!")
                 uploadUserStuffToDatabase { (completed) in
                     if completed {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
@@ -121,6 +127,7 @@ extension AddStoreVC {
             showFailureToast(message: "Error, try rebooting the application.")
         }
     }
+    
     @IBAction func addStoreButtonTapped(_ sender: Any) {
         
         let newStoreVC = storyboard?.instantiateViewController(identifier: "StoreAdder") as! StoreNameEnterVC

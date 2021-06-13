@@ -44,7 +44,6 @@ extension UIViewController {
     }
     
     func showAnimationNotification(animationName: String, message: String, duration: Double = 3, color: UIColor = .label, fontColor: UIColor = .label, playbackSpeed: CGFloat = 1, loop: LottieLoopMode = .playOnce) {
-        view.endEditing(true)
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first!
         let notificationView = UIView(frame: CGRect(x: 10, y: -50, width: view.frame.size.width - 20, height: 100))
         notificationView.addLeftBorder(with: color, andWidth: 1)
